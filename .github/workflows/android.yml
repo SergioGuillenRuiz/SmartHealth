@@ -113,7 +113,7 @@ jobs:
       - name: Probar la parte nativa y compilar los APK (release y debug)
         working-directory: android
         # `testDebugUnitTest` ejecuta las pruebas de Java del módulo (la pista del GPS en segundo plano): si fallan, no hay APK.
-        run: ./gradlew testDebugUnitTest assembleRelease assembleDebug --no-daemon -PapkVersionCode=${{ github.run_number }} -PapkVersionName=${{ env.VERSION }}
+        run: ./gradlew testDebugUnitTest assembleRelease assembleDebug --no-daemon -PapkVersionCode=$(( ${{ github.run_number }} + 100 )) -PapkVersionName=${{ env.VERSION }}
       - name: Comprobar la firma y el contenido de los APK
         run: |
           REL=android/app/build/outputs/apk/release/app-release.apk
@@ -237,7 +237,7 @@ jobs:
       - name: Publicar como release
         run: |
           gh release create "apk-${{ github.run_number }}" "apk/smarthealth-${VERSION}.apk" \
-            --prerelease \
+            --latest \
             --target "${{ github.sha }}" \
             --title "${NOMBRE:-SmartHealth APK ${VERSION}}" \
             --notes "APK de prueba (compilación ${{ github.run_number }}, commit ${GITHUB_SHA::7}). Se instala sobre la versión anterior sin borrar los datos."
@@ -308,7 +308,7 @@ jobs:
       - name: Publicar como release
         run: |
           gh release create "beta-web-${{ github.run_number }}" "zip/smarthealth-beta-web-${VERSION}.zip" \
-            --prerelease \
+            --latest=false \
             --target "${{ github.sha }}" \
             --title "${NOMBRE:-SmartHealth beta web ${VERSION}}" \
             --notes "Versión web para betatesters (compilación ${{ github.run_number }}, commit ${GITHUB_SHA::7}). Descomprime el zip en el PC y en Linux ejecuta python3 iniciar-linux.py; en Windows haz doble clic en iniciar-windows.py: sale un enlace https para mandar a los testers. Detalles en LEEME.txt."
