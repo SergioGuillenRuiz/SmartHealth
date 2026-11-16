@@ -1,0 +1,52 @@
+# Tabla de alimentos de la app: lo que se usa para calcular las calorías de lo que la persona escribe («dos huevos y un café con leche»).
+# Está repartida por familias en varios archivos (alimentos.txt, alimentos-carnes.txt, -pescados, -verduras, -frutas, -lacteos, -panes-cereales,
+# -dulces, -salsas, -bebidas, -platos): añadir un archivo `alimentos*.txt` a esta carpeta basta, se recoge solo.
+#
+# Una línea por alimento:   Nombre | otras formas de decirlo, separadas por comas | kcal proteínas hidratos grasas fibra azúcares sal | extras
+#   · Las cifras son por cada 100 g (o 100 ml si lleva «liquido»), del alimento tal como se come (cocinado si se cocina). Son SIEMPRE 7 números, en gramos
+#     salvo las kcal: la fibra, los azúcares (que son una parte de los hidratos: nunca más que ellos) y la SAL (cloruro sódico, = sodio × 2,5; en un plato
+#     casero lleva la que se echa de ordinario, en un envasado la de la etiqueta típica). Un alimento sin nada de eso lleva 0. Los platos compuestos
+#     (`= pieza + pieza…`) no llevan cifras: las suman de sus piezas.
+#   · Valores medios y redondeados, de las tablas de composición habituales y de etiquetas típicas: NO son los de una marca concreta
+#     (salvo donde se dice la marca). Los hidratos son los disponibles (sin la fibra), como en una etiqueta europea.
+#   · Extras (separados por espacios):
+#       racion=g de una ración habitual · ud=g de una unidad natural («un huevo») · conjunto (se come por raciones: sin decir cuántos, una ración y no una unidad) · entero=g de lo que pesa entero («media tarta») · liquido ·
+#       densidad=g/ml · alcohol=g por cada 100 ml · ignorar (se reconoce pero no suma) ·
+#       gramos de una medida casera: vaso, taza, copa, cana, botellin, lata, botella, brick, jarra, chupito, bol, cucharada, cucharadita,
+#       cucharon, punado, loncha, rebanada, rodaja, trozo, porcion, plato, onza, sobre, terron, cazo, chorrito, bola, filete, dedo, tarro, tableta, pizca, racimo.
+#   · coc=ave|carne|pescado|azul|marisco|verdura|patata|seta: el alimento cambia al cocinarlo («pollo frito», «verduras a la plancha»,
+#     «merluza rebozada»). Las cifras de esa línea son las del alimento cocinado SIN grasa añadida; «frito», «empanado», «a la plancha», «al horno»
+#     y «guisado» suman lo que la cocina le añade (COOKING en food-text.ts) y «crudo» pasa a las cifras del crudo. En esas líneas no se escriben
+#     las formas con la cocción dentro («pollo frito»): las entiende solo.
+#   · contenedor: es el pan o la masa que lleva algo dentro («bocadillo de pavo y queso»); lo que se nombra después es relleno, y rell=g dice
+#     cuánto se pone de ese alimento cuando es relleno (sin rell=, una ración pequeña: 40 g como mucho).
+#   · Sin acentos ni mayúsculas importa poco: se normalizan. Singular y plural se entienden solos (huevo/huevos, tomate/tomates).
+#   · Cada forma de decirlo solo puede estar en UN alimento (una prueba lo vigila). Las más largas ganan: «café con leche» no es «café» + «leche».
+#   · No pongas como forma de decirlo una cantidad o una medida delante («un trozo de», «dos lonchas de»): las cantidades se leen solas. Y cuidado
+#     con las formas con «con» que son platos sumados («pollo con patatas»): se entienden mejor como dos alimentos.
+#
+# Es una estimación: la cantidad real de una ración varía mucho. La app siempre enseña los gramos que ha supuesto.
+
+# ───────────── huevos ─────────────
+Huevo | huevo, huevos, huevo cocido, huevos cocidos, huevo duro, huevos duros | 155 12.6 1.1 10.6 0 1.1 0.37 | ud=55 racion=110 rell=55 rol=topping
+Huevo escalfado | huevo escalfado, huevos escalfados, huevo poché, huevo poche, huevos poché, huevos poche, huevo pochado, huevos pochados | 143 12.5 0.7 10 0 0.4 0.35 | ud=50 racion=100 rell=50 rol=topping
+Huevo frito | huevo frito, huevos fritos, huevo a la plancha, huevos a la plancha | 196 13.6 0.8 15.3 0 0.4 0.45 | ud=50 racion=100 rell=50 rol=topping rapida
+Huevos revueltos | huevos revueltos, huevo revuelto, revuelto de huevo, huevos batidos | 180 11 2 14 0 1.5 0.55 | ud=60 racion=120 rell=60 rol=topping
+Tortilla francesa | tortilla francesa, tortilla de huevo, tortilla de huevos, tortilla de un huevo, tortilla de dos huevos | 190 12.5 1 15 0 0.7 0.6 | racion=110 rell=60 
+Tortilla de patatas | tortilla de patatas, tortilla de patata, tortilla española, tortilla espanola, tortilla | 175 6.5 12 11 1.2 1.5 0.6 | racion=150 trozo=120 porcion=120 rell=120 entero=700 
+Clara de huevo | clara, claras, clara de huevo, claras de huevo, claras de huevo cocidas | 52 10.9 0.7 0.2 0 0.7 0.4 | ud=33 racion=66 rol=topping
+Yema de huevo | yema, yemas, yema de huevo | 322 15.9 3.6 26.5 0 0.6 0.12 | ud=17 racion=17 rol=topping
+Huevos con tomate | huevos con tomate, huevo con tomate | 120 7 6 8 1.2 4 0.8 | racion=250
+Revuelto | revuelto, revuelto de champiñones, revuelto de setas, revuelto de gambas, revuelto de espárragos, revuelto de ajetes, revuelto de jamón | 160 9 3 12 0.8 1.5 0.7 | racion=200
+
+
+
+
+
+
+
+
+
+
+
+

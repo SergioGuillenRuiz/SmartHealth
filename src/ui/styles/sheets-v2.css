@@ -1,0 +1,277 @@
+/* Hojas inferiores, versión 2 (ronda 53): un mismo lenguaje visual para todas, el de la hoja de pesar con la báscula —bloques de fondo suave y esquinas generosas, rótulos pequeños,
+   campos y mosaicos con el mismo borde, lo seleccionado en verde— sin perder del todo el color propio de cada una (el del sueño, el del pulso, el de cada ajuste…, que sigue en iconos, cifras y
+   gráficos y, muy tenue, en el fondo de algunos bloques).
+
+   VERSIONES: el aspecto anterior NO se ha borrado: sigue entero en `app.css`. Todo lo de aquí solo vale con `data-sheets="2"` en <html> (lo pone `ui/sheet-style.ts`): para volver al aspecto
+   anterior basta poner `SHEET_STYLE = 1` allí; para probar otro, se añade `sheets-v3.css` con `data-sheets="3"` y se cambia esa constante. No se pierde ninguna versión.
+
+   Lenguaje común:
+     · bloque (nivel 1)  → fondo `--surface-2`, esquina 22 px, sin borde;
+     · elemento dentro de un bloque (nivel 2) → fondo `--surface`, esquina 14–16 px;
+     · elemento suelto sobre la hoja → fondo `--surface-2`, esquina 14–16 px;
+     · campos → fondo `--surface-2`, borde de 1 px, esquina 14 px; opciones elegibles → borde de 1,5 px y, elegidas, borde y fondo verdes;
+     · rótulos de sección → pequeños, en mayúsculas, con letra algo separada (como «CÓMO ESTÁ» al pesar). */
+
+:root[data-sheets='2'] {
+  --sh-r-card: 22px;
+  --sh-r-item: 16px;
+  --sh-r-field: 14px;
+  --sh-caption: var(--text-2);
+}
+
+/* El marco de la hoja y su cabecera. */
+:root[data-sheets='2'] dialog.sheet {
+  border-radius: 26px 26px 0 0;
+}
+:root[data-sheets='2'] .sheet__head h2 {
+  font-size: 19px;
+}
+:root[data-sheets='2'] .sheet__body {
+  padding-top: 8px;
+}
+
+/* Rótulos de sección: el mismo para todos. */
+:root[data-sheets='2'] .detail-title,
+:root[data-sheets='2'] .dishes__title,
+:root[data-sheets='2'] .meal__other,
+:root[data-sheets='2'] .profile-data__title,
+:root[data-sheets='2'] .sc-cap {
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--sh-caption);
+}
+:root[data-sheets='2'] .profile-data__title {
+  margin: 26px 0 12px;
+  padding-top: 0;
+  border-top: 0;
+}
+/* El título del análisis lleva icono y es una frase del bloque: se queda como estaba. */
+:root[data-sheets='2'] .analysis .detail-title {
+  font-size: 14.5px;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text);
+}
+
+/* Campos y botones. */
+:root[data-sheets='2'] .field > label,
+:root[data-sheets='2'] .field__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sh-caption);
+}
+:root[data-sheets='2'] .input,
+:root[data-sheets='2'] .stepper,
+:root[data-sheets='2'] select.input {
+  border-radius: var(--sh-r-field);
+}
+:root[data-sheets='2'] .btn {
+  border-radius: var(--sh-r-field);
+}
+:root[data-sheets='2'] .btn--big {
+  border-radius: 18px;
+}
+:root[data-sheets='2'] .banner {
+  border-radius: var(--sh-r-item);
+}
+
+/* Bloques de nivel 1. */
+:root[data-sheets='2'] .device {
+  padding: 16px;
+  border: 0;
+  border-radius: var(--sh-r-card);
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .device .switch {
+  background: var(--surface);
+}
+:root[data-sheets='2'] .switch {
+  padding: 13px 14px;
+  border: 0;
+  border-radius: var(--sh-r-item);
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .analysis {
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--ok) 9%, var(--surface-2));
+}
+:root[data-sheets='2'] .analysis--attention {
+  background: color-mix(in srgb, var(--warn) 11%, var(--surface-2));
+}
+:root[data-sheets='2'] .device__title {
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--sh-caption);
+}
+
+/* Elementos de cifras: el mismo bloque suave. */
+:root[data-sheets='2'] .kpis > div,
+:root[data-sheets='2'] .totals > div,
+:root[data-sheets='2'] .history-totals,
+:root[data-sheets='2'] .minmax .stat,
+:root[data-sheets='2'] .meal-detail__macros div,
+:root[data-sheets='2'] .wg-card,
+:root[data-sheets='2'] .jp-card {
+  border-radius: var(--sh-r-item);
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .sleep-facts {
+  margin-top: 16px;
+  padding: 16px;
+  border-top: 0;
+  border-radius: 20px;
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .stage-totals li {
+  padding: 10px 12px;
+  border-radius: var(--sh-r-item);
+  background: var(--surface-2);
+}
+
+/* Listas de filas (el menú de perfil, las formas de anotar una comida): un solo bloque con sus filas separadas por una raya, y el icono de cada fila con su color muy suave. */
+:root[data-sheets='2'] .menu {
+  margin: 8px 0 0;
+  padding: 2px 16px;
+  border-radius: var(--sh-r-card);
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .menu > li + li {
+  border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+}
+:root[data-sheets='2'] .menu-row {
+  padding: 13px 0;
+}
+:root[data-sheets='2'] .menu-row__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: color-mix(in srgb, currentColor 16%, var(--surface-3));
+}
+:root[data-sheets='2'] .profile-card {
+  margin: 0 0 12px;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: var(--sh-r-card);
+  background: var(--surface-2);
+}
+
+/* Opciones elegibles (objetivo de salud, sexo…): borde de 1,5 px, y la elegida en verde, como los mosaicos de «Cómo está». */
+:root[data-sheets='2'] .choice__item {
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--sh-r-item);
+  background: transparent;
+}
+:root[data-sheets='2'] .choice__item.is-active {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+
+/* ───────────── La valoración de una comida (hoja de detalles) ─────────────
+   Un bloque como los demás de las hojas (fondo `--surface-2`, 22 px, sin borde): arriba el nivel y el objetivo y, a la derecha, un medidor de tres tramos con el color del nivel; debajo cada
+   criterio como una pieza de nivel 2 (`--surface`) con su marca, su cifra y su palabra. El código de colores y los iconos de cada fila (verde bien, ámbar regular, rojo mal) son los de siempre y
+   son lo único que lleva color. (Hasta la ronda 54 llevaba un degradado, una manzana de fondo y las filas teñidas: se quitó.) */
+:root[data-sheets='2'] .meal-fit {
+  --fit: var(--text-3);
+  margin: 8px 0 18px;
+  padding: 16px 14px 14px;
+  border: 0;
+  border-radius: var(--sh-r-card);
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .meal-fit.is-great,
+:root[data-sheets='2'] .meal-fit.is-good {
+  --fit: var(--ok);
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .meal-fit.is-fair {
+  --fit: var(--warn);
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .meal-fit.is-poor {
+  --fit: var(--danger);
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .meal-fit__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 0 2px;
+}
+:root[data-sheets='2'] .meal-fit h4 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+:root[data-sheets='2'] .meal-fit__goal {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+/* El medidor: tres tramos; los llenos con el color del nivel y, si no hay ninguno (poco adecuada), los tres con su contorno en rojo para que se vea el nivel. */
+:root[data-sheets='2'] .meal-fit__meter {
+  display: flex;
+  flex: none;
+  gap: 4px;
+  padding-top: 7px;
+}
+:root[data-sheets='2'] .meal-fit__meter i {
+  width: 22px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--surface-3);
+}
+:root[data-sheets='2'] .meal-fit__meter i.is-on {
+  background: var(--fit);
+}
+:root[data-sheets='2'] .meal-fit.is-poor .meal-fit__meter i {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--fit);
+}
+:root[data-sheets='2'] .fit-rows {
+  gap: 8px;
+  margin-top: 0;
+}
+:root[data-sheets='2'] .fit-row {
+  padding: 11px 12px;
+  border: 0;
+  border-radius: var(--sh-r-item);
+  background: var(--surface);
+}
+:root[data-sheets='2'] .fit-note {
+  margin: 10px 2px 0;
+}
+
+/* Hojas con una sola idea (el aviso de la tarjeta de ideas, la gota de agua…) heredan el mismo aire. */
+:root[data-sheets='2'] .advice,
+:root[data-sheets='2'] .recipe-card,
+:root[data-sheets='2'] .dish-card,
+:root[data-sheets='2'] .rv-card {
+  border-radius: var(--sh-r-card);
+}
+:root[data-sheets='2'] .recipe-card {
+  border: 0;
+  background: var(--surface-2);
+}
+:root[data-sheets='2'] .recipe-card .recipe-card__shop {
+  background: var(--surface);
+}
+:root[data-sheets='2'] .recipe-card .recipe-card__kind,
+:root[data-sheets='2'] .recipe-card .cook-step__icon {
+  border-radius: 14px;
+}
+:root[data-sheets='2'] .recipe-card .cook-step__time {
+  background: var(--surface);
+}

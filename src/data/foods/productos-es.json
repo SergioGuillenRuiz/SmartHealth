@@ -1,0 +1,53 @@
+{
+  "format": 2,
+  "source": "Open Food Facts",
+  "license": "ODbL 1.0",
+  "url": "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz",
+  "countries": [
+    "en:spain"
+  ],
+  "dumpDate": "2026-10-20",
+  "builtAt": "2026-10-20T13:40:27.635Z",
+  "count": 242538,
+  "bytes": 13424262,
+  "samples": [
+    {
+      "code": "0000102991701",
+      "name": "Sand. Multi salmón salsa curry-mango",
+      "brand": "Viena Capellanes"
+    },
+    {
+      "code": "00001694",
+      "name": "butifarra blanca",
+      "brand": "Con R de Monegros"
+    },
+    {
+      "code": "0000207062276",
+      "name": "Bio te verde",
+      "brand": "Lord Nelson"
+    },
+    {
+      "code": "0000209773750",
+      "name": "Roti Wraps",
+      "brand": "Lidl"
+    },
+    {
+      "code": "00002202",
+      "name": "Jamón de cebo ibérico",
+      "brand": "Espana e Hijos"
+    }
+  ],
+  "stats": {
+    "rows": 4859256,
+    "malformed": 6393,
+    "otherCountry": 4492124,
+    "badBarcode": 19355,
+    "noName": 20015,
+    "noNutrition": 78831,
+    "duplicates": 0,
+    "kept": 242538,
+    "withFiber": 66332,
+    "withSugars": 236645,
+    "withSalt": 221745
+  }
+}

@@ -1,0 +1,110 @@
+# Cocina de Japón, Corea, China, el Sudeste Asiático y la India. Formato y significado de cada columna: ver alimentos.txt.
+# Las cifras son por 100 g del plato tal como se sirve (con su caldo, su salsa y su aceite); las raciones, las de un plato o un bol normales.
+
+# ───────────── Japón ─────────────
+Ramen | ramen, ramen de cerdo, ramen tonkotsu, tonkotsu, tonkotsu ramen, ramen de pollo, ramen de miso, ramen shoyu, shoyu ramen, ramen con huevo, sopa ramen, ramen japonés, ramen japones | 97 5.5 11 3.5 0.8 0.8 1.2 | racion=550 bol=550 plato=550
+Fideos instantáneos | fideos instantáneos, noodles instantáneos, sopa de sobre, maruchan, nissin, sopa de fideos instantánea, fideos de sobre, cup noodles, fideos de vaso, pasta instantánea, pasta de sobre, sobre de pasta, sobre de pasta instantánea, sobre de fideos, sobre de noodles, sobre de sopa, sobre de sopa de fideos, ramen instantáneo, ramen de sobre | 438 9 60 18 2.5 2 2.8 | racion=75 bol=75
+Udon | udon, fideos udon, udon con verduras, udon de pollo, udon de ternera, sopa udon, udon en caldo, soba, fideos soba | 71 3 13 0.8 0.8 0.8 1 | racion=500 bol=500 plato=500
+Noodles salteados | noodles salteados, yakisoba, yaki udon, chow mein, chow mein de pollo, chow mein de ternera, fideos salteados, tallarines chinos, tallarines salteados, mie goreng, lo mein, wok de fideos, fideos con verduras, bami goreng, fideos orientales, fideos chinos, fideos de arroz, fideos de soja | 152 6 22 4.5 1.5 2.5 1 | racion=350 plato=350
+Sopa de miso | sopa de miso, miso, caldo de miso, sopa miso | 33 2.5 3.5 1 0.5 1 1.2 | racion=250 bol=250
+Sashimi | sashimi, sashimi de salmón, sashimi de atún, sashimi variado, tataki, tataki de atún, tataki de ternera, carpaccio de pescado | 129 21 0 5 0 0 0.15 | racion=120 ud=15 rol=proteina
+Nigiri | nigiri, nigiris, nigiri de salmón, nigiri de atún, nigiri variado, nigiri de gamba, nigiris de salmón | 147 7 24 2.5 0.3 3 0.9 | ud=30 racion=180 conjunto
+Maki | maki, makis, maki de pepino, maki de aguacate, maki de salmón, maki de atún, hosomaki, futomaki, uramaki, uramakis, california roll, california, sushi roll, temaki, temakis, roll de salmón, roll de aguacate, dragon roll, philadelphia roll | 140 5 26 1.8 1 3 0.8 | ud=25 racion=150 conjunto
+Tempura de marisco y verduras | tempura de langostinos, tempura mixta, tempura de gambas, tempura de verduras, ebi tempura, langostinos en tempura, verduras en tempura | 224 7 22 12 1 1 0.9 | racion=150
+Tonkatsu | tonkatsu, katsu, chicken katsu, katsu de pollo, katsudon, pollo katsu, cerdo katsu | 284 19 16 16 1 1 1 | racion=180
+Curry japonés | katsu curry, curry japonés, curry japones, kare raisu | 174 8 22 6 1.5 3 1 | racion=450 plato=450
+Pollo teriyaki | pollo teriyaki, teriyaki, pollo yakitori, yakitori, salmón teriyaki, ternera teriyaki, pollo al estilo japonés | 165 18 12 5 0.5 9 1.5 | racion=250 plato=250
+Okonomiyaki | okonomiyaki, tortilla japonesa, pizza japonesa | 188 8 20 8.5 1.5 4 1.2 | ud=250 racion=250
+Takoyaki | takoyaki, takoyakis, bolitas de pulpo | 187 7 24 7 1 4 1.2 | ud=20 racion=120 conjunto
+Onigiri | onigiri, onigiris, bola de arroz, bola de arroz japonesa, triángulo de arroz | 168 4 34 1.8 0.8 0.5 0.8 | ud=110 racion=110
+Mochi y dulces japoneses | mochi, mochis, mochi de té verde, mochi helado, daifuku, dorayaki, taiyaki, dango, anko | 230 3 50 1.5 1.5 28 0.1 | ud=45 racion=90
+
+# ───────────── Corea ─────────────
+Bibimbap | bibimbap, bibimbap de ternera, bibimbap de pollo, bibimbap vegetal, dolsot bibimbap | 129 5.5 20 3 2 2.5 1 | racion=450 bol=450
+Bulgogi | bulgogi, bulgogi de ternera, carne coreana, galbi, kalbi, costillas coreanas, samgyeopsal, korean bbq | 184 20 8 8 0.5 6 1.2 | racion=200 rol=proteina
+Kimchi | kimchi, kimchis, kimchi de col, col fermentada | 18 1.1 2.4 0.5 1.6 1.1 1.7 | racion=50 rol=verdura
+Tteokbokki | tteokbokki, topokki, tokbokki, ddukbokki, tteokbokki picante | 168 4 34 1.8 1.5 8 1.3 | racion=300 plato=300
+Japchae | japchae, chapchae, fideos de boniato, fideos coreanos | 143 3 25 3.5 1.5 5 1 | racion=250 plato=250
+
+# ───────────── China ─────────────
+Dim sum | dim sum, dim sums, dimsum, dim sum al vapor, dim sum variado, har gow, ha gao, siu mai, shumai, shu mai, baozi, bao, bao de cerdo, baozi de cerdo, bao bun, bollo al vapor, pelmeni, empanadillas chinas | 200 8 24 8 1 1.5 1.1 | ud=25 racion=125 conjunto
+Pollo agridulce | pollo agridulce, cerdo agridulce, ternera agridulce, pollo al limón, pollo limón, pollo kung pao, kung pao, pollo con almendras, pollo con anacardos, pollo a la naranja, pollo orange, pollo general tso | 190 11 24 5.5 1 14 0.9 | racion=300 plato=300
+Mapo tofu | mapo tofu, tofu mapo, tofu picante, tofu agridulce | 111 8 4 7 1 1.5 1.3 | racion=300 plato=300
+Rollitos de verano | rollitos de verano, rollitos vietnamitas, summer rolls, goi cuon, rollitos frescos, rollitos de papel de arroz | 110 5 17 2.5 1.5 3 0.8 | ud=80 racion=160
+
+# ───────────── Sudeste Asiático ─────────────
+Pad thai | pad thai, pad thai de gambas, pad thai de pollo, padthai, pad thai vegetal | 166 7 21 6 1.5 5 1.1 | racion=350 plato=350
+Pho | pho, pho de ternera, pho bo, pho de pollo, pho ga, sopa pho, sopa vietnamita | 56 4 7 1.3 0.5 0.5 0.8 | racion=600 bol=600
+Bánh mì | bánh mì, banh mi, banh mi de cerdo, bocadillo vietnamita | 223 10 30 7 2 4 1.4 | ud=250 racion=250
+Tom yum | tom yum, tom yum goong, tom yam, sopa tom yum, sopa tailandesa | 37 4 3.5 0.8 0.5 1.5 1 | racion=350 bol=350
+Laksa | laksa, laksa de gambas, sopa laksa, curry laksa, tom kha, tom kha gai, sopa de coco tailandesa | 105 5 11 4.5 1 1 1 | racion=500 bol=500
+Curry tailandés | curry verde tailandés, curry rojo tailandés, curry tailandés, panang, massaman, curry massaman, pollo al curry verde, gaeng | 124 8 5 8 1.5 3 0.9 | racion=300 plato=300
+Nasi goreng | nasi goreng, arroz frito indonesio, nasi lemak, arroz frito tailandés, khao pad | 178 6 26 5.5 1.5 2 1.1 | racion=350 plato=350
+Satay | satay, satay de pollo, satay de pollo con salsa de cacahuete, saté, sate, brochetas satay | 212 20 6 12 1 4 1 | racion=150 ud=40
+Rendang | rendang, rendang de ternera, beef rendang | 199 20 5 11 1.5 2 1 | racion=250 plato=250
+
+# ───────────── India ─────────────
+Naan | naan, pan naan, naan de ajo, garlic naan, naan con mantequilla, naan con queso, cheese naan, roti, chapati, chapatis, paratha, puri, poori, pan indio | 286 9 50 5.5 2 4 1.2 | ud=90 racion=90
+Pollo tikka masala | pollo tikka masala, chicken tikka masala, tikka masala, butter chicken, pollo a la mantequilla, murgh makhani, pollo makhani, korma, korma de pollo, pollo korma, pollo madras, madras, pollo vindaloo, vindaloo, rogan josh | 149 12 6 8.5 1 4 0.9 | racion=300 plato=300
+Pollo tandoori | pollo tandoori, tandoori, chicken tandoori, pollo al tandoor, tikka de pollo, chicken tikka, pollo tikka, shish tawook, shish taouk | 150 22 3 5.5 0.5 2 1 | racion=250 rol=proteina
+Biryani | biryani, biriyani, biryani de pollo, biryani de cordero, biryani de verduras, pulao, pilau, arroz pilaf, arroz pilau | 160 7 24 4 1.5 1.5 1 | racion=350 plato=350
+Dal | dal, dhal, daal, dahl, dal de lentejas, dal makhani, dal tadka, curry de lentejas | 107 6 14 3 4 1.5 0.8 | racion=300 bol=300
+Chana masala | chana masala, curry de garbanzos, garbanzos al curry, channa masala | 134 6.5 18 4 5 3 0.9 | racion=300 bol=300
+Paneer | paneer, queso paneer, paneer tikka | 300 18 3 24 0 2.5 0.4 | racion=100
+Palak paneer | palak paneer, saag paneer, paneer tikka masala, paneer butter masala | 164 8 6 12 2 2.5 0.9 | racion=300 plato=300
+Pakora | pakora, pakoras, pakora de cebolla, pakora de verduras, bhaji, onion bhaji, bhajis | 275 7 28 15 4 3 1.1 | ud=30 racion=90 conjunto
+Dosa | dosa, masala dosa, dosas, idli, idlis, uttapam, appam | 160 4 28 3.5 1.5 1 0.6 | ud=100 racion=120
+
+# ───────────── más Sudeste Asiático ─────────────
+Som tam | som tam, ensalada de papaya verde, ensalada de papaya, papaya salad | 84 2 10 4 2 7 1 | racion=200
+Larb | larb, laab, ensalada de carne tailandesa | 169 18 4 9 1 2 1.1 | racion=200
+Mango sticky rice | mango sticky rice, arroz glutinoso con mango, khao niao mamuang | 225 3 42 5 1.5 18 0.1 | racion=200
+Banh xeo | banh xeo, bánh xèo, crepe vietnamita | 207 7 20 11 1.5 2 1 | ud=150 racion=150
+Bun cha | bun cha, bún chả | 158 8 18 6 1.5 5 1 | racion=450 plato=450
+Gado-gado | gado gado, gado-gado | 136 6 10 8 4 4 0.8 | racion=300 plato=300
+Roti canai | roti canai, roti prata, roti paratha | 316 7 45 12 2 2 1 | ud=100 racion=100
+Char kway teow | char kway teow, char kuey teow | 234 6 30 10 2 3 1.4 | racion=350 plato=350
+Arroz con pollo hainanés | arroz con pollo hainanés, hainanese chicken rice, chicken rice | 202 9 28 6 0.8 0.5 0.9 | racion=400 plato=400
+Bak kut teh | bak kut teh | 72 8 1 4 0.3 0.3 0.8 | racion=450 bol=450
+Congee | congee, arroz congee, jook, gachas de arroz, congee de pollo | 65 2 13 0.5 0.3 0.2 0.5 | racion=350 bol=350
+Thai tea | té tailandés, thai tea, thai iced tea | 71 1.2 12 2 0 11 0.05 | liquido racion=300 vaso=300
+# ───────────── Japón y Corea (más) ─────────────
+Hot pot | hot pot, hotpot, shabu shabu, shabu-shabu, sukiyaki, fondue china, olla china | 93 8 4 5 1 2 1 | racion=500 bol=500
+Donburi | oyakodon, gyudon, donburi, bol de arroz japonés | 165 8 22 5 1 4 1.1 | racion=400 bol=400
+Karaage | karaage, pollo karaage, pollo frito japonés | 254 20 12 14 0.5 1 1.3 | ud=40 racion=150
+Unagi | unagi, anguila a la parrilla, anguila kabayaki, kabayaki, unadon | 237 18 3 17 0 2 1 | racion=100
+Natto | natto | 206 17 12 10 5 4 0.5 | racion=50
+Tamagoyaki | tamagoyaki, tortilla japonesa enrollada, huevo dulce japonés | 140 11 6 8 0 5 0.8 | racion=100
+Chawanmushi | chawanmushi, flan de huevo japonés | 58 5 1.5 3.5 0 1 0.8 | racion=150
+Kimbap | kimbap, gimbap | 176 5 30 4 1.5 2 1 | ud=25 racion=200
+Kimchi jjigae | kimchi jjigae, kimchi chigae, jjigae, sundubu jjigae, guiso de kimchi | 72 6 3 4 1 1 1.3 | racion=400 bol=400
+Samgyetang | samgyetang, sopa de pollo coreana con ginseng | 96 8 7 4 0.5 0.5 0.8 | racion=600 bol=600
+Naengmyeon | naengmyeon, fideos fríos coreanos | 95 3 19 0.8 1 1 0.9 | racion=500 bol=500
+Hotteok | hotteok | 277 4 45 9 1.5 20 0.4 | ud=90 racion=90
+Bingsu | bingsu, patbingsu | 168 3 30 4 1 22 0.1 | racion=250
+# ───────────── China (más) ─────────────
+Dan dan noodles | dan dan noodles, dandan, fideos dan dan | 180 7 20 8 2 2 1.4 | racion=350 plato=350
+Zhajiangmian | zhajiangmian, jajangmyeon, jjajangmyeon, fideos con salsa negra | 170 7 22 6 2 4 1.4 | racion=400 plato=400
+Jianbing | jianbing, crepe chino callejero | 241 8 32 9 2 2 1.2 | ud=200 racion=200
+Youtiao | youtiao, you tiao, churro chino | 335 6 44 15 1.5 1 1.4 | ud=60 racion=60
+Mantou | mantou, pan chino al vapor, bollo chino al vapor | 230 7 47 1.5 2 2 0.4 | ud=70 racion=70
+Dan tat | dan tat, egg tart, tarta de huevo china, tartaleta de huevo | 270 6 30 14 1 14 0.3 | ud=55 racion=55
+Mooncake | mooncake, pastel de luna, yuebing | 410 7 55 18 3 30 0.2 | ud=100 racion=100
+Tang yuan | tang yuan, tangyuan, bolas de arroz glutinoso | 248 3 50 4 1 20 0.05 | ud=25 racion=100
+Kaya toast | kaya toast, tostada de kaya | 294 6 45 10 2 18 0.8 | ud=80 racion=80
+# ───────────── India (más) ─────────────
+Chole bhature | chole bhature, chole, bhature, chana bhatura | 230 7 28 10 4 3 1 | racion=350 plato=350
+Aloo gobi | aloo gobi, aloo gobhi, patata con coliflor al curry | 82 2.5 9 4 3 2 0.8 | racion=250 plato=250
+Rajma | rajma, rajma masala, judías rojas al curry | 107 6 14 3 5 2 0.8 | racion=300 plato=300
+Poha | poha, arroz batido indio | 148 3 25 4 2 1 0.7 | racion=250
+Upma | upma, sémola india | 138 3.5 22 4 1.5 1 0.7 | racion=250
+Khichdi | khichdi, kichdi, khichri | 127 5 20 3 2 1 0.7 | racion=300 plato=300
+Gulab jamun | gulab jamun, gulab jamún | 362 4 55 14 0.5 40 0.1 | ud=40 racion=80
+Jalebi | jalebi | 380 2 66 12 0.5 45 0.1 | ud=30 racion=60
+Kheer | kheer, arroz con leche indio, payasam | 143 3.5 22 4.5 0.3 18 0.1 | racion=150
+Dulces indios | ladoo, laddu, barfi, burfi, peda, halwa, mithai, dulces indios | 420 5 55 20 2 40 0.1 | ud=40 racion=40
+Vada pav | vada pav, vada pao | 245 6 35 9 3 3 1.2 | ud=150 racion=150
+Pav bhaji | pav bhaji | 150 4 20 6 3 4 0.9 | racion=300 plato=300
+Keema | keema, kheema, keema matar, carne picada al curry | 170 15 5 10 1.5 2 0.9 | racion=250 plato=250
+Chutney | chutney, chutney de mango, chutney de tamarindo, salsa chutney | 185 0.5 45 0.3 1.5 40 0.8 | cucharada=20 racion=20 rol=salsa
+

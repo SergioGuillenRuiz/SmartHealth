@@ -1,0 +1,1349 @@
+# Frases de la ronda 23: cada línea es algo que una persona podría escribir y que la tabla de alimentos (sin la base de productos) debe entender entera:
+# al menos un alimento, ninguna palabra sin reconocer y menos de 3500 kcal en total. Lo que no se entiende a propósito (marcas sueltas, suplementos sin calorías)
+# no está aquí. Para añadir una frase que falle, primero se añade el alimento o la forma de decirlo a src/data/foods/alimentos*.txt.
+pote gallego con unto y grelos
+caldo gallego
+lacón con grelos y patatas
+empanada gallega de zamburiñas
+pulpo á feira con cachelos
+zorza con patatas
+raxo con patatas fritas
+cecina de León con aceite
+morcilla de Burgos con pimientos
+chorizo a la sidra
+cachopo de ternera con jamón y queso
+pixín a la plancha
+fabes con almejas
+sobaos pasiegos
+quesada pasiega
+carbayones
+casadielles
+frixuelos con azúcar
+arroz con bogavante
+arroz negro con alioli
+arroz a banda
+fideuà de marisco
+all i pebre de anguila
+suquet de peix
+butifarra con mongetes
+pa amb tomàquet con jamón
+crema catalana
+panellets de piñones
+mel i mató
+escalivada con anchoas
+esqueixada de bacalao
+calçots con salsa romesco
+ensaïmada mallorquina
+sobrasada con miel
+coca de recapte
+tumbet mallorquín
+trempó
+bolets con ajo y perejil
+ajoblanco con uvas
+salmorejo cordobés con huevo y jamón
+porra antequerana
+flamenquín cordobés
+berenjenas fritas con miel de caña
+rabo de toro estofado
+espinacas con garbanzos
+pestiños con miel
+torrijas
+migas extremeñas
+migas con chorizo y uvas
+gachas manchegas
+atascaburras
+morteruelo
+cochinillo asado de Segovia
+judiones de la Granja
+sopa castellana con huevo
+lechazo asado
+patatas a la importancia
+patatas revolconas con torreznos
+torreznos de Soria
+queso de Cabrales con nueces
+txangurro gratinado
+marmitako de bonito
+bacalao al pil pil
+bacalao a la vizcaína
+bacalao con tomate
+gilda de anchoa aceituna y guindilla
+pintxo de tortilla
+txuleta de vaca vieja
+pimientos de Gernika
+queso Idiazabal
+gateau vasco
+mojo picón con papas arrugadas
+gofio escaldado
+queso asado canario con mojo
+bienmesabe
+ropa vieja canaria
+potaje de berros
+potaje de lentejas
+potaje de garbanzos con bacalao
+cocido maragato
+cocido montañés
+olla podrida
+callos a la madrileña
+bocadillo de calamares
+entresijos
+gallinejas
+oreja a la plancha
+huevos estrellados con jamón
+tosta de salmón ahumado con queso crema
+tosta de anchoas con tomate
+tosta de queso de cabra con cebolla caramelizada
+montadito de lomo con pimientos
+montadito de pringá
+serranito
+bocadillo de panceta con queso
+bocata de jamón serrano con tomate y aceite
+bocata de chorizo
+bocata de chope
+bocadillo de sardinas
+bocadillo de atún con pimientos
+sándwich mixto con huevo
+pepito de ternera
+carne en salsa
+carne con tomate
+albóndigas en salsa con patatas
+filetes rusos
+san jacobo con patatas
+cordon bleu
+pechuga empanada
+escalope milanesa
+croquetas de bacalao
+croquetas de cocido
+croquetas de setas
+bolitas de queso
+buñuelos de bacalao
+tortillitas de camarones
+pescaíto frito variado
+chipirones fritos
+puntillitas
+adobo de cazón
+boquerones fritos
+espetos de sardinas
+salmonetes fritos
+atún encebollado
+caballa en escabeche
+mojama con almendras
+huevas de merluza
+ensalada de pimientos asados
+ensalada de tomate con ventresca
+ensalada de lentejas
+ensalada de garbanzos
+ensalada murciana
+ensalada campera
+ensalada de pasta
+ensalada de arroz
+ensalada César
+ensalada de queso de cabra
+ensalada de espinacas con fresas
+ensalada de col
+ensalada de remolacha
+ensalada de naranja y bacalao
+pipirrana
+zarangollo
+pisto manchego
+alboronía
+menestra de verduras
+judías verdes con patatas
+acelgas rehogadas
+guisantes con jamón
+habas con jamón
+alcachofas a la plancha
+espárragos blancos con mayonesa
+coles de Bruselas salteadas
+coliflor gratinada
+puré de calabaza
+crema de calabacín
+crema de verduras
+sopa de ajo
+sopa de cocido
+sopa de pescado
+gazpacho andaluz
+vichyssoise
+caldo de pollo
+consomé
+sopa de picadillo
+arroz caldoso con conejo
+arroz del señorito
+paella valenciana
+paella mixta
+arroz al horno
+arroz con costra
+arroz con pollo
+arroz tres delicias
+macarrones gratinados
+espaguetis con tomate
+canelones de espinacas
+lasaña de verduras
+fideos chinos
+fideos a la cazuela
+arepa de queso
+arepa reina pepiada
+empanadas argentinas de carne
+tacos al pastor
+tacos de carnitas
+quesadilla de pollo
+burrito de carne
+enchiladas rojas
+chilaquiles verdes
+tamal de pollo
+pozole rojo
+mole poblano
+guacamole con totopos
+nachos con queso
+elote con mayonesa
+pupusa de queso
+ceviche de pescado
+causa limeña
+lomo saltado
+ají de gallina
+anticuchos de corazón
+bandeja paisa
+sancocho de gallina
+pabellón criollo
+cachapa con queso
+tequeños
+hallaca
+feijoada
+pão de queijo
+coxinha de frango
+brigadeiro
+açaí con granola
+churrasco argentino
+choripán
+milanesa napolitana
+dulce de leche
+alfajor de maicena
+chimichurri
+locro
+humita
+yuca frita
+mofongo
+arroz con gandules
+tostones
+plátano maduro frito
+pastel de choclo
+completo italiano
+sopaipillas
+empanada de pino
+sushi variado
+sashimi de salmón
+nigiri de atún
+maki de aguacate
+uramaki california
+ramen de cerdo
+udon con verduras
+soba fría
+tempura de langostinos
+gyozas a la plancha
+okonomiyaki
+takoyaki
+onigiri de atún
+sopa de miso
+edamame
+pollo teriyaki
+katsu curry
+bibimbap
+kimchi
+bulgogi de ternera
+tteokbokki
+japchae
+pad thai de gambas
+tom yum
+curry verde tailandés
+pho de ternera
+bánh mì
+rollitos de primavera
+dim sum variado
+har gow
+baozi de cerdo
+chow mein de pollo
+pollo agridulce
+pato laqueado
+mapo tofu
+wonton frito
+naan con mantequilla
+pollo tikka masala
+biryani de cordero
+samosa de verduras
+dal de lentejas
+paneer tikka
+chapati
+lassi de mango
+raita
+pakora de cebolla
+pollo tandoori
+butter chicken
+korma de pollo
+laksa
+nasi goreng
+satay de pollo con salsa de cacahuete
+rendang de ternera
+mochi de té verde
+matcha latte
+bubble tea de taro
+hummus con pan de pita
+falafel con tahini
+shawarma de pollo
+kebab mixto
+baba ganoush
+tabulé
+kibbeh
+shakshuka
+labneh con aceite
+baklava
+halva de sésamo
+tzatziki con pita
+souvlaki de cerdo
+gyros de pollo
+moussaka
+spanakopita
+ensalada griega
+dolmades
+cuscús con verduras
+tajine de cordero
+harira
+msemen con miel
+pastela de pollo
+pizza cuatro quesos
+pizza prosciutto
+pizza diavola
+pizza barbacoa
+pizza hawaiana
+calzone
+spaghetti carbonara
+tagliatelle boloñesa
+penne all'arrabbiata
+fettuccine alfredo
+cacio e pepe
+bucatini all'amatriciana
+gnocchi al pesto
+ravioli de ricotta y espinacas
+tortellini en caldo
+risotto de parmesano
+tiramisú
+panna cotta con frutos rojos
+cannoli
+gelato de pistacho
+focaccia de romero
+bruschetta de tomate
+ensalada caprese
+arancini
+osso buco
+saltimbocca
+polenta con setas
+minestrone
+ribollita
+croissant relleno de jamón y queso
+baguette con mantequilla y jamón
+quiche lorraine
+crepe de nutella
+crepe salada de jamón y queso
+ratatouille
+coq au vin
+sopa de cebolla gratinada
+croque monsieur
+macarons
+éclair de chocolate
+brioche
+foie gras con pan
+camembert al horno
+queso brie con mermelada
+salchichas de Frankfurt con chucrut
+pretzel
+schnitzel con patatas
+currywurst
+strudel de manzana
+bratwurst con mostaza
+fish and chips
+full english breakfast
+shepherd's pie
+scone con nata y mermelada
+sunday roast
+yorkshire pudding
+perrito caliente con todo
+bagel con queso crema y salmón
+pancakes con sirope de arce
+waffles con fresas
+mac and cheese
+alitas de pollo buffalo
+brownie con helado
+cookies de chocolate
+cheesecake de frambuesa
+tarta de manzana americana
+club sandwich
+cobb salad
+BLT
+philly cheesesteak
+pulled pork sandwich
+corn dog
+muffin de arándanos
+poke bowl de salmón
+buddha bowl
+bowl de quinoa con aguacate
+tostada de aguacate y huevo poché
+overnight oats con frutos rojos
+porridge con manzana y canela
+granola con yogur
+un scoop de whey
+dos scoops de proteína de suero con agua
+batido de caseína con leche
+gainer con leche
+barrita proteica de chocolate
+barrita Quest
+barrita Grenade
+overnight oats proteicos
+claras con avena
+pechuga con arroz y brócoli
+tupper de pollo con arroz
+atún con arroz
+requesón con fresas
+skyr con frutos rojos
+kéfir natural
+quark con miel
+pan Ezequiel
+tortitas de arroz con crema de cacahuete
+tortitas de avena
+crema de cacahuete
+mantequilla de almendras
+cucharada de semillas de chía
+cucharada de lino molido
+proteína vegetal de guisante
+aceite MCT
+colágeno hidrolizado
+bebida isotónica
+gel energético
+pan de proteínas
+pasta de lentejas rojas
+harina de avena
+wrap integral con pavo
+hamburguesa de pollo a la plancha
+queso batido 0%
+flan proteico
+helado proteico
+yogur proteico
+leche de soja sin azúcar
+leche de avena
+leche de almendras
+leche de coco
+bebida de arroz
+tofu a la plancha
+tempeh
+seitán
+hamburguesa vegetal
+salchichas veganas
+queso vegano
+hummus de remolacha
+tahini
+pasta de curry
+harina de almendra
+pan rallado
+cucharada de aceite de oliva
+cucharada de aceite de coco
+una cucharadita de azúcar moreno
+mantequilla
+nata para cocinar
+nata montada
+miel
+sirope de agave
+mermelada de fresa
+ghee
+mayonesa light
+ketchup
+mostaza antigua
+salsa de soja
+salsa sriracha
+salsa barbacoa
+salsa de queso cheddar
+alioli
+salsa César
+vinagreta
+pesto rojo
+sofrito de tomate
+tomate frito
+tomate triturado
+caldo de verduras
+cubito de caldo
+atún al natural
+atún en aceite
+sardinillas en aceite
+mejillones en escabeche
+berberechos
+anchoas en aceite
+bacalao desalado
+gambas cocidas
+langostinos a la plancha
+calamares a la romana
+pulpo cocido
+almejas a la marinera
+mejillones a la marinera
+sepia a la plancha
+salmón ahumado
+caviar
+huevas de salmón
+surimi
+palitos de cangrejo
+jamón cocido
+jamón serrano
+jamón ibérico de bellota
+lomo embuchado
+chorizo ibérico
+salchichón
+fuet
+longaniza
+butifarra
+mortadela
+pechuga de pavo en lonchas
+bacon
+panceta a la plancha
+chicharrones
+foie
+paté de campo
+queso fresco
+queso manchego curado
+queso de cabra
+queso azul
+mozzarella
+parmesano rallado
+queso en lonchas
+queso crema
+queso para untar
+cuajada
+natillas
+flan de vainilla
+arroz con leche
+yogur griego
+yogur de fresa
+yogur desnatado
+leche entera
+leche semidesnatada
+leche desnatada
+leche condensada
+cacao en polvo
+cola cao
+nesquik
+chocolate negro 85%
+chocolate con leche
+chocolate blanco
+turrón de Jijona
+turrón duro
+mazapán
+polvorón
+mantecado
+roscón de reyes
+torta de aceite
+magdalenas
+bizcocho de yogur
+tarta de santiago
+tarta de queso al horno
+tarta de zanahoria
+tarta de chocolate
+tarta de limón
+café solo
+café cortado
+café americano
+café con leche de avena
+café bombón
+café latte
+capuchino
+flat white
+macchiato
+moka
+carajillo de ron
+café irlandés
+frappé de café
+café con hielo
+descafeinado de máquina
+té verde
+té rojo
+té chai con leche
+té matcha
+kombucha
+infusión de manzanilla
+poleo menta
+cola cao con leche
+chocolate a la taza
+zumo de naranja
+zumo de piña
+zumo de manzana
+zumo de tomate
+zumo multifrutas
+coca cola
+coca cola zero
+fanta de naranja
+sprite
+nestea
+aquarius
+red bull
+monster
+powerade
+gatorade
+cerveza sin alcohol
+cerveza radler
+shandy
+cerveza IPA
+cerveza negra
+cerveza de trigo
+caña de cerveza
+doble de cerveza
+jarra de cerveza
+vino tinto
+vino blanco
+vino rosado
+copa de cava
+sidra natural
+tinto de verano
+sangría
+calimocho
+whisky con cola
+ron cola
+vodka con limón
+ginebra con tónica
+tequila
+chupito de orujo
+pacharán
+anís
+brandy
+mojito
+caipirinha
+piña colada
+margarita
+cosmopolitan
+aperol spritz
+negroni
+daiquiri
+horchata
+granizado de limón
+batido de fresa
+batido de chocolate
+smoothie de mango
+agua de coco
+agua con gas
+agua tónica
+vermut
+vermut con soda
+lambrusco
+licor 43
+baileys
+amaretto
+limoncello
+mistela
+cerveza artesana
+lager
+bock
+cuba libre
+tinto con casera
+clara
+cervezas sin
+batido de plátano y avena
+zumo detox
+agua con limón
+agua de cebada
+leche merengada
+batido de vainilla
+helado de turrón
+café con hielo y leche
+te frío
+limonada
+naranjada
+mosto
+gaseosa
+bitter kas
+trina
+sunny delight
+capri sun
+zumo de arándanos
+zumo de granada
+smoothie verde
+batido de proteínas con plátano
+una cerveza y unas aceitunas
+dos copas de vino y queso
+un chupito
+unos vinos
+tres cañas
+una botella de vino entre dos
+un whisky solo
+un gin tonic de Hendricks
+bolsa de pringles
+unas Doritos
+cheetos
+ruffles
+patatas lays
+risi
+gusanitos
+palomitas de microondas
+chocapic
+corn flakes
+special k
+fitness con chocolate
+cheerios
+oreo
+galletas príncipe
+chips ahoy
+galletas digestive
+galletas maría
+galletas cuétara
+tosta rica
+donuts glaseado
+bollycao
+phoskitos
+pantera rosa
+tigretón
+nutella en pan
+nocilla
+cacaolat
+kinder bueno
+kinder delice
+kinder pingüi
+kinder sorpresa
+ferrero rocher
+mars
+snickers
+twix
+bounty
+kitkat
+milka oreo
+lacasitos
+m&m's de cacahuete
+haribo
+chupa chups
+sugus
+fruittella
+mentos
+chicle
+caramelo
+piruleta
+gominolas
+regaliz
+algodón de azúcar
+palomitas dulces
+cacahuetes fritos
+pipas de girasol
+pistachos
+almendras tostadas
+anacardos
+nueces de macadamia
+avellanas
+pasas
+dátiles
+orejones
+higos secos
+arándanos secos
+frutos secos mixtos
+fruta deshidratada
+chips de plátano
+chips de kale
+barrita de cereales
+barrita de muesli
+barrita de fruta
+galletas de arroz
+tortitas de maíz
+crackers
+colines
+picos
+regañás
+tostadas de pan
+biscotes
+panecillos
+bollo suizo
+napolitana de crema
+ensaimada
+caracola de crema
+palmera de chocolate
+cruasán de mantequilla
+cruasán plancha
+medianoche
+pan de leche
+pan de molde
+pan de pita
+pan integral
+pan de centeno
+pan de maíz
+tortilla de trigo
+tortilla de maíz
+pan de hamburguesa
+pan chapata
+chapata de jamón
+barra de pan
+mollete
+bollo de pan
+helado de vainilla
+helado de fresa
+helado de limón
+helado cornetto
+magnum
+frigo
+calippo
+sandwich de helado
+polo de hielo
+tarrina de helado
+sorbete de limón
+tarta helada
+mochi helado
+flan chino
+profiteroles
+tarta tatin
+tarta sacher
+carlota de limón
+tarta de la abuela
+mousse de chocolate
+tarta de tres chocolates
+brazo de gitano
+roscos de vino
+rosquillas
+mantecados
+turrón de chocolate
+barquillos
+neulas
+buñuelos de viento
+churros con azúcar
+porras
+chocolate con churros
+tortitas con nata
+gofres con helado
+tortila de patatas
+hamburgesa con queso
+ensalda mixta
+espagueti con tomate
+ensaladilla rusa y una caña
+2 huevos + 1 café
+1/2 pizza margarita
+tres cuartos de litro de leche
+un cuarto de pollo asado
+una tercera parte de la tarta
+medio kilo de cerezas
+kilo y medio de naranjas
+dos y medio de arroz
+chocolate al 70%
+la mitad de una pizza
+un trozo grande de tarta de queso
+un platazo de macarrones
+un platillo de aceitunas
+un montón de pasta
+poquito de arroz
+una barbaridad de turrón
+una pizza entera yo solo
+medio paquete de galletas
+tres lonchas de jamón
+cuatro rebanadas de pan
+cinco cucharadas de aceite
+un cazo de lentejas
+un cucharón de sopa
+una lata de atún
+dos latas de sardinas
+un tarro de yogur
+una bandeja de sushi
+un cubo de pollo frito
+cinco croquetas
+doce gambas
+veinte almendras
+diez aceitunas
+una docena de ostras
+dos docenas de churros
+una decena de nueces
+un par de tostadas
+un par de huevos fritos
+unas patatas
+unos macarrones
+unos espaguetis
+unos huevos
+unas lentejas
+unas croquetas
+unas bravas
+unas gambas al ajillo
+unos churros
+una ración de jamón
+media ración de croquetas
+una ración de calamares
+un pincho de tortilla
+dos pinchos de tortilla
+un bocadillo de jamón y un refresco
+he comido macarrones con carne
+he cenado pizza
+me he tomado un café con una magdalena
+desayuno: café con leche y tostada
+comida: ensalada y filete con patatas
+cena: sopa y tortilla
+merienda: yogur y fruta
+almuerzo de 14:00 arroz con pollo
+a las 9 un café
+a media mañana un plátano
+de postre flan
+para cenar una manzana
+200 gr pollo
+200gr de arroz
+250 ml leche
+30g avena
+100 g de pasta cruda
+80 g arroz en crudo
+150 gramos de salmón
+1 kg de patatas
+2 l de agua
+33 cl de cerveza
+500 ml de zumo
+un litro de leche
+medio litro de cerveza
+una botella de agua
+dos botellines
+tres vasos de vino
+un tazón de cereales
+un bol de fruta
+un bol de sopa
+un plato hondo de lentejas
+un plato de pasta
+un plato de jamón
+una taza de caldo
+una taza de café
+una copa de vino
+un vaso de agua
+un vaso de leche con cacao
+una cucharada de azúcar
+dos terrones de azúcar
+un sobre de azúcar
+una cucharadita de miel
+una loncha de queso
+dos lonchas de pavo
+un trozo de pan
+un trozo de pizza
+un trozo de bizcocho
+una rodaja de melón
+una rodaja de sandía
+una tableta de chocolate
+una onza de chocolate
+dos onzas de chocolate negro
+una barra de pan
+medio pan
+un puñado de nueces
+un puñado de almendras
+un puñado de pasas
+un filete de ternera
+un filete de pollo
+un filete de merluza
+una pechuga de pollo
+un muslo de pollo
+un contramuslo
+dos alitas
+una chuleta de cordero
+tres chuletas
+una hamburguesa
+dos hamburguesas
+una hamburguesa doble con queso
+un perrito
+una salchicha
+dos salchichas
+una morcilla
+un chorizo
+una tortilla
+una tortilla de dos huevos
+un huevo
+dos huevos duros
+tres huevos fritos
+una manzana
+dos plátanos
+una naranja
+una pera grande
+un melocotón
+tres mandarinas
+un kiwi
+unas uvas
+un racimo de uvas
+un aguacate
+medio aguacate
+un tomate
+una zanahoria
+un pepino
+una cebolla
+un pimiento
+una patata cocida
+dos patatas
+unas patatas fritas
+una ración de patatas bravas
+una bolsa de patatas
+puré de patata con huevo cocido
+puré de zanahoria y puerro
+sopa de fideos con pollo
+sopa de estrellas
+caldo de pollo con fideos finos
+arroz blanco con tomate frito y huevo
+arroz con salchichas
+macarrones con chorizo
+macarrones con tomate y atún
+espaguetis con gambas
+tallarines con salsa de tomate
+pasta con salsa de queso
+lentejas con arroz
+lentejas estofadas con verduras
+garbanzos con chorizo y morcilla
+alubias con verduras
+judías verdes rehogadas con jamón
+coliflor con bechamel
+brócoli al vapor con aceite
+calabacín relleno de carne
+berenjena rellena de carne y queso
+pimientos rellenos de arroz
+tomates rellenos de atún
+champiñones rellenos
+setas al ajillo
+espárragos trigueros a la plancha
+alcachofas con jamón
+cardo con almendras
+borraja con patatas
+acelgas con patatas
+espinacas a la crema
+huevos al plato con chorizo
+tortilla de espinacas
+tortilla de calabacín
+tortilla de patata con cebolla
+tortilla de jamón y queso
+revuelto de gambas
+revuelto de espárragos
+huevos con patatas
+huevo cocido con mayonesa
+pollo al ajillo
+pollo al horno con patatas
+pollo en pepitoria
+pollo en salsa de almendras
+muslos de pollo al horno
+pechuga de pollo rellena
+pechuga a la plancha con limón
+pavo a la plancha
+conejo al ajillo
+codorniz asada
+cordero asado con patatas
+chuletas de cordero a la brasa
+costillas de cerdo al horno
+lomo de cerdo en salsa
+solomillo de cerdo con champiñones
+cinta de lomo
+panceta asada
+cerdo agridulce
+ternera estofada con zanahorias
+filete de ternera a la plancha con patatas
+entrecot de ternera
+bistec de ternera con ensalada
+hamburguesa casera con huevo frito
+albóndigas de pollo
+albóndigas de bacalao
+merluza a la romana
+merluza en salsa verde
+merluza rebozada con ensalada
+lubina al horno
+dorada a la sal
+salmón al horno con verduras
+atún a la plancha
+bacalao rebozado
+rape a la marinera
+sardinas en lata
+mejillones en lata
+berberechos al natural
+anchoas del cantábrico
+calamares en su tinta
+sepia con alioli
+gambas a la plancha
+langostinos cocidos
+cigalas a la plancha
+navajas a la plancha
+pulpo a la plancha
+ensalada verde con tomate y cebolla
+ensalada de lechuga y tomate
+ensalada de tomate con atún
+ensalada de pollo con aguacate
+ensalada de aguacate y gambas
+ensalada de patata con atún
+ensalada de pasta con maíz
+gazpacho con picatostes
+salmorejo con virutas de jamón
+sopa fría de melón
+crema de espárragos
+crema de champiñones
+crema de puerros
+crema de tomate
+caldo de huesos
+papilla de frutas
+papilla de cereales
+potito de pollo con verduras
+potito de frutas
+biberón de leche
+yogur infantil
+galletas de bebé
+zumo de manzana para niños
+compota de manzana
+gelatina sin azúcar
+tortitas de arroz con pavo
+lechuga con atún
+pollo con brócoli
+ensalada de pollo
+caldo depurativo
+infusión adelgazante
+yogur 0%
+leche sin lactosa
+pan sin gluten
+pasta sin gluten
+galletas sin azúcar
+chocolate sin azúcar
+mermelada sin azúcar
+refresco sin azúcar
+barrita hipocalórica
+sopa de verduras
+dieta blanda arroz y pollo
+manzana asada
+plátano con yogur
+tostada integral con pavo
+pan con aceite
+pan con chocolate
+pan con mantequilla y azúcar
+leche con galletas
+leche con cereales
+colacao con galletas
+yogur con cereales
+yogur con frutas
+macedonia de frutas
+fruta variada
+ensalada de frutas
+brocheta de frutas
+zumo de naranja con zanahoria
+batido de frutas
+pizza prosciutto con rúcula
+pizza margarita pequeña
+nuggets de pollo con salsa barbacoa
+kebab durum de pollo
+dürüm de ternera
+wrap de falafel
+bocata de calamares
+sándwich vegetal
+tosta de aguacate
+bagel de salmón
+croissant de jamón y queso
+hot dog con cebolla frita
+hamburguesa de pollo
+burrito bowl
+ensalada césar con pollo
+sushi para llevar
+pollo asado con patatas
+costillas bbq
+alitas picantes
+tacos de pollo
+quesadilla de queso
+nachos con guacamole y queso
+patatas con queso y bacon
+patatas deluxe
+aros de cebolla
+bastones de mozzarella
+croquetas congeladas
+palitos de merluza
+tortilla de patatas congelada
+pizza congelada de jamón y queso
+lasaña congelada
+empanadillas de atún
+empanada de bonito
+empanada de carne
+bollo preñao
+hornazo
+copa de vino tinto
+un rioja
+una copa de ribera
+albariño
+verdejo
+cerveza sin
+ron con cola
+whisky con hielo
+vermut con aceituna
+kalimotxo
+patxarán
+orujo
+un chupito de tequila
+copa de brandy
+chupito de licor de hierbas
+una caña y unas bravas
+dos cañas y una ración de calamares
+vino con gaseosa
+tinto de verano con limón
+sangría de cava
+cerveza de barril
+birra
+birras
+un tercio
+un tercio de cerveza
+una litrona
+danone natural
+activia
+actimel
+yakult
+leche pascual
+leche puleva
+pan bimbo
+chiquilin
+philadelphia
+queso president
+babybel
+la vaca que ríe
+kinder
+pringles de queso
+doritos
+palomitas
+trident
+cornetto
+tarta helada de vainilla
+lentejs
+garbansos
+croketas de jamon
+hamburguesa de ternerra
+pizza margarita
+alcachofas
+espárragos
+calabacin
+champinones
+patata cosida
+tortilla francesa con jamon york
+bocata de jamon y queso
+tostada con aceite y tomate
+cafe con leche
+cafe cortado
+zumo de naranja natural
+coca-cola
+aguacate
+sandwich mixto
+croisant
+napolitana de chocolate
+donuts
+galletas maria
+2 huevos y 1/2 aguacate
+100g de queso fresco y 200g de fresas
+una pizza de 4 quesos entera
+un paquete de jamón de 100 g
+medio melón
+tres cuartos de pizza
+un bol grande de cereales con leche
+dos tazones de leche
+una jarra de agua
+tres vasos de agua
+una botella de agua de 1,5 l
+un plato grande de arroz
+un plato pequeño de pasta
+una ración pequeña de tarta
+una ración doble de patatas
+una ración extra de queso
+un trozo pequeño de pizza
+cuatro trozos de pizza
+cinco galletas
+seis nueces
+siete almendras
+ocho aceitunas
+nueve uvas
+diez cacahuetes
+doce croquetas
+quince patatas fritas
+veinte gominolas
+media barra de pan
+un cuarto de barra
+la mitad de la tortilla
+la tercera parte de una pizza
+dos cucharadas soperas de aceite
+una cucharada de postre de azúcar
+una cucharadita de café de miel
+un chorrito de aceite
+un chorro de leche
+un golpe de nata
+una pizca de azúcar
+un puñadito de nueces
+un cacho de pan
+un pedazo de tarta
+un trozo enorme de tarta
+hoy he desayunado un café con leche y dos tostadas con aceite y tomate, a media mañana un plátano, comí lentejas con chorizo y de postre una manzana, merendé un yogur con nueces y cené una tortilla francesa con ensalada
+para comer: macarrones con tomate (200g), pechuga de pollo a la plancha (150g) y una pieza de fruta
+cena: 2 huevos revueltos, 1 tostada de pan integral, medio aguacate y un café solo
+desayuno: tostada con jamón serrano y aceite de oliva, zumo de naranja natural y café con leche desnatada
+almuerzo: ensalada de lechuga, tomate, cebolla y atún; filete de ternera con patatas fritas; flan de huevo
+merienda: bocadillo de jamón York y queso, y una coca cola light
+cena ligera: crema de calabacín, merluza al horno con limón y un yogur desnatado
+en el bar: una caña, una tapa de tortilla de patatas y un pincho de jamón
+fui a un restaurante japonés y pedí 10 piezas de sushi variado, una sopa de miso y edamames
+pizza margarita entera con una cerveza y un helado de postre
+comida de domingo: paella de marisco, ensalada mixta, pan, dos copas de vino tinto y un trozo de tarta de queso
+brunch: tortitas con sirope, bacon crujiente, huevos revueltos y un zumo de naranja
+he comido en el trabajo un tupper de arroz con pollo y verduras, una manzana y un café
+snack: un puñado de almendras, una mandarina y un yogur griego
+postre: arroz con leche y canela
+antes de entrenar: plátano con crema de cacahuete y un café solo
+después de entrenar: batido de proteínas con leche semidesnatada y un plátano
+cena fuerte: hamburguesa doble con queso y bacon, patatas fritas grandes, coca cola y un helado
+desayuno de hotel: 2 croissants, mantequilla, mermelada, jamón cocido, queso, café con leche y zumo
+barbacoa: 3 chorizos, 2 morcillas, un chuletón de 400 g, ensalada y pan
+tapas: croquetas de jamón (6), patatas bravas, calamares a la romana, pimientos de padrón y dos cañas
+cena en casa de mi madre: lentejas, tortilla de patatas, ensalada y fruta
+sopa de pollo con fideos, pollo guisado con patatas y una naranja
+dos huevos fritos con chorizo y pan
+arroz con leche y un café
+cereales con leche y un plátano
+yogur con miel y nueces
+una barrita de cereales y un café con leche
+un bocadillo de tortilla y una caña
+espaguetis a la carbonara con parmesano y una copa de vino
+ensalada césar con pollo y pan de ajo
+poke de salmón con arroz, aguacate, edamame y salsa de soja
+bowl de açaí con granola, plátano y fresas
+tostada de salmón ahumado con queso crema y rúcula
+huevos benedictinos con salmón
+croissant de mantequilla y café con leche
+pancakes de avena con arándanos y yogur
+batido verde de espinacas, plátano y leche de almendras
+sándwich de pavo y queso con una manzana
+wrap de pollo con lechuga y salsa césar
+kebab de pollo con patatas y una coca cola
+falafel con hummus y pan de pita
+hummus con zanahoria y pepino
+tabulé con falafel
+curry de pollo con arroz basmati y naan
+pad thai de pollo y una cerveza
+ramen de cerdo con huevo
+dim sum variado y té verde
+tacos de carnitas con guacamole
+burrito de pollo y arroz con frijoles
+nachos con queso, guacamole y una margarita
+empanadas de carne (3)
+churrasco con chimichurri y ensalada
+paella valenciana y sangría
+fabada asturiana con una sidra
+cocido madrileño completo
+gazpacho, tortilla de patatas y sandía
+migas con chorizo y huevo frito
+pulpo a la gallega con vino albariño
+bacalao al pil pil con pimientos
+chuletón de buey a la brasa con pimientos de padrón
+cordero asado con patatas panadera
+marmitako y una copa de txakoli
+cochinillo asado con ensalada
+croquetas caseras de cocido
+rabo de toro con patatas fritas
+salmorejo con huevo y jamón
+tortilla de patatas, pan con tomate y jamón ibérico
+pan con tomate, jamón y queso manchego
+fideuà y un vaso de vino blanco
+crema catalana y un café
+panellets y un moscatel
+torrijas con vino dulce
+turrón de Jijona y un cava
+polvorones y un chupito de anís
+roscón de reyes con chocolate caliente
+mazapán, turrón y mantecados
+uvas de nochevieja (12) y una copa de cava
+un plato de jamón ibérico con pan con tomate y una copa de rioja
+sushi, tempura y un sake
+sashimi de atún y salmón con wasabi y arroz
+mochi y té matcha
+bubble tea de mango
+hamburguesa vegana con boniato frito
+tofu a la plancha con verduras salteadas y arroz integral
+seitán con champiñones
+lentejas rojas con leche de coco
+quinoa con verduras y huevo duro
+ensalada de garbanzos con atún y tomate
+tortitas de arroz con aguacate y huevo
+queso fresco con membrillo y nueces
+requesón con miel
+cuajada con miel y nueces
+skyr con frutos rojos y granola
+pan de centeno con salmón ahumado y aguacate

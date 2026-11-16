@@ -1,0 +1,295 @@
+{
+ "format": "smartring-backup",
+ "version": 1,
+ "exportedAt": "2026-10-14T20:45:31.781Z",
+ "data": {
+  "profile": [
+   {
+    "date": "2026-05-27",
+    "heightCm": 178,
+    "weightKg": 84.2,
+    "sex": "male",
+    "birthDate": "1985-06-15"
+   },
+   {
+    "date": "2026-06-08",
+    "heightCm": 178,
+    "weightKg": 84.4,
+    "sex": "male",
+    "birthDate": "1985-06-15",
+    "strideCm": 74.5
+   },
+   {
+    "date": "2026-06-20",
+    "heightCm": 178,
+    "weightKg": 79.8,
+    "sex": "male",
+    "birthDate": "1985-06-15",
+    "strideCm": 76,
+    "strideOnly": true
+   }
+  ],
+  "settings": {
+   "stepGoal": 8000,
+   "sleepGoalH": 8,
+   "heartIntervalMin": 60,
+   "spo2IntervalMin": 60,
+   "lastBackupMs": 1791917131519
+  },
+  "workouts": [
+   {
+    "id": "demo-12",
+    "sport": "cycle",
+    "startMs": 1790961300000,
+    "endMs": 1790966418724,
+    "pausedMs": 0,
+    "source": "live",
+    "distanceM": 28747,
+    "distanceSource": "gps",
+    "hr": [
+     [
+      1790961300000,
+      138
+     ],
+     [
+      1790961305000,
+      136
+     ],
+     [
+      1790961310000,
+      134
+     ],
+     [
+      1790961315000,
+      133
+     ]
+    ],
+    "splitsM": [
+     412,
+     405,
+     -1,
+     398
+    ],
+    "kcalManual": 640,
+    "note": "Ruta del río, con viento de cara"
+   },
+   {
+    "id": "demo-45",
+    "sport": "run",
+    "startMs": 1788109200000,
+    "endMs": 1788113012875,
+    "pausedMs": 0,
+    "source": "manual",
+    "steps": 10168,
+    "distanceM": 8200,
+    "distanceSource": "manual"
+   },
+   {
+    "id": "demo-23",
+    "sport": "walk",
+    "startMs": 1790004600000,
+    "endMs": 1790008271546,
+    "pausedMs": 0,
+    "source": "live",
+    "steps": 6425,
+    "hr": [
+     [
+      1790004600000,
+      103
+     ],
+     [
+      1790004605000,
+      103
+     ],
+     [
+      1790004610000,
+      104
+     ]
+    ]
+   }
+  ],
+  "buckets": [
+   {
+    "startMs": 1781892600000,
+    "endMs": 1781893500000,
+    "steps": 93,
+    "ringDistanceM": 69,
+    "ringCalories": 56
+   },
+   {
+    "startMs": 1781892780000,
+    "endMs": 1781893500000,
+    "steps": 140,
+    "ringDistanceM": 104,
+    "ringCalories": 84
+   },
+   {
+    "startMs": 1781892840000,
+    "endMs": 1781893740000,
+    "steps": 107,
+    "ringDistanceM": 79,
+    "ringCalories": 64
+   },
+   {
+    "startMs": 1781896080000,
+    "endMs": 1781896620000,
+    "steps": 128,
+    "ringDistanceM": 95,
+    "ringCalories": 77
+   }
+  ],
+  "counters": [
+   {
+    "tsMs": 1782007201000,
+    "steps": 0
+   },
+   {
+    "tsMs": 1782010804000,
+    "steps": 0
+   },
+   {
+    "tsMs": 1782014403000,
+    "steps": 157
+   }
+  ],
+  "heart": [
+   {
+    "tsMs": 1782007201000,
+    "bpm": 54,
+    "source": "ring-auto"
+   },
+   {
+    "tsMs": 1782010804000,
+    "bpm": 52,
+    "source": "ring-spot"
+   },
+   {
+    "tsMs": 1782014403000,
+    "bpm": 57,
+    "source": "workout"
+   },
+   {
+    "tsMs": 1782018035000,
+    "bpm": 85,
+    "source": "ring-auto"
+   }
+  ],
+  "spo2": [
+   {
+    "tsMs": 1782007201000,
+    "percent": 96
+   },
+   {
+    "tsMs": 1782010804000,
+    "percent": 98
+   },
+   {
+    "tsMs": 1782014403000,
+    "percent": 97
+   }
+  ],
+  "sleep": [
+   {
+    "startMs": 1781642940000,
+    "endMs": 1781656525304,
+    "segments": [
+     {
+      "stage": "light",
+      "startMs": 1781642940000,
+      "durationSec": 950
+     },
+     {
+      "stage": "deep",
+      "startMs": 1781643889512,
+      "durationSec": 1995
+     },
+     {
+      "stage": "light",
+      "startMs": 1781645884236,
+      "durationSec": 1775
+     },
+     {
+      "stage": "rem",
+      "startMs": 1781647658948,
+      "durationSec": 263
+     },
+     {
+      "stage": "awake",
+      "startMs": 1781647922304,
+      "durationSec": 438
+     },
+     {
+      "stage": "light",
+      "startMs": 1781648359846,
+      "durationSec": 1346
+     },
+     {
+      "stage": "deep",
+      "startMs": 1781649706265,
+      "durationSec": 1189
+     },
+     {
+      "stage": "light",
+      "startMs": 1781650895390,
+      "durationSec": 1053
+     },
+     {
+      "stage": "rem",
+      "startMs": 1781651948424,
+      "durationSec": 513
+     },
+     {
+      "stage": "light",
+      "startMs": 1781652461756,
+      "durationSec": 1233
+     },
+     {
+      "stage": "deep",
+      "startMs": 1781653694678,
+      "durationSec": 583
+     },
+     {
+      "stage": "light",
+      "startMs": 1781654277304,
+      "durationSec": 1348
+     },
+     {
+      "stage": "nap",
+      "startMs": 1781655625304,
+      "durationSec": 900
+     }
+    ]
+   }
+  ],
+  "syncs": [
+   {
+    "tsMs": 1792003531519,
+    "ringName": "R99 F265",
+    "firmware": "2.32",
+    "batteryPercent": 78,
+    "durationMs": 11400,
+    "interrupted": false,
+    "outcomes": [],
+    "added": {
+     "buckets": 0,
+     "counters": 0,
+     "heart": 0,
+     "spo2": 0,
+     "sleep": 0
+    },
+    "dropped": {},
+    "liveSteps": 2498,
+    "capabilities": [
+     "bloodPressure",
+     "heartRate",
+     "manualBloodPressure",
+     "manualHeartRate",
+     "manualSpo2",
+     "sleep",
+     "spo2",
+     "steps"
+    ]
+   }
+  ]
+ }
+}

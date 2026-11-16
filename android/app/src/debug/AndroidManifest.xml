@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Solo en el APK de depuración (el que usa el emulador del CI, nunca el que se instala): el servicio de ubicación se deja exportado
+  para que `adb shell am start-foreground-service` pueda arrancarlo y comprobar que graba con la pantalla apagada (tools/android-tracking.mjs).
+  En el APK de release sigue sin exportar.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <application>
+        <service
+            android:name=".TrackingService"
+            android:exported="true"
+            tools:replace="android:exported" />
+    </application>
+</manifest>

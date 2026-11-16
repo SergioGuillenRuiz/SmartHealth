@@ -1,0 +1,47 @@
+# Cocina de Latinoamérica y el Caribe: arepas, empanadas, tamales, ceviches, guisos, dulces y salsas. Formato y significado de cada columna: ver alimentos.txt.
+# Las cifras son por 100 g del plato tal como se sirve; las raciones, las de un plato normal de restaurante o de casa.
+
+# ───────────── masas de maíz, panes y empanadas ─────────────
+Arepa | arepa, arepas, arepa de maíz, arepa blanca, arepa asada | 190 4 38 2.5 2.5 0.5 0.5 | ud=100 racion=100
+Arepa rellena | arepa de queso, arepa con queso, arepa reina pepiada, reina pepiada, arepa de carne mechada, arepa de pollo, arepa dominó, arepa pelúa, arepa catira, arepa rellena, arepas rellenas, arepa de huevo | 237 10 28 9.5 2.5 1 1 | ud=180 racion=180
+Cachapa | cachapa, cachapas, cachapa con queso, cachapa con queso de mano | 233 8 30 9 2.5 8 0.6 | ud=150 racion=150
+Tequeños | tequeños, tequeño, tequenos, palitos de queso fritos | 330 9 33 18 1 1.5 1 | ud=45 racion=135
+Empanada argentina | empanada argentina, empanadas argentinas, empanadas argentinas de carne, empanada criolla, empanada de carne, empanadas de carne, empanada salteña, salteña, empanada de pino, empanadas de pino, empanada chilena, empanada de queso, empanadas de queso, empanada venezolana, empanada colombiana, empanada de pollo, empanadas de pollo, empanada tucumana | 257 9 26 13 1.5 1.5 1.1 | ud=90 racion=180
+Pão de queijo | pão de queijo, pao de queijo, pan de queso brasileño, pan de queso, pandebono, pandebono colombiano, chipá, chipa, pan de yuca | 337 6 40 17 0.5 1 1.2 | ud=25 racion=75
+Coxinha | coxinha, coxinhas, coxinha de frango, coxinha de pollo | 265 9 28 13 1 1 1 | ud=80 racion=80
+Sopaipillas | sopaipilla, sopaipillas, sopaipillas pasadas | 328 6 40 16 2.5 3 1 | ud=45 racion=90
+Choripán | choripán, choripan, choripanes, chorizo en pan, bondiola en pan | 292 12 25 16 1.5 2 1.8 | ud=170 racion=170
+Completo chileno | completo italiano, completos italianos, completo chileno, completo con palta, hot dog chileno | 262 9 25 14 2 4 1.8 | ud=250 racion=250
+
+# ───────────── tamales, maíz y antojitos ─────────────
+Tamal | tamal, tamales, tamal de pollo, tamal de cerdo, tamal oaxaqueño, humita, humitas, hallaca, hallacas, nacatamal | 189 5 22 9 2 1.5 0.9 | ud=150 racion=150
+Chilaquiles | chilaquiles, chilaquiles verdes, chilaquiles rojos, chilaquiles con huevo, chilaquiles con pollo | 181 7 18 9 2.5 2 1 | racion=300 plato=300
+Elote | elote, elotes, elote con mayonesa, elote asado, esquites, mazorca con mayonesa | 192 5 24 8.5 2.5 5 0.7 | racion=200 ud=200
+Pupusa | pupusa, pupusas, pupusa de queso, pupusa revuelta, pupusa de chicharrón | 224 8 30 8 2.5 1 0.9 | ud=120 racion=120
+Pozole | pozole, pozole rojo, pozole verde, pozole blanco, pozole de cerdo, posole | 85 6 10 2.3 2 1 0.8 | racion=400 bol=400
+Mole | mole, mole poblano, mole negro, mole con pollo, pollo en mole, mole rojo | 173 15 8 9 1.5 3 0.8 | racion=300 plato=300
+Pico de gallo | pico de gallo, salsa mexicana, salsa fresca, salsa criolla | 26 1 5 0.2 1.5 3 0.4 | cucharada=20 racion=60 rol=salsa
+Salsa roja | salsa roja, salsa verde, salsa taquera, salsa verde mexicana | 36 1.2 6 0.8 2 3 1 | cucharada=15 racion=40 rol=salsa
+Chimichurri | chimichurri, chimichurri argentino, salsa chimichurri | 353 1 4 37 1.5 0.5 1.2 | cucharada=15 racion=30 rol=salsa
+
+# ───────────── carnes, guisos y platos de olla ─────────────
+Asado argentino | asado argentino, asado de tira, churrasco, churrasco argentino, parrillada, parrillada argentina, entraña, vacío, bife de chorizo, bife de lomo, ojo de bife, picaña, matambre, bondiola | 250 22 0 18 0 0 0.6 | racion=250
+Ceviche | ceviche, ceviche de pescado, ceviche peruano, ceviche mixto, ceviche de camarón, ceviche de gambas, tiradito, ceviche de pulpo | 98 15 5 2 0.8 2 0.9 | racion=250 plato=250
+Causa limeña | causa, causa limeña, causa rellena, causa de pollo, causa de atún | 138 4 16 6.5 1.5 1 0.8 | racion=250 plato=250
+Lomo saltado | lomo saltado, lomito saltado, pollo saltado, saltado de carne, tallarín saltado, tallarines saltados | 153 9 17 5.5 1.5 2 1 | racion=400 plato=400
+Ají de gallina | ají de gallina, aji de gallina | 157 9 10 9 1 1.5 0.8 | racion=300 plato=300
+Anticuchos | anticuchos, anticucho, anticuchos de corazón, anticucho de corazón | 190 22 3 10 0.3 1 0.9 | racion=150 ud=75
+Bandeja paisa | bandeja paisa, bandeja de frijoles, bandeja antioqueña | 216 9 18 12 3 2 1.1 | racion=650 plato=650
+Sancocho | sancocho, sancocho de gallina, sancocho de pollo, sancocho colombiano, sancocho de res, ajiaco, ajiaco santafereño | 70 5 8 2 1.5 1 0.7 | racion=450 bol=450
+Pabellón criollo | pabellón criollo, pabellon criollo, pabellón, pabellón con barandas | 168 10 22 4.5 4 4 0.9 | racion=450 plato=450
+Feijoada | feijoada, feijoada brasileña, feijoada completa | 142 9 12 6.5 4 1 1.1 | racion=350 plato=350
+Locro | locro, locro argentino, locro de papas | 115 6.5 11 5 3 1.5 0.9 | racion=400 plato=400
+Mofongo | mofongo, mofongo relleno, mofongo con camarones | 222 5 28 10 2 7 1 | racion=250 plato=250
+Arroz con gandules | arroz con gandules, arroz con gandul, arroz con habichuelas, moros y cristianos, congrí, congri, gallo pinto, arroz con frijoles, arroz y frijoles, arroz con frijoles negros, frijoles negros con arroz | 156 4 26 4 2.5 0.8 0.9 | racion=300 plato=300
+Plátano frito | plátano frito, platano frito, plátano macho frito, plátano macho, tostones, maduros, plátanos maduros fritos, patacones, patacón, plátano maduro frito | 239 1.5 38 9 2.5 17 0.5 | racion=120
+Pastel de choclo | pastel de choclo, pastel de maíz | 149 7 18 5.5 2 5 0.9 | racion=300 plato=300
+
+# ───────────── dulces ─────────────
+Dulce de leche | dulce de leche, arequipe, cajeta, manjar, manjar blanco | 316 6 55 8 0 52 0.2 | cucharada=20 racion=20 rol=topping rell=20
+Alfajor | alfajor, alfajores, alfajor de maicena, alfajor de chocolate, alfajores de dulce de leche | 408 4 62 16 1.5 38 0.2 | ud=50 racion=50
+Brigadeiro | brigadeiro, brigadeiros, beijinho, beijinhos, negrinho | 412 5 62 16 1 55 0.1 | ud=20 racion=40

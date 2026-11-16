@@ -1,0 +1,26 @@
+# Más bebidas: cafés con leche de cafetería, tés con leche, batidos orientales, cócteles y mosto. Formato y significado de cada columna: ver alimentos.txt.
+# Todo lo de esta lista va por 100 ml (llevan `liquido`). El alcohol cuenta 7 kcal por gramo (`alcohol=` son los gramos por 100 ml).
+
+# ───────────── cafés y tés con leche ─────────────
+Latte | latte, café latte, caffè latte, latte macchiato, flat white | 53 2.8 4.4 2.7 0 4.4 0.1 | liquido racion=300 taza=250 vaso=300
+Mocha | mocha, moka, mocca, café moca, café mocha, café con chocolate, mochaccino | 79 3 10 3 0.3 9 0.1 | liquido racion=300 taza=250 vaso=300
+Chai latte | chai latte, té chai, te chai, chai, té chai con leche, chai tea latte, masala chai, té masala | 55 2 9 1.2 0 8 0.1 | liquido racion=300 taza=250 vaso=300
+Matcha latte | matcha latte, latte de matcha, té matcha con leche, matcha con leche, matcha | 49 2.2 6 1.8 0.2 5 0.1 | liquido racion=300 taza=250 vaso=300
+Bubble tea | bubble tea, boba, boba tea, té con perlas, té de burbujas, milk tea, té con leche y tapioca, bubble tea de taro, bubble tea de mango, té de taro | 70 0.7 14 1.2 0.2 9 0.05 | liquido racion=500 vaso=500
+Lassi | lassi, lassi de mango, lassi de fresa, lassi salado, lassi dulce, mango lassi | 70 3 11 1.5 0 11 0.1 | liquido racion=250 vaso=250
+Mosto | mosto, mosto de uva, zumo de uva, zumo de uvas | 69 0.3 17 0 0 16 0.01 | liquido racion=200 vaso=200
+
+# ───────────── cócteles ─────────────
+Mojito | mojito, mojitos, mojito de fresa, caipirinha, caipiriña, caipiroska | 85 0 10 0 0 9 0.01 | liquido alcohol=6.5 racion=250 copa=250 vaso=250
+Margarita | margarita, daiquiri, cosmopolitan, cosmo, gimlet, sidecar, tequila sunrise, sex on the beach, whisky sour, amaretto sour | 130 0 10 0 0 9 0.01 | liquido alcohol=12 racion=150 copa=150 vaso=150
+Piña colada | piña colada, pina colada, coco loco, blue lagoon | 140 0.5 17 4 0.2 15 0.02 | liquido alcohol=5 racion=250 copa=250 vaso=250
+Spritz | aperol spritz, spritz, campari spritz, hugo spritz, spritz de aperol | 66 0 8.5 0 0 8 0.01 | liquido alcohol=4.5 racion=200 copa=200 vaso=200
+Negroni y martini | negroni, dry martini, vodka martini, manhattan, old fashioned | 165 0 4 0 0 4 0.01 | liquido alcohol=21 racion=90 copa=90 vaso=90
+
+# ───────────── leches fermentadas y de bebé ─────────────
+Yakult | yakult, yakult l casei, leche fermentada | 69 1.2 16 0 0 14 0.04 | liquido ud=65 racion=65
+Leche de fórmula | leche de fórmula, leche de formula, fórmula, formula infantil, leche infantil, leche de continuación, biberón de fórmula, biberon de formula | 67 1.3 7.3 3.6 0 7 0.05 | liquido racion=210 vaso=210
+
+# ───────────── leches vegetales y de coco ─────────────
+Leche de coco | leche de coco, leche de coco en lata, crema de coco | 190 1.8 3 19 0 2 0.05 | liquido cucharada=15 racion=100
+Bebida de coco | bebida de coco, leche de coco para beber, bebida vegetal de coco | 20 0.2 2 1.2 0 1.8 0.1 | liquido vaso=200 racion=200

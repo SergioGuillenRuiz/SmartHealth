@@ -1,0 +1,23 @@
+# Dulces, frutos secos y snacks que faltaban (y alguna repostería de casa). Formato y significado de cada columna: ver alimentos.txt.
+# Las cifras son por 100 g del producto tal como se toma.
+
+# ───────────── frutos secos y frutas secas ─────────────
+Macadamias | macadamia, macadamias, nueces de macadamia, nuez de macadamia | 718 8 14 76 8.6 4.6 0.01 | punado=30 racion=30 ud=3
+Castañas | castañas, castaña, castañas asadas, castañas cocidas | 165 2 36 1.5 5 8 0.01 | racion=100 ud=15 punado=60
+Higos secos | higos secos, higo seco, brevas secas | 254 3.3 58 1 9.8 48 0.03 | ud=20 racion=40
+Arándanos secos | arándanos secos, arándanos deshidratados, cranberries, arándanos rojos secos | 331 0.5 80 1 5 66 0.02 | punado=30 racion=30
+
+# ───────────── repostería y dulces de casa ─────────────
+Torta de aceite | torta de aceite, tortas de aceite, tortas de aceite de inés rosales, tortas dulces de aceite | 469 8 62 21 3 20 0.7 | ud=25 racion=50
+Roscos de vino | roscos de vino, rosco de vino, roscos, rosquillas de vino, rosquillas de anís, rosquillas de san isidro | 435 6 60 19 2 25 0.1 | ud=30 racion=60
+Brazo de gitano | brazo de gitano, brazo gitano, brazo de cabello de ángel, tronco de navidad, brazo de nata, brazo de crema | 300 5.5 38 14 0.8 22 0.2 | trozo=80 racion=80
+Carlota de limón | carlota de limón, carlota de limon, carlota, tarta de limón, tarta de limón y galleta, tarta de limon | 276 4 38 12 0.3 28 0.2 | trozo=110 racion=110
+Tarta de zanahoria | tarta de zanahoria, carrot cake, pastel de zanahoria, bizcocho de zanahoria | 366 4.5 42 20 1.5 28 0.5 | trozo=120 racion=120
+Tarta de Santiago | tarta de santiago, tarta santiaga | 443 10 40 27 3.5 32 0.1 | trozo=100 racion=100
+Mousse de chocolate | mousse de chocolate, mousse, mousse de limón, mousse de fresa, mousse de turrón, copa de mousse | 232 4.5 22 14 1.5 20 0.1 | racion=100
+Profiteroles | profiteroles, profiterol, profiteroles con chocolate, petit choux, petisús, petit su, carolinas, bolitas de nata | 334 6 28 22 1 18 0.2 | ud=30 racion=120
+Medianoche | medianoche, medianoches, pan de medianoche | 297 8 46 9 2 8 1.1 | ud=60 racion=60
+Leche merengada | leche merengada, merengada | 71 2.8 11 1.8 0 11 0.1 | liquido vaso=200 racion=250
+
+# ───────────── bollería envasada ─────────────
+Kinder Delice y Pingüi | kinder delice, delice, kinder pingüi, kinder pinguí, pingüi, pinguí, kinder maxi king, kinder cards, kinder happy hippo, kinder country, kinder tronky, kinder brioss, brioss | 392 6 47 20 1 28 0.4 | ud=39 racion=39

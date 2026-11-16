@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="false"
+        android:usesCleartextTraffic="false"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBarLaunch"
+            android:launchMode="singleTask"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <!--
+          Mantiene vivo un entreno con la pantalla apagada o la app oculta: graba la ruta (la web no recibe el GPS entonces) y deja
+          al anillo, que habla por Bluetooth con la app, seguir midiendo el pulso. Servicio en primer plano de tipo ubicación (si
+          hay GPS) y dispositivo conectado (el anillo): Android exige su aviso fijo y lo mantiene vivo. Lo arranca la app, con la app
+          a la vista.
+        -->
+        <service
+            android:name=".TrackingService"
+            android:exported="false"
+            android:foregroundServiceType="location|connectedDevice" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+    </application>
+
+    <!-- Permissions -->
+
+    <!-- Internet, SOLO para la foto de los productos con código de barras (Open Food Facts: ver `src/app/product-image.ts`; la política de contenido solo deja conectar ahí). Los productos
+         y la tabla de alimentos van dentro de la app: sin conexión todo funciona igual, solo faltan esas fotos. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Cámara, solo para escanear el código de barras de un producto: Android la pide al abrir el escáner. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <!-- Ubicación: GPS de los entrenos y búsqueda Bluetooth (los demás permisos de Bluetooth los trae el plugin). -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Grabación de la ruta de un entreno en segundo plano: servicio en primer plano de ubicación, su aviso fijo (Android 13+) y el
+         bloqueo de CPU mientras graba. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Para pedir a Android que no restrinja la app en segundo plano (el ahorro de batería de algunos fabricantes cierra los servicios). -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+</manifest>

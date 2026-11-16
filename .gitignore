@@ -1,0 +1,36 @@
+node_modules/
+dist/
+dist-beta/
+coverage/
+.vite/
+*.log
+.DS_Store
+
+# Capturas y trazas de las pruebas e2e
+tests/e2e/.artifacts/
+tests/beta/.artifacts/
+tests/e2e/.camera/
+test-results/
+playwright-report/
+
+# Android (si se genera el proyecto nativo)
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+*.aab
+
+# Sondas locales de depuración
+scripts/_*.mjs
+
+out/
+__pycache__/
+
+# Claves de firma: NUNCA al repositorio (es público)
+*.jks
+
+# Claves de firma: nunca al repositorio
+*.keystore
+*.jks
+*.b64

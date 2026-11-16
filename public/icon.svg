@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- SmartHealth: una manzana con el pulso del corazón atravesándola (comer y moverse) sobre el verde de la marca. El anillo anterior se conserva en branding/anillo.
+       scripts/make-icons.mjs y scripts/make-android-icons.mjs leen este fichero: el fondo son los dos rect redondeados (el atributo de esquina es el que esos scripts cambian para
+       las variantes a sangre y redonda), el dibujo va entre las marcas glyph (el primer plano adaptable de Android reutiliza ese bloque) y la versión de un solo color, entre las
+       marcas mono (el icono monocromo de Android 13). -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#26a37a"/>
+      <stop offset=".55" stop-color="#177a58"/>
+      <stop offset="1" stop-color="#0c4a38"/>
+    </linearGradient>
+    <radialGradient id="sheen" cx=".27" cy=".18" r=".75">
+      <stop offset="0" stop-color="#fff" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- la fruta: del blanco menta de la tarjeta a la menta -->
+    <linearGradient id="fruit" gradientUnits="userSpaceOnUse" x1="0" y1="130" x2="0" y2="420">
+      <stop offset="0" stop-color="#f4fffb"/>
+      <stop offset=".55" stop-color="#bff1df"/>
+      <stop offset="1" stop-color="#79d6b8"/>
+    </linearGradient>
+    <linearGradient id="leaf" gradientUnits="userSpaceOnUse" x1="270" y1="90" x2="350" y2="160">
+      <stop offset="0" stop-color="#e3ff9a"/>
+      <stop offset="1" stop-color="#8fe05a"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="11"/></filter>
+  </defs>
+  <!-- La versión de un solo color (icono monocromo de Android 13: el sistema la tiñe con el color del tema): la fruta y la hoja macizas y el pulso recortado. Nada de esto se dibuja aquí. -->
+  <defs>
+    <!-- mono -->
+    <g transform="translate(0 12)">
+      <mask id="cut" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+        <rect width="512" height="512" fill="#fff"/>
+        <path d="M148 292L200 292L224 244L254 346L288 262L308 292L364 292" fill="none" stroke="#000" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+      </mask>
+      <path d="M256 170C256 150 262 128 274 110" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
+      <path d="M266 146C272 104 308 80 352 82C352 124 318 158 266 146Z" fill="#fff"/>
+      <path mask="url(#cut)" d="M256 168C236 140 196 128 164 146C118 172 100 232 118 296C136 360 182 410 218 410C236 410 246 400 256 400C266 400 276 410 294 410C330 410 376 360 394 296C412 232 394 172 348 146C316 128 276 140 256 168Z" fill="#fff"/>
+    </g>
+    <!-- /mono -->
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="112" fill="url(#sheen)"/>
+  <!-- glyph -->
+  <g transform="translate(0 12)">
+    <path d="M256 168C236 140 196 128 164 146C118 172 100 232 118 296C136 360 182 410 218 410C236 410 246 400 256 400C266 400 276 410 294 410C330 410 376 360 394 296C412 232 394 172 348 146C316 128 276 140 256 168Z" transform="translate(10 22)" fill="#031f17" fill-opacity=".38" filter="url(#soft)"/>
+    <path d="M256 170C256 150 262 128 274 110" fill="none" stroke="#0f6a51" stroke-width="14" stroke-linecap="round"/>
+    <path d="M266 146C272 104 308 80 352 82C352 124 318 158 266 146Z" fill="url(#leaf)"/>
+    <path d="M256 168C236 140 196 128 164 146C118 172 100 232 118 296C136 360 182 410 218 410C236 410 246 400 256 400C266 400 276 410 294 410C330 410 376 360 394 296C412 232 394 172 348 146C316 128 276 140 256 168Z" fill="url(#fruit)"/>
+    <path d="M148 292L200 292L224 244L254 346L288 262L308 292L364 292" fill="none" stroke="#0f6a51" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- /glyph -->
+</svg>

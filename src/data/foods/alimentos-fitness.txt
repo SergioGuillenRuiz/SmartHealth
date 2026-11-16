@@ -1,0 +1,28 @@
+# Despensa, suplementos y comida de gimnasio o vegana que no tenía entrada propia. Formato y significado de cada columna: ver alimentos.txt.
+# Las cifras son por 100 g del producto tal como se toma (en polvo, el polvo; el resto, listo para comer).
+
+# ───────────── suplementos y polvos ─────────────
+Colágeno hidrolizado | colágeno, colageno, colágeno hidrolizado, colageno hidrolizado, péptidos de colágeno, collagen | 364 90 0 0.5 0 0 0.4 | cucharada=10 sobre=10 racion=10
+Gainer | gainer, ganador de peso, mass gainer, weight gainer | 380 20 66 4 2 15 0.8 | cazo=100 racion=100
+Helado proteico | helado proteico, helado fit, helado light, halo top, helado sin azúcar, helado de proteínas, helado bajo en calorías | 105 5 17 2 4.5 8 0.2 | bola=60 racion=100 sabores
+
+# ───────────── cereales, panes y repostería fit ─────────────
+Tortitas de avena y plátano | tortitas de avena, tortitas fit, tortitas de avena y plátano, pancakes de avena, pancakes fit, pancakes proteicos, tortitas proteicas | 148 7 20 4.5 2.5 5 0.3 | ud=40 racion=120
+Pan de proteínas | pan de proteínas, pan proteico, pan ezequiel, pan de semillas | 234 25 20 6 8 2 1.3 | rebanada=35 ud=35 racion=70
+Pan de leche | pan de leche, brioche, pan brioche, bollo de leche, bollitos de leche | 308 8 50 8.5 2 8 1 | ud=60 racion=60 rebanada=35
+Harina de almendra | harina de almendra, almendra molida, almendra en polvo | 592 21 10 52 10 4 0.05 | cucharada=8 racion=30
+Tahini | tahini, tahin, tahína, crema de sésamo, pasta de sésamo | 593 17 12 53 9 0.5 0.1 | cucharada=15 racion=15 rol=topping rell=15
+Crema de frutos secos | mantequilla de almendras, crema de almendras, mantequilla de anacardo, crema de anacardos, mantequilla de frutos secos, crema de pistacho, crema de avellanas | 600 21 12 52 7 5 0.5 | cucharada=16 racion=20 rol=topping rell=15
+
+# ───────────── lácteos y proteínas fit y veganas ─────────────
+Quark | quark, quark natural, queso quark | 67 12 4 0.3 0 4 0.1 | racion=125
+Tempeh | tempeh, tempé | 211 19 9 11 4 0.5 0.02 | racion=100 rol=proteina
+Seitán | seitán, seitan, gluten de trigo, carne de gluten | 142 25 6 2 0.5 0.5 1 | racion=100 rol=proteina
+Embutido vegetal | salchichas veganas, salchichas vegetales, salchicha vegana, nuggets veganos, nuggets vegetales, burger vegana, hamburguesa vegana, albóndigas veganas, albóndigas vegetales | 217 17 8 13 4 1.5 1.2 | ud=75 racion=150
+Queso vegano | queso vegano, queso vegetal, queso de anacardo, queso de almendra | 273 1 20 21 1 0.5 1.5 | loncha=20 racion=30
+Mayonesa light | mayonesa light, mayonesa ligera, mayonesa baja en grasa, mayonesa 0% | 260 0.8 8 26 0.1 4 1.7 | cucharada=14 racion=15 rol=salsa rell=15
+Ghee | ghee, mantequilla clarificada, mantequilla ghee | 896 0.3 0 99.5 0 0 0.01 | cucharada=14 racion=10
+
+# ───────────── comida de bebé ─────────────
+Potito | potito, potitos, potito de pollo, potito de verduras, potito de ternera, potito de pescado, potito de pollo con verduras, tarrito, tarritos, puré de bebé, puré infantil | 61 3 7 2.3 1 1.5 0.1 | racion=200 tarro=200
+Papilla | papilla, papillas, papilla de cereales, papilla de frutas, papilla de arroz, papilla de frutas y cereales, papilla de bebé | 80 2.5 13 2 0.6 4 0.05 | racion=200 bol=200

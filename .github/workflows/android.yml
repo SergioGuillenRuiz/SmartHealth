@@ -1,0 +1,540 @@
+name: APK de Android
+
+# Compila la app como APK (la web dentro de un contenedor nativo de Android, con Bluetooth nativo). Se instala en el móvil
+# sin tienda ni servidor: el APK va firmado siempre con la misma clave (guardada como secreto del repositorio, no en el código), así cada versión
+# nueva se instala sobre la anterior sin borrar los datos.
+#
+# Cada subida a una rama de trabajo compila y deja el APK como artefacto. Para tenerlo como descarga directa en el móvil,
+# se lanza a mano (Actions → APK de Android → Run workflow): publica un «release» con el APK adjunto.
+#
+# Después de compilarlo, un segundo trabajo lo prueba en un emulador de Android (tools/android-smoke.mjs).
+#
+# Se compilan DOS APK con la misma firma: el de RELEASE (el que se instala en el móvil y se publica: no depurable, sin
+# depuración remota del WebView ni registro detallado de cada llamada a los plugins) y el de DEBUG (solo para el emulador:
+# Playwright necesita un WebView depurable para recorrerlo). Escribir en el repositorio (publicar el release) es lo único que
+# pide permiso de escritura, y lo hace un trabajo aparte que no ejecuta ni código del proyecto ni de sus dependencias.
+
+on:
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'android/**'
+      - 'src/**'
+      - 'public/**'
+      - 'tools/**'
+      - 'index.html'
+      - 'vite.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'capacitor.config.ts'
+      - '.github/workflows/android.yml'
+  workflow_dispatch:
+    inputs:
+      publicar:
+        description: 'Publicar el APK como release para descargarlo en el móvil'
+        type: boolean
+        default: true
+      nombre:
+        description: 'Título del release (al publicar, vacío: «SmartHealth APK <versión>»; al renombrar, el nuevo título)'
+        type: string
+        default: ''
+      renombrar:
+        description: 'Solo renombrar un release ya publicado: su etiqueta (p. ej. apk-47). No compila nada.'
+        type: string
+        default: ''
+      productos:
+        description: 'Solo regenerar la base de productos de Open Food Facts (España) y confirmarla en esta rama. No compila el APK.'
+        type: boolean
+        default: false
+      iconos:
+        description: 'Solo bajar las ilustraciones 3D de comida que falten (Fluent Emoji, MIT) y confirmarlas en esta rama. No compila el APK.'
+        type: boolean
+        default: false
+      iconos_solo:
+        description: 'Con «iconos»: claves concretas a repetir aunque ya estén (separadas por comas, p. ej. mango,pancakes). Vacío: solo las que faltan.'
+        type: string
+        default: ''
+      web_beta:
+        description: 'Solo empaquetar la VERSIÓN WEB para betatesters (ZIP con la app y el servidor para el PC de quien la sirve; ver beta-web/) y publicarla como release beta-web-N. No compila el APK.'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  # Renombrar un release, regenerar la base de productos o bajar los iconos de comida no compila nada: no deben cancelar (ni ser cancelados por) una compilación
+  # en curso de la misma rama (ni por un push mientras descargan el volcado, que tarda).
+  group: apk-${{ github.ref }}${{ inputs.renombrar != '' && '-renombrar' || '' }}${{ inputs.productos && '-productos' || '' }}${{ inputs.iconos && '-iconos' || '' }}${{ inputs.web_beta && '-web-beta' || '' }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    name: Compilar el APK
+    if: inputs.renombrar == '' && !inputs.productos && !inputs.iconos && !inputs.web_beta
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      VERSION: 0.1.${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - run: npm ci
+      - name: Compilar la web para Android y copiarla al proyecto nativo
+        run: npm run android:sync
+        env:
+          BUILD_ID: ${{ github.sha }}
+      - name: Preparar la clave de firma
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ] || [ -z "$STORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+            echo "::error::Faltan los secretos de la clave de firma (ANDROID_KEYSTORE_B64, ANDROID_STORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD).  Hay que crear una clave con keytool, guardarla como secretos del repositorio y poner la variable FIRMA_SHA256 con su huella SHA-256."
+            exit 1
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/firma.keystore"
+          echo "SMARTHEALTH_KEYSTORE=$RUNNER_TEMP/firma.keystore" >> "$GITHUB_ENV"
+          echo "SMARTHEALTH_STORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
+          echo "SMARTHEALTH_KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
+          echo "SMARTHEALTH_KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+      - name: Probar la parte nativa y compilar los APK (release y debug)
+        working-directory: android
+        # `testDebugUnitTest` ejecuta las pruebas de Java del módulo (la pista del GPS en segundo plano): si fallan, no hay APK.
+        run: ./gradlew testDebugUnitTest assembleRelease assembleDebug --no-daemon -PapkVersionCode=${{ github.run_number }} -PapkVersionName=${{ env.VERSION }}
+      - name: Comprobar la firma y el contenido de los APK
+        run: |
+          REL=android/app/build/outputs/apk/release/app-release.apk
+          DBG=android/app/build/outputs/apk/debug/app-debug.apk
+          BUILD_TOOLS="$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)"
+          for APK in "$REL" "$DBG"; do
+            ls -l "$APK"
+            "$BUILD_TOOLS/apksigner" verify --print-certs "$APK" | head -5
+          done
+          # Lo que cada APK dice de sí mismo, capturado ANTES de comprobar nada: si la herramienta fallara, la asignación aborta el paso
+          # (un `if ... | grep` lo habría dado por bueno en silencio).
+          REL_BADGING="$("$BUILD_TOOLS/aapt2" dump badging "$REL")"
+          REL_PERMS="$("$BUILD_TOOLS/aapt2" dump permissions "$REL")"
+          DBG_BADGING="$("$BUILD_TOOLS/aapt2" dump badging "$DBG")"
+          grep -E "^package|uses-permission|sdkVersion|targetSdkVersion|application-debuggable" <<< "$REL_BADGING" | head -20
+
+          # La MISMA firma de siempre: de ella depende que el APK se instale sobre el anterior sin borrar los datos.
+          EXPECTED='${{ vars.FIRMA_SHA256 }}'
+          if [ -n "$FIRMA_TEMPORAL" ]; then
+            echo "::warning::Firma temporal: no se comprueba la huella de la clave de siempre."
+          else
+            if [ -z "$EXPECTED" ]; then echo "::error::Falta la variable FIRMA_SHA256 del repositorio (la huella SHA-256 pública de la clave, en minúsculas y sin dos puntos)."; exit 1; fi
+            for APK in "$REL" "$DBG"; do
+              ACTUAL="$("$BUILD_TOOLS/apksigner" verify --print-certs "$APK" | grep -m1 'certificate SHA-256 digest' | awk '{print $NF}')"
+              if [ "$ACTUAL" != "$EXPECTED" ]; then
+                echo "::error::El APK $APK no está firmado con la clave de siempre ($ACTUAL en vez de $EXPECTED): no se instalaría sobre el anterior."
+                exit 1
+              fi
+            done
+          fi
+
+          # Controles positivos: el APK de debug SÍ es depurable y el de release SÍ declara los permisos que la app usa. Si no, la salida
+          # de la herramienta ya no se lee como se cree y las dos comprobaciones de abajo pasarían siempre, sin valer nada.
+          if ! grep -q "application-debuggable" <<< "$DBG_BADGING"; then
+            echo "::error::El APK de debug no sale como depurable: la salida de aapt2 ya no se lee como se esperaba."
+            exit 1
+          fi
+          if ! grep -q "android.permission.ACCESS_FINE_LOCATION" <<< "$REL_PERMS"; then
+            echo "::error::El APK de release no muestra sus permisos: la salida de aapt2 ya no se lee como se esperaba."
+            exit 1
+          fi
+
+          # El que se instala en el móvil no puede ser depurable: lo sería la depuración remota del WebView, el registro detallado
+          # de cada llamada a los plugins (con los datos de las copias y del Bluetooth) y la lectura de los datos con adb run-as.
+          if grep -q "application-debuggable" <<< "$REL_BADGING"; then
+            echo "::error::El APK de release es depurable."
+            exit 1
+          fi
+          # La app solo usa internet para dos cosas: la foto de los productos (Open Food Facts) y el mapa de la zona (Overpass, ronda 39); la copia en Google Drive se quitó
+          # en la ronda 50: el permiso tiene que estar y la política de contenido (más abajo) solo deja conectar a esos sitios. La cámara es para el escáner de códigos de barras y las fotos.
+          if ! grep -q "android.permission.INTERNET" <<< "$REL_PERMS"; then
+            echo "::error::El APK de release no declara el permiso de internet y la foto de los productos lo necesita."
+            exit 1
+          fi
+          if ! grep -q "android.permission.CAMERA" <<< "$REL_PERMS"; then
+            echo "::error::El APK de release no declara el permiso de la cámara y el escáner lo necesita."
+            exit 1
+          fi
+          # Seguridad del manifiesto ya unido con el de las librerías (ronda 43, auditoría): solo MainActivity se puede llamar desde otras apps (salvo componentes protegidos con un permiso),
+          # nada de tráfico sin cifrar ni copias por adb, y ninguno de los permisos que la app no necesita (almacenamiento general, micrófono, contactos, SMS, teléfono…).
+          "$BUILD_TOOLS/aapt2" dump xmltree --file AndroidManifest.xml "$REL" | node tools/apk-manifest-check.ts
+          node tools/apk-manifest-check.ts permissions <<< "$REL_PERMS"
+          # Vite escribe las comillas simples del atributo como `&#39;`: se deshacen para comparar el texto de la política tal cual.
+          CSP="$(grep -o 'Content-Security-Policy" content="[^"]*"' android/app/src/main/assets/public/index.html | head -1 | sed "s/&#39;/'/g")"
+          CONNECT="$(grep -o "connect-src [^;]*" <<< "$CSP" | head -1)"
+          EXPECTED_CONNECT="connect-src 'self' https://world.openfoodfacts.org https://overpass-api.de https://overpass.kumi.systems"
+          if [ "$CONNECT" != "$EXPECTED_CONNECT" ]; then
+            echo "::error::La política de contenido de la app deja conectar a sitios que no son Open Food Facts ni Overpass ($CONNECT en vez de $EXPECTED_CONNECT)."
+            exit 1
+          fi
+
+          # Ni scripts en línea ni `eval` en el APK: lo único que se ejecuta es código empaquetado con la app (y el WebAssembly propio).
+          SCRIPT_SRC="$(grep -o "script-src [^;]*" <<< "$CSP" | head -1)"
+          if [ "$SCRIPT_SRC" != "script-src 'self' 'wasm-unsafe-eval'" ]; then
+            echo "::error::La política de contenido del APK admite más scripts de los debidos ($SCRIPT_SRC)."
+            exit 1
+          fi
+
+          # La base de productos va dentro del APK y no está vacía (con la de plantilla, el escáner no encontraría nada).
+          DB_JSON=src/data/foods/productos-es.json
+          COUNT="$(node -p "require('./$DB_JSON').count")"
+          if [ "$COUNT" -lt 20000 ]; then
+            echo "::error::La base de productos del APK solo tiene $COUNT productos: regenérala (Run workflow con «productos»)."
+            exit 1
+          fi
+          unzip -l "$REL" | grep -E 'assets/public/assets/productos-es-.*\.bin' > /dev/null || { echo "::error::El APK no lleva la base de productos."; exit 1; }
+
+          mkdir -p out/release out/debug
+          cp "$REL" "out/release/smarthealth-${VERSION}.apk"
+          cp "$DBG" "out/debug/smarthealth-debug-${VERSION}.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smartring-apk
+          path: out/release/smarthealth-*.apk
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smartring-apk-debug
+          path: out/debug/smarthealth-debug-*.apk
+          retention-days: 3
+
+  publicar:
+    name: Publicar el APK como release
+    needs: apk
+    if: github.event_name == 'workflow_dispatch' && inputs.publicar
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Lo único que escribe en el repositorio. Solo descarga el APK ya compilado y lo adjunta: no ejecuta nada del proyecto.
+    permissions:
+      contents: write
+    env:
+      VERSION: 0.1.${{ github.run_number }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      NOMBRE: ${{ inputs.nombre }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: smartring-apk
+          path: apk
+      - name: Publicar como release
+        run: |
+          gh release create "apk-${{ github.run_number }}" "apk/smarthealth-${VERSION}.apk" \
+            --prerelease \
+            --target "${{ github.sha }}" \
+            --title "${NOMBRE:-SmartHealth APK ${VERSION}}" \
+            --notes "APK de prueba (compilación ${{ github.run_number }}, commit ${GITHUB_SHA::7}). Se instala sobre la versión anterior sin borrar los datos."
+
+  beta-web:
+    name: Empaquetar la versión web para betatesters
+    # La app compilada en modo «beta» (anillo y báscula simulados, datos de ejemplo la primera vez) + el servidor sin dependencias y los arranques de beta-web/, todo en UN zip. Se prueba el zip
+    # TAL CUAL lo recibirá quien la use: se descomprime, se arranca su servidor y se abre en un navegador de móvil (service worker, archivos, instalación, iPhone). Ubuntu 24.04: en la 26.04 Playwright no instala Chromium.
+    if: github.event_name == 'workflow_dispatch' && inputs.web_beta
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      VERSION: 0.1.${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Pruebas del servidor y compilación de la web (modo beta)
+        run: |
+          python3 -m unittest discover -s beta-web -p 'test_*.py'
+          npm run build:beta
+        env:
+          BUILD_ID: ${{ github.sha }}
+      - name: Empaquetar
+        run: node tools/pack-beta-web.mjs "$VERSION"
+      - name: Instalar el navegador de las pruebas
+        run: npx playwright install --with-deps chromium
+      - name: Probar el zip tal cual lo recibirá quien la use
+        run: |
+          mkdir -p "$RUNNER_TEMP/zip"
+          unzip -q "out/smarthealth-beta-web-${VERSION}.zip" -d "$RUNNER_TEMP/zip"
+          cd "$RUNNER_TEMP/zip/smarthealth-beta-web-${VERSION}"
+          setsid nohup python3 iniciar-linux.py --sin-tunel --puerto 8123 > "$RUNNER_TEMP/servidor.log" 2>&1 &
+          for i in $(seq 1 30); do curl -fs http://127.0.0.1:8123/ > /dev/null && break; sleep 1; done
+          cd "$GITHUB_WORKSPACE"
+          BETA_URL=http://127.0.0.1:8123 CI=1 npx playwright test --config playwright.beta.config.ts
+          cat "$RUNNER_TEMP/servidor.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smartring-beta-web
+          path: out/smarthealth-beta-web-*.zip
+          retention-days: 30
+
+  beta-web-publicar:
+    name: Publicar la versión web como release
+    needs: beta-web
+    if: github.event_name == 'workflow_dispatch' && inputs.web_beta && inputs.publicar
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Lo único que escribe en el repositorio; solo adjunta el zip ya probado (no ejecuta nada del proyecto).
+    permissions:
+      contents: write
+    env:
+      VERSION: 0.1.${{ github.run_number }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      NOMBRE: ${{ inputs.nombre }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: smartring-beta-web
+          path: zip
+      - name: Publicar como release
+        run: |
+          gh release create "beta-web-${{ github.run_number }}" "zip/smarthealth-beta-web-${VERSION}.zip" \
+            --prerelease \
+            --target "${{ github.sha }}" \
+            --title "${NOMBRE:-SmartHealth beta web ${VERSION}}" \
+            --notes "Versión web para betatesters (compilación ${{ github.run_number }}, commit ${GITHUB_SHA::7}). Descomprime el zip en el PC y en Linux ejecuta python3 iniciar-linux.py; en Windows haz doble clic en iniciar-windows.py: sale un enlace https para mandar a los testers. Detalles en LEEME.txt."
+
+  renombrar:
+    name: Renombrar un release
+    # Solo cambia el título de un release ya publicado (no toca su APK ni su etiqueta). Los datos del formulario van por variables
+    # de entorno, nunca dentro del guion.
+    if: github.event_name == 'workflow_dispatch' && inputs.renombrar != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      ETIQUETA: ${{ inputs.renombrar }}
+      TITULO: ${{ inputs.nombre }}
+    steps:
+      - run: |
+          if [ -z "$ETIQUETA" ] || [ -z "$TITULO" ]; then
+            echo "::error::Para renombrar hace falta la etiqueta del release (renombrar) y el título nuevo (nombre)."
+            exit 1
+          fi
+          gh release edit "$ETIQUETA" --title "$TITULO"
+
+  productos:
+    name: Generar la base de productos (Open Food Facts)
+    # Baja el volcado público de Open Food Facts (~1 GB), se queda con los productos de España y deja la base binaria como artefacto
+    # (tools/build-food-db.ts: Node sin dependencias). La app no usa internet: la base viaja dentro del APK. Solo lee el repositorio.
+    if: github.event_name == 'workflow_dispatch' && inputs.productos
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generar la base
+        run: node --max-old-space-size=4096 tools/build-food-db.ts --out out/foods --countries en:spain --min 5000
+      - uses: actions/upload-artifact@v4
+        with:
+          name: productos-es
+          path: out/foods/productos-es.*
+          retention-days: 7
+
+  confirmar-productos:
+    name: Confirmar la base de productos en la rama
+    needs: productos
+    if: github.event_name == 'workflow_dispatch' && inputs.productos
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Lo único que escribe en el repositorio: solo descarga los dos archivos ya generados y los confirma. No ejecuta nada del proyecto.
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: productos-es
+          path: out
+      - name: Confirmar y subir
+        run: |
+          # Un mínimo de cordura antes de escribir nada: la firma «SRFD» y un tamaño razonable.
+          test "$(head -c 4 out/productos-es.bin)" = "SRFD" || { echo "::error::El archivo generado no es una base de productos."; exit 1; }
+          test "$(stat -c %s out/productos-es.bin)" -gt 500000 || { echo "::error::La base generada es demasiado pequeña."; exit 1; }
+          mkdir -p src/data/foods
+          cp out/productos-es.bin out/productos-es.json src/data/foods/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/foods/productos-es.bin src/data/foods/productos-es.json
+          if git diff --cached --quiet; then echo "La base no ha cambiado."; exit 0; fi
+          git commit -m "Datos: base de productos de Open Food Facts (España), $(date -u +%F)"
+          for i in 1 2 3 4; do
+            if git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          echo "::error::No se pudo subir la base a la rama."
+          exit 1
+
+  iconos:
+    name: Bajar los iconos de comida (Fluent Emoji)
+    # Baja las ilustraciones 3D que falten de `EXTRA_ICONS` (tools/build-food-icons.ts: Node sin dependencias; ImageMagick para reducir) del repositorio público de Microsoft
+    # (Fluent Emoji, licencia MIT) y deja el resultado como artefacto. La app no las pide por internet: viajan dentro del APK. Solo lee el repositorio; lo que escribe en la rama
+    # es el trabajo siguiente.
+    if: github.event_name == 'workflow_dispatch' && inputs.iconos
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Instalar ImageMagick con WebP
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick webp
+      - name: Bajar los iconos
+        env:
+          SOLO: ${{ inputs.iconos_solo }}
+        run: node tools/build-food-icons.ts --dir src/ui/food-photos ${SOLO:+--only "$SOLO"}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: iconos-comida
+          path: src/ui/food-photos/*.webp
+          retention-days: 7
+
+  confirmar-iconos:
+    name: Confirmar los iconos de comida en la rama
+    needs: iconos
+    if: github.event_name == 'workflow_dispatch' && inputs.iconos
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Lo único que escribe en el repositorio: solo descarga los archivos ya generados y los confirma. No ejecuta nada del proyecto.
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: iconos-comida
+          path: out
+      - name: Confirmar y subir
+        run: |
+          # Un mínimo de cordura antes de escribir nada: hay iconos, son WebP y ninguno es enorme.
+          COUNT=$(find out -name '*.webp' | wc -l)
+          test "$COUNT" -ge 50 || { echo "::error::Solo hay $COUNT iconos; no se confirma nada."; exit 1; }
+          for f in out/*.webp; do
+            test "$(head -c 4 "$f")" = "RIFF" || { echo "::error::$f no es WebP."; exit 1; }
+            test "$(stat -c %s "$f")" -lt 30000 || { echo "::error::$f pesa demasiado."; exit 1; }
+          done
+          cp out/*.webp src/ui/food-photos/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/ui/food-photos
+          if git diff --cached --quiet; then echo "Los iconos no han cambiado."; exit 0; fi
+          git commit -m "Datos: ilustraciones 3D de comida de Fluent Emoji ($COUNT), $(date -u +%F)"
+          for i in 1 2 3 4; do
+            if git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
+            sleep $((i * 5))
+          done
+          echo "::error::No se pudieron subir los iconos a la rama."
+          exit 1
+
+  emulador:
+    name: Probar el APK en un emulador de Android
+    needs: apk
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    # Comprobación extra: instala el APK de DEBUG en un Android 14 virtual (el de release no deja depurar su WebView) y recorre
+    # la prueba guiada con el anillo simulado
+    # (tools/android-smoke.mjs). No impide tener el APK si falla o si el runner no admite emuladores.
+    continue-on-error: true
+    env:
+      SYSTEM_IMAGE: system-images;android-34;default;x86_64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: smartring-apk-debug
+          path: apk
+      - name: Diagnóstico del equipo y KVM (aceleración del emulador)
+        id: kvm
+        run: |
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
+          nproc; free -m | head -2; df -h / | tail -1
+          lscpu | grep -E "Virtualization|Hypervisor|Model name" || true
+          ls -l /dev/kvm || true
+          if [ -e /dev/kvm ]; then
+            echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules > /dev/null
+            sudo udevadm control --reload-rules
+            sudo udevadm trigger --name-match=kvm
+            ls -l /dev/kvm
+            echo "disponible=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "disponible=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Este runner no ofrece KVM: no se puede probar el APK en un emulador."
+          fi
+      - name: Crear y arrancar el emulador
+        if: steps.kvm.outputs.disponible == 'true'
+        run: |
+          # avdmanager y el emulador no coinciden en dónde buscar los AVD si no se les dice (el primero usa ~/.config/.android;
+          # el segundo, ~/.android): se fija la misma carpeta para los dos.
+          export ANDROID_AVD_HOME="$HOME/.android/avd"
+          mkdir -p "$ANDROID_AVD_HOME"
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "emulator" "$SYSTEM_IMAGE" > "$RUNNER_TEMP/sdkmanager.log" 2>&1 || { tail -30 "$RUNNER_TEMP/sdkmanager.log"; exit 1; }
+          echo no | avdmanager create avd -n smoke -k "$SYSTEM_IMAGE" -d pixel_6 --force
+          emulator -list-avds
+          setsid nohup emulator -avd smoke -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 3072 -accel on > "$RUNNER_TEMP/emulator.log" 2>&1 &
+          adb start-server
+          for i in $(seq 1 120); do
+            if [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ]; then
+              echo "El emulador arrancó a los $((i * 5)) s"
+              adb shell input keyevent KEYCODE_HOME
+              exit 0
+            fi
+            if ! pgrep -f qemu-system > /dev/null; then
+              echo "::error::El emulador se ha parado antes de arrancar"
+              tail -60 "$RUNNER_TEMP/emulator.log"
+              exit 1
+            fi
+            sleep 5
+          done
+          echo "::error::El emulador no arrancó en 10 minutos"
+          tail -60 "$RUNNER_TEMP/emulator.log"
+          exit 1
+      - name: Recorrer el APK en el emulador
+        if: steps.kvm.outputs.disponible == 'true'
+        run: node tools/android-smoke.mjs apk
+      - name: Probar la grabación de la ruta con la pantalla apagada
+        if: always() && steps.kvm.outputs.disponible == 'true'
+        # Arranca el servicio de ubicación como lo haría la app, le da posiciones con `adb emu geo fix` y comprueba que sigue grabando
+        # con la pantalla apagada y la app oculta (tools/android-tracking.mjs).
+        run: node tools/android-tracking.mjs apk
+      - name: Registro del emulador
+        if: always() && steps.kvm.outputs.disponible == 'true'
+        run: tail -n 40 "$RUNNER_TEMP/emulator.log" || true

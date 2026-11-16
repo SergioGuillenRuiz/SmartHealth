@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- SmartHealth: el anillo (banda gruesa en perspectiva, como el icono de la barra superior) sobre el verde de la marca.
+       scripts/make-icons.mjs y scripts/make-android-icons.mjs leen este fichero: el fondo son los dos rect redondeados (el atributo de
+       esquina es el que esos scripts cambian para las variantes a sangre y redonda) y el dibujo va entre las marcas glyph (el primer
+       plano adaptable de Android reutiliza ese bloque). -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#26a37a"/>
+      <stop offset=".55" stop-color="#177a58"/>
+      <stop offset="1" stop-color="#0c4a38"/>
+    </linearGradient>
+    <radialGradient id="sheen" cx=".27" cy=".18" r=".75">
+      <stop offset="0" stop-color="#fff" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- cuerpo: el degradado del hero de la app (menta claro a menta) -->
+    <linearGradient id="wall" gradientUnits="userSpaceOnUse" x1="0" y1="101" x2="0" y2="403">
+      <stop offset="0" stop-color="#eafff7"/>
+      <stop offset=".5" stop-color="#a9ecd8"/>
+      <stop offset="1" stop-color="#68d0b0"/>
+    </linearGradient>
+    <linearGradient id="face" gradientUnits="userSpaceOnUse" x1="0" y1="101" x2="0" y2="403">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#e4faf1"/>
+    </linearGradient>
+    <linearGradient id="inner" gradientUnits="userSpaceOnUse" x1="0" y1="101" x2="0" y2="403">
+      <stop offset="0" stop-color="#0a3a2d"/>
+      <stop offset="1" stop-color="#12604b"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="11"/></filter>
+    <!-- lo que se ve a través del anillo (abertura delantera ∩ abertura trasera) queda sin dibujar -->
+    <clipPath id="hole"><path d="M264.28 265.25A60.66 129.2 -122 1 0 199.99 162.37A60.66 129.2 -122 1 0 264.28 265.25Z"/></clipPath>
+    <mask id="see" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <rect width="512" height="512" fill="#fff"/>
+      <path d="M312.01 341.63A60.66 129.2 -122 1 0 247.72 238.75A60.66 129.2 -122 1 0 312.01 341.63Z" clip-path="url(#hole)" fill="#000"/>
+    </mask>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="112" fill="url(#sheen)"/>
+  <!-- glyph -->
+  <path d="M87.97 303.9A79.81 170 -122 0 1 376.31 123.73L424.03 200.1A79.81 170 -122 0 1 135.69 380.27Z" transform="translate(10 24)" fill="#031f17" fill-opacity=".38" filter="url(#soft)"/>
+  <g mask="url(#see)">
+    <path d="M87.97 303.9A79.81 170 -122 0 1 376.31 123.73L424.03 200.1A79.81 170 -122 0 1 135.69 380.27Z" fill="url(#wall)"/>
+    <path d="M274.43 281.49A79.81 170 -122 1 0 189.84 146.13A79.81 170 -122 1 0 274.43 281.49Z" fill="url(#face)"/>
+    <path d="M264.28 265.25A60.66 129.2 -122 1 0 199.99 162.37A60.66 129.2 -122 1 0 264.28 265.25Z" fill="url(#inner)"/>
+  </g>
+  <path d="M388.79 234.68L366.86 263.23L350.62 270.69L342.33 287.19L332 295.81L327.01 316.34L282.89 280.49L305.3 351.26L275.64 332.72L254.03 332.31L240.27 348.86L182.22 363.76" fill="none" stroke="#0f6a51" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- /glyph -->
+</svg>

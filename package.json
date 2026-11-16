@@ -1,0 +1,55 @@
+{
+  "name": "smartring",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Alternativa personal a Smart Health para el anillo inteligente R99 (protocolo Yucheng YCBT)",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:native": "tsc --noEmit && vite build --mode native",
+    "android:sync": "npm run build:native && cap sync android",
+    "build:beta": "tsc --noEmit && vite build --mode beta --outDir dist-beta",
+    "beta": "npm run build:beta && python3 beta-web/iniciar-linux.py --app dist-beta",
+    "beta:empaquetar": "npm run build:beta && node tools/pack-beta-web.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run test",
+    "e2e": "playwright test",
+    "e2e:beta": "playwright test --config playwright.beta.config.ts",
+    "icons": "node scripts/make-icons.mjs",
+    "verify": "npm run check && npm run e2e"
+  },
+  "dependencies": {
+    "@capacitor-community/bluetooth-le": "^8.3.0",
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/device": "^8.0.3",
+    "@capacitor/haptics": "^8.0.2",
+    "@preact/signals": "^2.11.3",
+    "@tesseract.js-data/spa": "1.0.0",
+    "idb": "^8.0.4",
+    "lucide-preact": "^1.55.0",
+    "preact": "^11.0.1",
+    "tesseract.js": "7.0.0",
+    "zxing-wasm": "^3.1.5"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@capacitor/cli": "^8.5.3",
+    "@playwright/test": "^1.56.1",
+    "@preact/preset-vite": "^2.10.6",
+    "@types/node": "^26.6.5",
+    "@types/web-bluetooth": "^0.0.21",
+    "fake-indexeddb": "^6.2.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3"
+  }
+}

@@ -1,0 +1,170 @@
+/* ───────────── Gráficos ───────────── */
+.chart {
+  margin: 0;
+}
+.chart.is-stale .plot {
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+.chart__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.chart__title {
+  font-size: 14.5px;
+  font-weight: 650;
+}
+.chart__subtitle {
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend__key--rect {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+.legend__key--line {
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+}
+.legend__key--dash {
+  width: 14px;
+  height: 2px;
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 7px);
+  mask: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 7px);
+}
+
+.plot {
+  position: relative;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  /* `pan-y`: el dedo arrastra la barra vertical de lectura por los días (un deslizamiento lateral sobre un gráfico es del gráfico, no del carrusel de pestañas) y el desplazamiento vertical de la página sigue valiendo. */
+  touch-action: pan-y;
+}
+.plot__svg {
+  display: block;
+  touch-action: pan-y;
+  outline: none;
+  overflow: visible;
+}
+.plot__svg:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--brand) 70%, transparent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.plot__grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.plot__axis {
+  stroke: color-mix(in srgb, var(--text-3) 45%, transparent);
+  stroke-width: 1;
+}
+.plot__tick {
+  fill: var(--text-3);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.plot__ref {
+  stroke: var(--text-2);
+  stroke-width: 1;
+  opacity: 0.55;
+}
+.plot__ref--avg {
+  stroke-dasharray: 5 4;
+  opacity: 0.75;
+}
+.plot__nodata {
+  fill: var(--surface-3);
+}
+.plot__cross {
+  stroke: var(--text-3);
+  stroke-width: 1;
+}
+/* Gráfico conjunto de Salud: el título de cada banda, su aviso de vacío y la etiqueta del objetivo (en la fila del título). */
+.jc .plot__tick {
+  font-size: 12px;
+}
+.jc__title {
+  fill: var(--text-2);
+  font-size: 13px;
+  font-weight: 650;
+}
+.jc__tag {
+  fill: var(--text-3);
+  font-weight: 500;
+}
+.jc__empty {
+  fill: var(--text-3);
+  font-size: 13px;
+}
+.jc__ref {
+  fill: var(--text-2);
+  font-size: 12.5px;
+}
+.plot__link {
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+.tip {
+  position: absolute;
+  top: 2px;
+  transform: translateX(-50%);
+  z-index: 3;
+  /* Sin esto, cerca del borde derecho el ancho disponible (el que queda a la derecha de `left`) es menor que el contenido y las lecturas se parten en varias líneas. */
+  width: max-content;
+  min-width: 120px;
+  max-width: 190px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  pointer-events: none;
+  font-size: 12.5px;
+}
+.tip__title {
+  color: var(--text-2);
+  font-size: 11.5px;
+  margin-bottom: 3px;
+}
+.tip__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tip__key {
+  width: 10px;
+  height: 3px;
+  border-radius: 2px;
+  flex: none;
+}
+.tip__value {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+.tip__label {
+  color: var(--text-2);
+}

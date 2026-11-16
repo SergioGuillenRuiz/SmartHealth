@@ -1,0 +1,295 @@
+/* Tokens de diseño. Claro y oscuro salen de las mismas variables; el color de cada dominio
+   (actividad, sueño, corazón…) es el mismo en tarjetas, gráficos y leyendas. */
+:root {
+  color-scheme: light dark;
+
+  /* Paleta inspirada en Smart Health: fondo casi blanco, tarjetas blancas, verde menta y números ligeros. */
+  --bg: #f8f8f8;
+  --surface: #ffffff;
+  --surface-2: #f4f6f5;
+  --surface-3: #e8ecea;
+  --line: #eceeed;
+  --text: #030f0d;
+  --text-2: #5f6866;
+  --text-3: #6b7270;
+
+  --brand: #177a58;
+  --brand-soft: #e3f6ee;
+  /* El fondo del mapa (el mismo que dibuja `ui/nav/map-render.ts`): se ve mientras carga y detrás de los botones. */
+  --map-bg: #f4f2ee;
+  --on-brand: #ffffff;
+  /* El verde de Smart Health, para trazos y rellenos que no llevan texto encima. */
+  --mint: #58c198;
+  /* El mismo verde menta para los iconos de la barra superior, algo más hondo para llegar a 3:1 sobre blanco. */
+  --mint-ui: #28a074;
+
+  --steps: #2c9d5f;
+  --kcal: #f26a21;
+  --water: #2f9be8;
+  --distance: #0b8fd6;
+  /* El azul de la distancia como TEXTO sobre su propio fondo tenue (el distintivo «GPS»): el de arriba solo llega a 3:1, este a 5,4:1. */
+  --distance-text: #086496;
+  /* Sueño: --sleep es el color de la tarjeta; las fases son CATEGÓRICAS (profundo y ligero en dos violetas bien separados, REM en
+     naranja, despierto en gris), validadas con el script de la guía de dataviz en claro y en oscuro. La posición del carril
+     del hipnograma dice la fase aunque no se distingan los colores. */
+  --sleep: #685ec1;
+  --sleep-deep: #4b3aa8;
+  --sleep-light: #8f7df2;
+  --sleep-rem: #d9661a;
+  --sleep-awake: #8b8d9a;
+  --heart: #e0364f;
+  --spo2: #0aa1b8;
+  --weight: #3b6fdc;
+
+  --ok: #0e9f6e;
+  --good-text: #006300;
+  --warn: #b7791f;
+  --warn-soft: #fdf1d8;
+  --warn-text: #8a5a0a;
+  --danger: #c62d3f;
+  --danger-soft: #fde4e7;
+  --danger-text: #a8243a;
+
+  /* Tarjeta principal del resumen (la de los pasos): degradado menta, tinta verde oscura y el disco del anillo. */
+  --hero-1: #a9ecd8;
+  --hero-2: #8adfc7;
+  --hero-3: #68d0b0;
+  --hero-glow: rgba(104, 208, 176, 0.45);
+  --hero-ink: #0c3d2f;
+  --hero-ink-2: #134e3b;
+  --hero-track: rgba(255, 255, 255, 0.34);
+  --hero-rim: rgba(255, 255, 255, 0.2);
+  --hero-chip: rgba(255, 255, 255, 0.4);
+  --hero-arc: #2f7d62;
+
+  /* Nutrición: calorías en el naranja de la energía y los tres nutrientes en tonos cálidos de un mismo color, de más a menos oscuro. */
+  --macro-protein: #b9470d;
+  --macro-carbs: #f08a3a;
+  --macro-fat: #eeb22f;
+  /* La sal es un límite y no un nutriente que haya que «llegar a»: un azul pizarra, frío, para que no se confunda con los tres cálidos. */
+  --macro-salt: #4f6f92;
+  --disc-1: #2f7f63;
+  --disc-2: #26705a;
+  --disc-ink: #ffffff;
+
+  /* Ilustraciones de fondo de las tarjetas de sueño y pulso (decorativas, muy suaves). */
+  --mark-moon: #fcf1c4;
+  --mark-wave: #dcd4fb;
+  --mark-heart: #fbdfe3;
+
+
+  --radius: 10px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 2px rgba(20, 40, 35, 0.06), 0 2px 8px rgba(20, 40, 35, 0.06);
+  --shadow-up: 0 -6px 24px rgba(15, 23, 32, 0.12);
+
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --header-h: 56px;
+  --nav-h: 64px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0d1311;
+    --surface: #151c1a;
+    --surface-2: #1b2422;
+    --surface-3: #26312e;
+    --line: #25302d;
+    --text: #e9f1ee;
+    --text-2: #aab9b4;
+    --text-3: #859590;
+
+    --brand: #4fd1a5;
+    --brand-soft: #123a31;
+    --map-bg: #1a1c20;
+    --on-brand: #04201a;
+    --mint: #58c198;
+    --mint-ui: #58c198;
+
+    --steps: #4fd08a;
+    --kcal: #fb923c;
+    --water: #5ab8f6;
+    --distance: #38bdf8;
+  --distance-text: #38bdf8;
+    --sleep: #7f76dc;
+    --sleep-deep: #734bdd;
+    --sleep-light: #a97dda;
+    --sleep-rem: #d97736;
+    --sleep-awake: #9aa0ae;
+    --heart: #fb7185;
+    --spo2: #22d3ee;
+    --weight: #7ba3ff;
+
+    --ok: #34d399;
+    --good-text: #0ca30c;
+    --warn: #f5b942;
+    --warn-soft: #3a2f12;
+    --warn-text: #f5b942;
+    --danger: #fb7185;
+    --danger-soft: #3d1c22;
+    --danger-text: #fb7185;
+
+    --hero-1: #1f6f58;
+    --hero-2: #19604c;
+    --hero-3: #134f3e;
+    --hero-glow: rgba(0, 0, 0, 0);
+    --hero-ink: #ecfff8;
+    --hero-ink-2: #bfeadb;
+    --hero-track: rgba(255, 255, 255, 0.12);
+    --hero-rim: rgba(255, 255, 255, 0.08);
+    --hero-chip: rgba(255, 255, 255, 0.11);
+    --hero-arc: #7cf0c8;
+
+    --macro-protein: #ff8a4c;
+    --macro-carbs: #ffb072;
+    --macro-fat: #ffd36b;
+    --macro-salt: #8fb3dd;
+    --disc-1: #0e3b2e;
+    --disc-2: #0a2e24;
+    --disc-ink: #ecfff8;
+
+    --mark-moon: #4a4326;
+    --mark-wave: #3a3560;
+    --mark-heart: #4a2530;
+
+
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.25);
+    --shadow-up: 0 -6px 24px rgba(0, 0, 0, 0.5);
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0d1311;
+  --surface: #151c1a;
+  --surface-2: #1b2422;
+  --surface-3: #26312e;
+  --line: #25302d;
+  --text: #e9f1ee;
+  --text-2: #aab9b4;
+  --text-3: #859590;
+  --brand: #4fd1a5;
+  --brand-soft: #123a31;
+  --map-bg: #1a1c20;
+  --on-brand: #04201a;
+  --mint: #58c198;
+  --mint-ui: #58c198;
+  --steps: #4fd08a;
+  --kcal: #fb923c;
+  --water: #5ab8f6;
+  --distance: #38bdf8;
+  --distance-text: #38bdf8;
+  --sleep: #7f76dc;
+  --sleep-deep: #734bdd;
+  --sleep-light: #a97dda;
+  --sleep-rem: #d97736;
+  --sleep-awake: #9aa0ae;
+  --heart: #fb7185;
+  --spo2: #22d3ee;
+  --weight: #7ba3ff;
+  --ok: #34d399;
+  --good-text: #0ca30c;
+  --warn: #f5b942;
+  --warn-soft: #3a2f12;
+  --warn-text: #f5b942;
+  --danger: #fb7185;
+  --danger-soft: #3d1c22;
+  --danger-text: #fb7185;
+  --hero-1: #1f6f58;
+  --hero-2: #19604c;
+  --hero-3: #134f3e;
+  --hero-glow: rgba(0, 0, 0, 0);
+  --hero-ink: #ecfff8;
+  --hero-ink-2: #bfeadb;
+  --hero-track: rgba(255, 255, 255, 0.12);
+  --hero-rim: rgba(255, 255, 255, 0.08);
+  --hero-chip: rgba(255, 255, 255, 0.11);
+  --hero-arc: #7cf0c8;
+
+  --macro-protein: #ff8a4c;
+  --macro-carbs: #ffb072;
+  --macro-fat: #ffd36b;
+  --macro-salt: #8fb3dd;
+  --disc-1: #0e3b2e;
+  --disc-2: #0a2e24;
+  --disc-ink: #ecfff8;
+  --mark-moon: #4a4326;
+  --mark-wave: #3a3560;
+  --mark-heart: #4a2530;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.25);
+  --shadow-up: 0 -6px 24px rgba(0, 0, 0, 0.5);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  /* La página nunca se desplaza: el que se desplaza es lo de dentro. Si el documento fuera un poco más alto que la ventana visible (las barras del navegador del móvil), toda la app subiría y quedaría la cabecera tapada. */
+  overflow: hidden;
+}
+
+/* El texto de la app no se selecciona al mantener pulsado (gráficas, botones, cifras): solo donde se escribe, y el detalle técnico de la
+   pantalla de error, que es lo único que se querría copiar. `text-selection.ts` cierra el resto de caminos (menú contextual). */
+* {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+input,
+textarea,
+[contenteditable='true'],
+[data-selectable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand) 70%, transparent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

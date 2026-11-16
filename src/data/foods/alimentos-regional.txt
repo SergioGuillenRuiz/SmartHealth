@@ -1,0 +1,83 @@
+# Cocina regional española y platos de casa que no tenían entrada propia (Galicia, Asturias, Cantabria, Euskadi, Cataluña, Valencia, Baleares, Andalucía, Castilla, Canarias).
+# Formato y significado de cada columna: ver alimentos.txt. Las cifras son por 100 g del plato tal como se sirve (con su aceite, su salsa y la sal que se echa de ordinario).
+
+# ───────────── Galicia, Asturias, Cantabria, Euskadi ─────────────
+Pote gallego | pote gallego, pote, caldo gallego, caldo gallego con grelos, pote de berzas, pote asturiano, pote de nabos | 60 3.2 6.5 2.3 2.2 0.8 0.8 | racion=350 bol=300 plato=350
+Lacón con grelos | lacón con grelos, lacon con grelos, lacón gallego, lacón cocido, lacón | 140 12 6 8 1.5 0.5 1.2 | racion=350 plato=350
+Pulpo a la gallega | pulpo a la gallega, pulpo á feira, pulpo a feira, pulpo con cachelos, pulpo con patatas, pulpo a la gallega con cachelos | 130 14 8 5 0.8 0.3 1.3 | racion=250 plato=250
+Zorza | zorza, zorza gallega, carne de zorza, zorza adobada | 250 18 1 19 0 0.5 2.2 | racion=120
+Raxo | raxo, raxo gallego, carne de raxo, cerdo adobado | 190 22 1 11 0 0.3 1 | racion=150
+Fabes con almejas | fabes con almejas, fabes con marisco, fabes de la granja con almejas | 95 6.5 11 2.7 3.2 0.7 0.9 | racion=350 plato=350
+Carbayones | carbayones, carbayón, carbayon | 430 7 50 22 2 30 0.2 | ud=60 racion=60
+Casadielles | casadielles, casadiella | 400 6 48 20 2 25 0.2 | ud=50 racion=50
+Quesada pasiega | quesada pasiega, quesada, pasiega, quesada cántabra | 330 8 38 16 0.5 28 0.3 | racion=100 trozo=100
+Gâteau vasco | gateau vasco, gâteau vasco, pastel vasco, gateau basque, pastel vasco de crema | 380 5 45 20 0.8 28 0.2 | racion=100 trozo=100
+Marmitako | marmitako, marmitako de bonito, sorropotún, sorropotun | 90 8 8 3 1 1.5 0.8 | racion=350 plato=350
+Bacalao al pil pil | bacalao al pil pil, bacalao al pilpil, bacalao pil pil, bacalao con pil pil | 209 18 0.5 15 0 0.2 1.4 | racion=200 plato=200
+Bacalao a la vizcaína | bacalao a la vizcaína, bacalao a la vizcaina, bacalao vizcaína, bacalao con pimientos choriceros | 139 14 5 7 0.8 2.5 1.2 | racion=250 plato=250
+Bacalao con tomate | bacalao con tomate, bacalao a la portuguesa, bacalao con pisto, bacalao con salsa de tomate | 121 14 5 5 1 3.5 1.1 | racion=250 plato=250
+Txangurro | txangurro, txangurro gratinado, centollo gratinado, txangurro a la donostiarra | 144 12 6 8 0.5 2 1 | racion=200
+Centollo | centollo, centolla, buey de mar | 85 17 0.5 1.5 0 0.3 0.9 | racion=150 ud=250 rol=proteina
+Pixín | pixín, pixin | 76 16 0 1.5 0 0 0.3 | racion=150 rol=proteina
+
+# ───────────── Cataluña, Valencia, Baleares ─────────────
+Arroz caldoso | arroz caldoso, arroz caldoso con bogavante, arroz caldoso con conejo, arroz meloso, arroz con bogavante, arroz de bogavante, arroz marinero | 112 6 17 2.2 0.6 0.8 0.9 | racion=350 plato=350
+Arroz al horno | arroz al horno, arroz con costra, arroz en cazuela de barro, arroz al forn, arroz de horno | 157 8 20 5 1.5 1 1 | racion=350 plato=350
+Fideuá | fideuá, fideuà, fideua, fideuá de marisco, fideua de marisco, fideuà de marisco | 148 8 20 4 1 1.5 1 | racion=350 plato=350
+All i pebre | all i pebre, all-i-pebre, all i pebre de anguila | 131 8 9 7 1 0.8 0.9 | racion=300 plato=300
+Butifarra con mongetes | butifarra con mongetes, butifarra amb mongetes, mongetes con butifarra, butifarra con judías, butifarra con alubias | 162 9 9 10 3 0.5 1.2 | racion=300 plato=300
+Mel i mató | mel i mató, mel i mato, miel y mató, mató con miel | 168 6 18 8 0 17 0.15 | racion=125
+Esqueixada | esqueixada, esqueixada de bacalao, ensalada de bacalao, ensalada de bacalao desmigado, ensalada de naranja y bacalao | 110 10 4 6 1 3 1.2 | racion=250 plato=250
+Calçots | calçots, calcots, calçotada, calçots a la brasa | 37 1.3 7.5 0.2 2 5 0.02 | racion=250 ud=20
+Salsa romesco | salsa romesco, romesco | 293 5 12 25 4 6 0.9 | cucharada=15 racion=40
+Coca de verduras | coca de recapte, coca de trampó, coca mallorquina, coca de verduras, coca de pimientos, coca salada, coca de tomate, coca de sardinas, coca de escalivada | 211 6 30 7.5 2.5 3 1 | racion=150 trozo=150
+Tumbet | tumbet, tumbet mallorquín, tumbet mallorquin, trampó, trempó, trempo, trempó mallorquín, samfaina, xanfaina | 110 1.8 11 6.5 2.5 4 0.5 | racion=250 plato=250
+Sopa mallorquina | sopa mallorquina, sopas mallorquinas | 100 4 12 4 2 2 0.7 | racion=350 plato=350
+
+# ───────────── Andalucía, Extremadura, Murcia, La Mancha ─────────────
+Ajoblanco | ajoblanco, ajo blanco, ajoblanco con uvas, ajoblanco de almendras, ajo blanco malagueño | 113 2.5 5.5 9 1 2.5 0.7 | liquido racion=250 vaso=200 bol=300
+Flamenquín | flamenquín, flamenquin, flamenquines, flamenquín cordobés, flamenquin cordobes | 329 17 18 21 0.8 0.8 1.3 | ud=150 racion=200
+Berenjenas fritas con miel | berenjenas fritas con miel, berenjenas con miel, berenjenas con miel de caña, berenjenas a la andaluza, berenjenas fritas con miel de caña, berenjenas con melaza | 197 2.5 22 11 3 12 0.5 | racion=150
+Rabo de toro | rabo de toro, rabo de buey, rabo de toro estofado, rabo de toro guisado, rabo estofado | 191 20 3 11 0.5 1.5 0.9 | racion=250 plato=250
+Pestiños | pestiño, pestiños, pestiños con miel, pestinos, borrachuelos | 439 6 52 23 1.5 25 0.1 | ud=35 racion=70
+Gachas | gachas, gachas manchegas, gachas de harina, gachas de pan | 137 4 18 5.5 1 1.5 0.6 | racion=250 plato=250
+Atascaburras | atascaburras, ataca burras, atascaburras manchego, atascaburras con bacalao | 152 8 12 8 1.5 0.5 0.9 | racion=250
+Morteruelo | morteruelo, morteruelo manchego, paté manchego | 280 17 8 20 0.5 1 1.5 | racion=100
+Zarangollo | zarangollo, zarangollo murciano, zarangollo con huevo | 79 3.5 5 5 1.2 3 0.6 | racion=200
+Pipirrana | pipirrana, pipirrana jienense, ensalada jienense | 70 1.2 5 5 1.5 3.5 0.4 | racion=200
+Patatas a la importancia | patatas a la importancia, patatas importantes, patatas en salsa, patatas guisadas | 119 2.4 15 5.5 1.5 1 0.5 | racion=250 plato=250
+Patatas revolconas | patatas revolconas, patatas machacás, patatas meneás, patatas meneadas | 130 3 16 6 1.8 0.8 0.8 | racion=250 plato=250
+Sopa de ajo | sopa de ajo, sopa castellana, sopa castellana con huevo, ajo caliente, sopas de ajo | 75 3.2 8 3.3 0.6 0.5 0.7 | racion=300 bol=300 plato=300
+Potaje de verduras | potaje de berros, potaje canario, potaje de verduras, potaje de calabaza | 57 3 8 1.5 3 0.5 0.6 | racion=350 plato=350
+Casquería | entresijos, gallinejas, zarajos, mollejas, mollejas fritas, criadillas, orejas fritas, oreja a la plancha, oreja de cerdo, oreja, morro, morros, morro de cerdo, manitas de cerdo, manitas, mano de cerdo, patas de cerdo, rabo de cerdo, sesos, lengua de cerdo | 265 18 1 21 0 0.2 0.9 | racion=150
+Ropa vieja | ropa vieja, ropa vieja canaria, ropa vieja de pollo | 133 11 10 5.5 2 0.8 0.8 | racion=300 plato=300
+
+# ───────────── Canarias ─────────────
+Mojo | mojo, mojo picón, mojo picon, mojo rojo, mojo verde, mojo canario, mojo de cilantro | 337 1.5 4 35 1 1 1.5 | cucharada=15 racion=30 rol=salsa
+Gofio | gofio, gofio de trigo, gofio de millo, gofio de maíz | 365 10 70 5 8 2 0.05 | cucharada=15 racion=30
+Escaldón de gofio | escaldón de gofio, escaldon de gofio, gofio escaldado, gofio amasado, escaldón | 131 4 22 3 3 0.5 0.5 | racion=250
+Bienmesabe canario | bienmesabe canario, bienmesabe de almendras, bienmesabe dulce | 382 6 40 22 2 35 0.05 | racion=100
+Adobo de pescado | adobo, adobo de cazón, bienmesabe, cazón en adobo, cazón adobado, adobo gaditano, adobo de pescado | 200 20 6 10.5 0.5 0.3 1 | racion=150
+
+# ───────────── fritos, empanados y platos de bar ─────────────
+Chopitos y chipirones fritos | chipirones fritos, chipirones, chopitos, puntillitas, puntillas, chocos fritos, choco frito, chopitos fritos, chipirón frito | 195 14 10 11 0.5 0.2 0.8 | racion=150
+Boquerones fritos | boquerones fritos, boquerones rebozados, boquerones a la andaluza, boquerones fritos andaluces, boquerón frito | 226 20 5 14 0.2 0 0.7 | racion=150
+Buñuelos salados | buñuelos de bacalao, buñuelos de queso, bolitas de queso, bolas de queso, bolitas de bacalao, buñuelo de bacalao, tortillitas de camarones, tortillitas de camarón, tortillitas de bacalao | 281 10 22 17 1 1 1.3 | ud=30 racion=120
+Filetes rusos | filetes rusos, filete ruso, hamburguesa rusa, carne rusa | 234 15 12 14 0.8 1 0.9 | ud=90 racion=180
+Cordon bleu | cordon bleu, cordón bleu, cordon blue, cordones bleu | 247 15 13 15 0.8 0.8 1.2 | ud=110 racion=120
+Milanesa napolitana | milanesa napolitana, milanesa a la napolitana, napolitana argentina, milanga napolitana | 254 20 12 14 1 1.5 1 | racion=250
+Atún encebollado | atún encebollado, atun encebollado, atún con cebolla, atún en salsa | 154 20 5 6 0.8 3 0.8 | racion=200
+Pescado en escabeche | pescado en escabeche, caballa en escabeche, sardinillas en escabeche, bonito en escabeche, jurel en escabeche, escabeche | 192 18 3 12 0.3 1.5 1.2 | racion=120
+Ensalada de pimientos asados | ensalada de pimientos asados, pimientos asados, pimientos asados con ajo, pimientos del piquillo, pimientos de piquillo | 60 1.2 5 4 2 4 0.5 | racion=150
+Ensalada de legumbres | ensalada de lentejas, ensalada de garbanzos, ensalada de legumbres, ensalada de alubias, ensalada de judías blancas, ensalada de judias blancas | 129 6 15 5 4 1.5 0.6 | racion=250
+Ensalada de quinoa | ensalada de quinoa, quinoa con verduras, bowl de quinoa | 120 4 16 4.5 2 1.5 0.5 | racion=250
+Ensalada de queso de cabra | ensalada de queso de cabra, ensalada de cabra, ensalada con queso de cabra, ensalada de cabra con miel, ensalada templada de queso de cabra | 159 7 8 11 1.5 5 0.7 | racion=250
+Ensalada de espinacas | ensalada de espinacas, ensalada de espinacas frescas, ensalada de espinacas con fresas | 70 2.5 6 4 2 3.5 0.3 | racion=200
+Coles de Bruselas | coles de bruselas, col de bruselas, coles de bruselas salteadas, coles bruselas | 36 3.4 5 0.3 3.8 2.2 0.05 | racion=150 coc=verdura
+
+# ───────────── dulces de temporada ─────────────
+Panellets | panellets, panellet, panellets de piñones, panellets de coco, panellets de almendra, castañada | 394 9 40 22 3 28 0.05 | ud=25 racion=75
+
+# ───────────── quesos a la plancha ─────────────
+Queso a la plancha | queso asado canario, queso asado, queso a la plancha, halloumi, queso halloumi | 317 21 2 25 0 1 2.5 | racion=100 rol=queso
+

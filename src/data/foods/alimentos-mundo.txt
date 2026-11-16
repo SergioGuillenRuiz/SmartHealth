@@ -1,0 +1,236 @@
+# Cocina de Oriente Medio, el Magreb, Italia, Francia, Europa central, las Islas Británicas y Estados Unidos. Formato y significado de cada columna: ver alimentos.txt.
+# Las cifras son por 100 g del plato tal como se sirve (con su aceite, su salsa y la sal que se echa de ordinario).
+
+# ───────────── Oriente Medio, Grecia y el Magreb ─────────────
+Baba ganoush | baba ganoush, baba ghanoush, mutabal, moutabal, crema de berenjena | 132 2.5 7 10.5 3 3 0.8 | racion=60 cucharada=20
+Tabulé | tabulé, tabule, tabbouleh, ensalada de bulgur, ensalada libanesa | 121 3 16 5 3 1.5 0.7 | racion=150
+Fattoush | fattoush, fatush, ensalada fattoush | 93 2 10 5 2 3 0.6 | racion=200
+Kibbeh | kibbeh, kibbe, kebbeh, kibe, quibe, kubba | 241 12 18 13.5 2 1 1 | ud=70 racion=140
+Kofta | kofta, kofte, köfte, albóndigas de cordero, kefta, kefta marroquí, pinchos de kofta | 228 17 4 16 0.5 1 1.1 | ud=60 racion=180 rol=proteina
+Shakshuka | shakshuka, shakshouka, chakchouka, huevos en salsa de tomate | 102 6 6 6 1.5 4 0.8 | racion=300 plato=300
+Labneh | labneh, labne, labaneh, yogur colado, yogur escurrido, yogur espeso | 152 7 4 12 0 3.5 0.8 | racion=60 cucharada=20
+Baklava | baklava, baclava, baklavas, kadaif, kunafa, knafeh | 429 6 45 25 2 30 0.2 | ud=40 racion=60
+Halva | halva, halvah, jalva, halva de sésamo | 518 12 50 30 5 40 0.1 | racion=30
+Tzatziki | tzatziki, tsatsiki, tzaziki, cacik, salsa tzatziki | 73 3.5 3.5 5 0.4 3 0.5 | cucharada=20 racion=60 rol=salsa
+Souvlaki | souvlaki, souvlakia, pincho moruno, pinchos morunos, brocheta griega, brochetas de cerdo | 203 24 2 11 0.3 1 0.9 | racion=150 ud=60 rol=proteina
+Moussaka | moussaka, musaka, musaká | 141 8 7 9 1.5 3 0.8 | racion=300 plato=300
+Spanakopita | spanakopita, pastel de espinacas, tarta de espinacas y feta, tiropita, börek, borek, burek, bourekas | 255 8 22 15 2 1 1.3 | racion=120 trozo=120
+Ensalada griega | ensalada griega, horiatiki, ensalada con feta, ensalada de feta | 90 3 5 6.5 1.5 3.5 0.9 | racion=250
+Dolmades | dolmades, dolmas, dolma, hojas de parra rellenas, rollitos de hoja de parra | 172 3 22 8 2.5 2 1 | ud=25 racion=125
+Tajine | tajine, tajín, tagine, tajine de pollo, tajine de cordero, tajine de verduras, cuscús con carne, cuscús marroquí | 113 9 8 5 2 4 0.8 | racion=350 plato=350
+Harira | harira, sopa harira, sopa marroquí | 70 4 9 2 2.5 1.5 0.8 | racion=350 bol=350
+Msemen | msemen, msemmen, m'semen, rghaif, harcha, crepe marroquí | 322 7 42 14 1.5 2 0.9 | ud=80 racion=80
+Pastela | pastela, pastela de pollo, bastilla, b'stilla | 270 12 24 14 1.5 8 0.9 | racion=150
+
+# ───────────── Italia ─────────────
+Pasta arrabbiata | arrabbiata, all'arrabbiata, penne arrabbiata, penne all'arrabbiata, pasta arrabbiata, pasta a la arrabbiata, pasta al pomodoro, pasta napolitana | 150 5 28 2.5 2 3 0.8 | racion=350 plato=350
+Cacio e pepe | cacio e pepe, pasta cacio e pepe, pasta al pecorino | 189 8 28 5 1.5 1 0.9 | racion=300 plato=300
+Pasta amatriciana | amatriciana, all'amatriciana, bucatini all'amatriciana, bucatini, pasta amatriciana, gricia, pasta alla gricia | 171 7.5 24 5 1.8 2.5 1 | racion=350 plato=350
+Pasta alfredo | fettuccine alfredo, alfredo, pasta alfredo, pasta cuatro quesos, pasta a los cuatro quesos | 200 7 24 8.5 1.2 1.5 0.8 | racion=350 plato=350
+Mac and cheese | mac and cheese, mac & cheese, mac n cheese, macaroni and cheese, macarrones con queso, macarrones al queso | 188 8 20 8.5 1 3 0.9 | racion=300 plato=300
+Ñoquis | ñoquis, noquis, gnocchi, gnocchis, ñoquis de patata | 129 3.5 27 0.8 1.5 1 0.7 | racion=250 plato=250
+Pasta rellena | ravioli, raviolis, ravioles, tortellini, tortelloni, tortelini, capelletti, agnolotti, sorrentinos, pasta rellena, pasta fresca rellena, ravioles de ricota, ravioli de ricotta y espinacas | 198 8 28 6 1.5 2 0.9 | racion=250 plato=250
+Arancini | arancini, arancino, arancinis, croquetas de arroz | 239 7 28 11 1 1 1 | ud=90 racion=180
+Panna cotta | panna cotta, panacota, panna cotta con frutos rojos | 217 3 22 13 0 20 0.1 | racion=125
+Cannoli | cannoli, cannolo, canoli, cannoli sicilianos | 341 7 40 17 1.5 25 0.2 | ud=90 racion=90
+Osso buco | osso buco, ossobuco, jarrete de ternera, jarrete | 177 20 4 9 1 2 0.9 | racion=300 plato=300
+Saltimbocca | saltimbocca, saltimbocca alla romana, escalope con jamón y salvia | 234 25 2 14 0.2 0.5 1.5 | racion=180
+Polenta | polenta, polenta cocida | 75 1.7 16 0.5 1 0.3 0.5 | racion=200
+Minestrone | minestrone, minestra, ribollita, sopa de verduras y legumbres | 45 2 7 1 2 2 0.7 | racion=350 bol=350
+Ensalada caprese | ensalada caprese, caprese, mozzarella con tomate, tomate con mozzarella, tomate y mozzarella | 187 10 3 15 0.8 2.5 0.7 | racion=200
+
+# ───────────── Francia y Europa central ─────────────
+Quiche | quiche, quiche lorraine, quiche de verduras, quiche de puerros, quiche de queso, tarta salada, quiche de salmón | 239 9 17 15 1 2 0.9 | racion=150 trozo=150
+Coq au vin | coq au vin, pollo al vino, pollo al vino tinto, boeuf bourguignon, ternera a la borgoñona | 140 15 3 7.5 0.5 1 0.8 | racion=300 plato=300
+Sopa de cebolla | sopa de cebolla, sopa de cebolla gratinada, sopa francesa de cebolla, soupe à l'oignon | 59 3 6 2.5 0.8 3 0.8 | racion=300 bol=300
+Macarons | macaron, macarons, macarrón francés, macarons franceses | 403 7 60 15 2 52 0.1 | ud=15 racion=45
+Chucrut | chucrut, choucroute, sauerkraut | 18 1 3 0.2 2.5 1.5 1.5 | racion=100 rol=verdura
+Pretzel | pretzel, pretzels, brezel, brezeln, bretzel | 327 9 66 3 2.5 3 2.2 | ud=100 racion=100
+Currywurst | currywurst, salchicha con curry y ketchup | 233 10 10 17 1 6 2 | racion=250
+Strudel de manzana | strudel, apfelstrudel, strudel de manzana, strudel de queso | 246 3 36 10 2 18 0.2 | trozo=130 racion=130
+Gulash | gulash, goulash, goulasch, estofado húngaro, gulyás | 113 9 7 5.5 1.5 2.5 0.8 | racion=350 plato=350
+
+# ───────────── Islas Británicas ─────────────
+Fish and chips | fish and chips, fish & chips, fish n chips, pescado con patatas fritas | 227 10 22 11 2 0.5 0.9 | racion=400 plato=400
+Desayuno inglés | full english, full english breakfast, desayuno inglés, desayuno ingles, english breakfast, fry up | 187 10 12 11 2 3 1.4 | racion=450 plato=450
+Shepherd's pie | shepherd's pie, shepherds pie, cottage pie, pastel de pastor, pastel de carne y puré | 117 7 11 5 1.5 2 0.7 | racion=350 plato=350
+Scone | scone, scones | 363 7 50 15 1.5 8 0.9 | ud=70 racion=70
+Sunday roast | sunday roast, roast dinner, asado dominical | 142 12 10 6 2 1.5 0.7 | racion=450 plato=450
+Yorkshire pudding | yorkshire pudding, yorkshire puddings, yorkshire | 205 6 25 9 1 1.5 0.7 | ud=50 racion=100
+
+# ───────────── Estados Unidos ─────────────
+Sándwich BLT | blt, sándwich blt, sandwich blt, bacon lettuce tomato | 266 11 24 14 2 3 1.4 | ud=180 racion=180
+Philly cheesesteak | philly cheesesteak, cheesesteak, philly cheese steak, sándwich de ternera y queso | 247 15 22 11 1.2 3 1.5 | ud=250 racion=250
+Pulled pork | pulled pork, cerdo desmechado, carne de cerdo deshilachada, carnitas | 192 20 10 8 0.5 7 1.3 | racion=150 rol=proteina
+Sándwich de pulled pork | pulled pork sandwich, sándwich de pulled pork, bocadillo de pulled pork, burger de pulled pork | 244 15 28 8 1.5 8 1.4 | ud=220 racion=220
+Corn dog | corn dog, corn dogs, corndog, perrito rebozado, salchicha rebozada | 267 8 25 15 1 6 1.4 | ud=100 racion=100
+Ensalada cobb | cobb salad, ensalada cobb | 146 10 4 10 1.5 2 0.8 | racion=300
+Buddha bowl | buddha bowl, bowl vegetal, bowl de verduras, bowl de arroz y verduras, grain bowl, power bowl | 129 5 17 4.5 4 3 0.5 | racion=400 bol=400
+Overnight oats | overnight oats, avena de la noche, avena remojada, avena fría, avena overnight, copos de avena remojados | 133 5 18 4.5 3 6 0.1 | racion=250 bol=250
+Pan de maíz | pan de maíz, cornbread, broa, borona, broa de millo | 287 7 50 6.5 3 5 1 | rebanada=50 racion=50
+
+# ───────────── bocados y bocadillos que faltaban ─────────────
+Bastones de mozzarella | bastones de mozzarella, mozzarella sticks, palitos de mozzarella, bastoncillos de queso, queso frito, quesitos fritos, sticks de queso | 289 12 22 17 1 1 1.4 | ud=25 racion=125
+Sándwich vegetal | sándwich vegetal, sandwich vegetal, sándwich de verduras, sandwich de verduras, sándwich vegetal con huevo | 200 8 24 8 2.5 3 1.2 | ud=200 racion=200 contenedor
+Bollo preñao | bollo preñao, bollu preñao, preñao, bollo con chorizo, hornazo, hornazo de salamanca, hornazo de pascua | 304 11 38 12 2 3 1.5 | ud=150 racion=150
+
+# ───────────── África ─────────────
+Injera | injera, enjera, pan etíope, injera con wat | 135 4 28 0.8 2.5 1 0.3 | ud=80 racion=160
+Doro wat | doro wat, doro wot, guiso etíope | 145 12 4 9 1 2 0.9 | racion=300 plato=300
+Jollof rice | jollof, jollof rice, arroz jollof, arroz africano | 172 3.5 27 5.5 1 2 0.9 | racion=300 plato=300
+Fufu | fufu, fufú, foufou, ugali, nshima, sadza | 158 1 38 0.2 1.5 1 0.02 | racion=250
+Mafé | mafé, maafe, guiso de cacahuete, tigadèguèna | 176 9 8 12 2 3 0.8 | racion=300 plato=300
+Suya | suya, suya de ternera, brochetas suya | 254 28 4 14 1 1 1.3 | racion=150 rol=proteina
+Bobotie | bobotie, bobotie sudafricano | 169 12 10 9 1 5 0.8 | racion=300 plato=300
+Koshari | koshari, kushari, koshary | 180 8 28 4 4 2 0.9 | racion=400 plato=400
+Ful medames | ful medames, ful mudammas, fuul, habas egipcias | 112 7 12 4 5 1 0.8 | racion=250
+Merguez | merguez, merguez de cordero, salchicha merguez, salchichas merguez | 289 15 1 25 0 0.5 2.2 | ud=70 racion=140 rol=proteina
+Brik | brik, brik tunecino, brick tunecino, brik de huevo | 258 11 22 14 1 1 1.1 | ud=120 racion=120
+# ───────────── Oriente Medio y Turquía ─────────────
+Arroz con carne y especias | mansaf, kabsa, mandi, machboos, majboos, maqluba | 188 9 20 8 1.5 1.5 0.9 | racion=400 plato=400
+Mujaddara | mujaddara, mujadara, mejadra, lentejas con arroz y cebolla | 165 6 24 5 4 2 0.8 | racion=300 plato=300
+Manakish | manakish, manaqish, manousheh, zaatar manakish, pan con zaatar, pizza libanesa | 265 8 38 9 2 2 1.3 | ud=120 racion=120
+Lahmacun | lahmacun, lahmajun, pizza turca | 244 11 32 8 2.5 2.5 1.5 | ud=130 racion=130
+Pide | pide, pide turco, pide de carne, pide de queso, pide de espinacas | 274 11 35 10 2 2 1.4 | racion=250
+Gözleme | gozleme, gözleme, gozleme turco | 234 8 28 10 2 1.5 1 | racion=180
+Simit | simit, simit turco, rosquilla turca de sésamo | 314 10 55 6 3 5 1.5 | ud=110 racion=110
+Menemen | menemen, huevos turcos | 116 7 4 8 1 3 0.8 | racion=250
+Imam bayildi | imam bayildi, imam bayıldı, berenjena rellena turca | 101 1.5 8 7 3 5 0.6 | racion=200
+Lokum | lokum, delicias turcas, turkish delight, loukoum | 335 0.5 82 0.5 0 75 0.02 | ud=15 racion=30
+Ayran | ayran, doogh, laban, yogur líquido salado | 34 2 3 1.5 0 3 0.5 | liquido vaso=250 racion=250
+# ───────────── Europa del Este y Escandinavia ─────────────
+Borscht | borscht, borsch, borsh, sopa de remolacha, sopa rusa, barszcz | 49 1.8 6 2 1.5 3.5 0.7 | racion=350 bol=350
+Pierogi | pierogi, pierogis, varenyky, vareniki, empanadillas polacas | 185 5 30 5 1.5 1.5 0.8 | ud=35 racion=140
+Bigos | bigos, estofado polaco, estofado de col y carne | 155 9 5 11 2.5 3 1.2 | racion=300 plato=300
+Golabki | golabki, gołąbki, rollitos de col, rollos de col rellenos, repollo relleno | 114 7 8 6 1.5 3 0.8 | ud=150 racion=300
+Stroganoff | stroganoff, strogonoff, beef stroganoff, ternera stroganoff | 180 14 4 12 0.5 2 0.9 | racion=250
+Blini | blini, blinis, blinchiki, crepes rusas, panqueques rusos | 208 6 28 8 1 4 0.6 | ud=40 racion=120
+Syrniki | syrniki, sirniki, tortitas de requesón, buñuelos de requesón | 205 9 22 9 0.5 8 0.3 | ud=60 racion=180
+Kasha | kasha, trigo sarraceno, alforfón, trigo sarraceno cocido, kasha de trigo sarraceno | 103 3.5 20 1 2.7 0.3 0.4 | racion=200
+Smørrebrød | smørrebrød, smorrebrod, smørrebrød danés, sándwich abierto danés | 188 9 20 8 3 2 1.2 | ud=120 racion=120
+Köttbullar | köttbullar, kottbullar, albóndigas suecas, albóndigas de ikea, albóndigas ikea | 206 12 8 14 0.8 2 1 | ud=25 racion=150
+Kanelbulle | kanelbulle, kanelbullar, roll de canela, rollo de canela, cinnamon roll, cinnamon rolls, caracola de canela | 323 6 50 11 2 20 0.4 | ud=80 racion=80
+# ───────────── Portugal y Brasil ─────────────
+Bacalhau à brás | bacalhau à brás, bacalhau a bras, bacalao a la brás, bacalhau à gomes de sá, bacalao dorado | 169 12 10 9 1 1 1.1 | racion=300 plato=300
+Francesinha | francesinha, francesinha portuguesa | 278 14 15 18 1 2 1.5 | racion=450 plato=450
+Pastel de nata | pastel de nata, pasteis de nata, pastéis de nata, pastel de belém, pastel de belem, natas portuguesas | 286 5 35 14 1 18 0.2 | ud=60 racion=60
+Caldo verde | caldo verde, sopa de col y patata portuguesa | 47 1.8 6 1.8 1.5 0.8 0.7 | racion=350 bol=350
+Bifana | bifana, bifanas, bocadillo de cerdo portugués, prego no pão | 221 15 20 9 1 2 1.3 | ud=170 racion=170
+Moqueca | moqueca, moqueca de pescado, moqueca capixaba, moqueca baiana | 119 10 4 7 1 2 0.8 | racion=300 plato=300
+Acarajé | acarajé, acaraje | 246 8 22 14 3 1 0.8 | ud=100 racion=100
+Farofa | farofa, harina de mandioca tostada | 354 2 55 14 4 1 1.2 | racion=60
+Tapioca brasileña | tapioca brasileña, tapioca con queso, tapioca de coco, crepioca, tapioca recheada | 206 3 35 6 1 2 0.5 | ud=100 racion=120
+# ───────────── Islas Británicas ─────────────
+Bangers and mash | bangers and mash, salchichas con puré | 184 7 12 12 1.5 1.5 1 | racion=400 plato=400
+Haggis | haggis | 222 10 14 14 2 1 1.3 | racion=150
+Scotch egg | scotch egg, scotch eggs, huevo escocés | 249 11 13 17 1 1 1.1 | ud=120 racion=120
+Trifle | trifle, trifle inglés | 180 3 24 8 0.5 18 0.1 | racion=150
+Sticky toffee pudding | sticky toffee pudding, sticky toffee, pudin de toffee | 339 3.5 52 13 1.5 36 0.6 | racion=150
+Beef Wellington | beef wellington, wellington, solomillo wellington | 314 14 15 22 1 1 1 | racion=200
+Cornish pasty | cornish pasty, pasty, pasty de carne, empanada inglesa | 228 6 24 12 2 1.5 1 | ud=200 racion=200
+Pork pie | pork pie, pastel de cerdo | 313 11 20 21 1 1 1.3 | ud=150 racion=150
+Crumpet | crumpet, crumpets, muffin inglés, english muffin | 209 7 43 1 2 2 1.3 | ud=45 racion=90
+Eton mess | eton mess | 240 3 30 12 1 27 0.1 | racion=150
+Irish stew | irish stew, estofado irlandés | 122 9 8 6 1.5 2 0.8 | racion=350 plato=350
+Soda bread | soda bread, pan irlandés | 259 8 50 3 3 3 1.3 | rebanada=45 racion=90
+Colcannon | colcannon, puré irlandés con col | 115 2.5 15 5 2 1.5 0.7 | racion=250
+# ───────────── Alemania, Austria y Suiza ─────────────
+Spätzle | spätzle, spatzle, spaetzle | 163 6 28 3 1.5 0.8 0.7 | racion=250
+Käsespätzle | käsespätzle, kasespatzle, spätzle con queso | 236 10 22 12 1.5 1.5 1 | racion=300 plato=300
+Fondue de queso | fondue, fondue de queso, fondue suiza, raclette | 248 14 3 20 0 1.5 1.2 | racion=150
+Rösti | rösti, rosti, patatas rösti, torta de patata suiza | 181 3 22 9 2 1 0.8 | racion=150
+Sauerbraten | sauerbraten, asado agridulce alemán | 180 22 5 8 1 3 0.9 | racion=200
+Selva Negra | selva negra, tarta selva negra, black forest cake, schwarzwälder kirschtorte | 300 4.5 30 18 1.5 24 0.2 | trozo=130 racion=130
+Lebkuchen | lebkuchen, pan de especias, gingerbread, galletas de jengibre, pan de jengibre | 363 5 70 7 3 45 0.3 | ud=40 racion=40
+Stollen | stollen | 385 6 52 17 3 30 0.3 | trozo=60 racion=60
+Panettone | panettone, pandoro | 374 7 55 14 2.5 24 0.3 | trozo=80 racion=80
+Kaiserschmarrn | kaiserschmarrn, kaiserschmarren | 256 7 30 12 1 14 0.4 | racion=250
+# ───────────── Francia ─────────────
+Cassoulet | cassoulet | 188 11 9 12 4 1 1.1 | racion=400 plato=400
+Bouillabaisse | bouillabaisse, bullabesa, sopa de pescado francesa | 75 8 4 3 1 2 1 | racion=400 bol=400
+Confit de pato | confit de pato, confit de canard, muslo de pato confitado, pato confitado | 268 22 0 20 0 0.2 1 | racion=200 rol=proteina
+Tartiflette | tartiflette | 210 9 12 14 1.5 1.5 1.5 | racion=350 plato=350
+Gratin dauphinois | gratin dauphinois, patatas gratinadas, patatas al gratén, patatas gratén, gratén de patata | 149 3 14 9 1.5 2 0.6 | racion=250
+Pissaladière | pissaladière, pissaladiere | 208 6 28 8 2 4 1.3 | racion=150
+Ensalada nizarda | ensalada nizarda, salade niçoise, ensalada niçoise | 102 8 4 6 1.5 2 0.8 | racion=300
+Clafoutis | clafoutis, clafoutis de cerezas | 183 5 25 7 1 18 0.2 | racion=150
+Madeleine | madeleine, madeleines, magdalenas francesas | 422 6 50 22 1 28 0.5 | ud=25 racion=50
+Canelé | canelé, canelés, cannelé | 260 5 42 8 1 25 0.2 | ud=45 racion=45
+Kouign-amann | kouign amann, kouign-amann | 429 6 45 25 1.5 20 0.5 | ud=100 racion=100
+Galette bretona | galette bretona, galette de sarrasin, galette complète, crepe de trigo sarraceno | 193 10 18 9 2 1 1 | ud=250 racion=250
+Rillettes | rillettes, rillettes de cerdo, rillettes de pato, rillette | 377 15 0.5 35 0 0 1.6 | cucharada=20 racion=30 rol=topping rell=25
+# ───────────── Italia ─────────────
+Parmigiana | parmigiana, parmigiana di melanzane, berenjenas a la parmesana, berenjena parmigiana, parmigiana de berenjena | 142 7 6 10 2 3.5 1 | racion=250 plato=250
+Vitello tonnato | vitello tonnato, ternera con salsa de atún | 190 14 2 14 0.3 1 1 | racion=150
+Burrata | burrata, burrata fresca | 248 15 2 20 0 1.5 0.8 | racion=125 ud=125 rol=queso
+Cantucci | cantucci, cantuccini, biscotti, amaretti, galletas italianas | 404 9 65 12 3 28 0.3 | ud=15 racion=45
+Sfogliatella | sfogliatella, sfogliatelle | 323 7 40 15 1 20 0.3 | ud=100 racion=100
+Piadina | piadina, piadina romagnola, piadina rellena | 326 9 50 10 2.5 2 1.8 | ud=90 racion=90 contenedor
+# ───────────── Estados Unidos ─────────────
+Brisket | brisket, brisket ahumado, pecho de ternera ahumado, carne ahumada texana | 247 25 3 15 0.2 2 1.2 | racion=150 rol=proteina
+Clam chowder | clam chowder, chowder, crema de almejas, sopa de almejas cremosa | 91 3.5 9 4.5 0.8 1.5 0.9 | racion=350 bol=350
+Lobster roll | lobster roll, roll de langosta, bocadillo de langosta | 213 11 22 9 1 3 1.2 | ud=170 racion=170
+Gumbo y jambalaya | gumbo, jambalaya, estofado criollo | 144 8.5 15 5.5 2 2 0.9 | racion=350 plato=350
+Biscuits and gravy | biscuits and gravy, biscuits con gravy, galletas con salsa de salchicha | 232 6 25 12 1 2 1.4 | racion=250
+Grits | grits, sémola de maíz, gachas de maíz | 65 2 12 1 0.8 0.3 0.5 | racion=250
+Hash browns | hash browns, hashbrowns, tortita de patata, tortitas de patata | 228 2 28 12 3 0.5 0.9 | ud=50 racion=100
+Pop-Tarts | pop-tarts, pop tarts, poptarts | 381 4 71 9 1 36 1 | ud=50 racion=50
+Pumpkin pie | pumpkin pie, tarta de calabaza, pastel de calabaza | 198 3.5 28 8 1.5 18 0.4 | trozo=120 racion=120
+Grilled cheese | grilled cheese, sándwich de queso a la plancha | 330 12 30 18 1.5 3 1.6 | ud=150 racion=150 contenedor
+Sloppy joe | sloppy joe, sloppy joes | 226 12 22 10 1.5 5 1.3 | ud=200 racion=200
+Baked beans | baked beans, alubias con tomate, alubias en salsa de tomate, judías en salsa de tomate, heinz beans | 71 4.7 12 0.5 4 5 1.1 | racion=130
+Tater tots | tater tots, croquetas de patata, bolitas de patata | 212 2 24 12 2 0.5 1.1 | ud=10 racion=100
+Ensalada Waldorf | waldorf, ensalada waldorf | 156 2 10 12 2 7 0.3 | racion=200
+# ───────────── Caribe y Sudamérica (más) ─────────────
+Tres leches | tres leches, pastel tres leches, torta tres leches, tarta tres leches | 248 5 30 12 0.3 24 0.2 | trozo=130 racion=130
+Papa a la huancaína | papa a la huancaína, papas a la huancaína, papa huancaína | 151 3.5 14 9 1.5 1.5 0.8 | racion=250
+Arroz chaufa | arroz chaufa, chaufa, chaufa de pollo | 177 5 28 5 1.5 2 1 | racion=350 plato=350
+Salchipapas | salchipapas, salchipapa, salchipapa colombiana | 306 8 28 18 2 2 1.2 | racion=300
+Provoleta | provoleta, queso provolone a la parrilla, provolone, provolone a la plancha | 312 22 2 24 0 1 1.5 | racion=100 rol=queso
+Cocadas | cocada, cocadas | 394 3 55 18 4 45 0.1 | ud=40 racion=40
+Vaca frita | vaca frita | 220 25 3 12 0.5 1 0.9 | racion=200
+Sándwich cubano | sándwich cubano, sandwich cubano | 274 15 22 14 1.5 3 1.8 | ud=250 racion=250 contenedor
+
+
+# ───────────── Canadá, Oceanía y Cáucaso ─────────────
+Poutine | poutine, poutín | 216 5 22 12 2 1 1.3 | racion=300 plato=300
+Tourtière | tourtière, tourtiere, pastel de carne canadiense | 242 9 20 14 1.5 1 1 | racion=200
+Butter tart | butter tart, tartaleta de mantequilla | 387 3.5 55 17 1 40 0.3 | ud=60 racion=60
+Pavlova | pavlova | 300 2 55 8 0.5 52 0.1 | racion=120 trozo=120
+Lamington | lamington, lamingtons | 332 4 52 12 2 38 0.3 | ud=60 racion=60
+Meat pie | meat pie, pie de carne, pastel de carne australiano | 242 7 22 14 1.5 1 1.1 | ud=170 racion=170
+Khachapuri | khachapuri, jachapuri, pan georgiano con queso | 302 12 32 14 1.5 2 1.4 | racion=200
+Khinkali | khinkali, jinkali | 204 9 24 8 1 1 0.9 | ud=60 racion=180
+Plov | plov, plof, pilaf uzbeko, osh | 196 6 25 8 1.5 1.5 0.9 | racion=350 plato=350
+Shashlik | shashlik, shashlyk, brochetas caucásicas | 212 24 2 12 0.3 1 1 | racion=150 rol=proteina
+Manti | manti, mantı, empanadillas turcas | 216 8 28 8 1.5 1.5 0.9 | racion=250 plato=250
+Samsa | samsa, samsa de carne | 274 9 28 14 1.5 1 1.1 | ud=100 racion=100
+# ───────────── Filipinas e Indonesia ─────────────
+Adobo filipino | adobo filipino, adobo de pollo, adobo de cerdo | 188 16 4 12 0.5 3 1.5 | racion=250 plato=250
+Sinigang | sinigang, sinigang de cerdo, sopa agria filipina | 67 6 4 3 1.5 1.5 0.9 | racion=450 bol=450
+Lumpia | lumpia, lumpia shanghai | 238 8 20 14 1.5 2 1.1 | ud=25 racion=100
+Pancit | pancit, pancit canton, pancit bihon | 161 7 22 5 2 2 1.2 | racion=350 plato=350
+Sisig | sisig | 282 18 3 22 0.5 1 1.3 | racion=200
+Leche flan | leche flan, flan filipino | 224 6 32 8 0 30 0.2 | racion=120
+Halo-halo | halo halo, halo-halo | 209 3 38 5 1.5 28 0.1 | racion=300
+Soto ayam | soto ayam, soto, sopa indonesia de pollo | 62 5 6 2 1 1 0.9 | racion=450 bol=450
+Bakso | bakso, albóndigas indonesias, bakso sapi | 125 8 12 5 0.8 1 1 | racion=400 bol=400
+# ───────────── México y Centroamérica (más) ─────────────
+Cochinita pibil | cochinita pibil, cochinita, puerco pibil | 226 22 3 14 0.5 1 1 | racion=200 rol=proteina
+Birria | birria, birria de res, birria de chivo, tacos de birria | 192 18 3 12 0.8 1 1.1 | racion=250 plato=250
+Tlayuda | tlayuda, tlayudas | 276 10 32 12 4 2 1.2 | ud=250 racion=250
+Sopes y gorditas | sopes, sope, gorditas, gordita | 264 9 30 12 3 2 1 | ud=100 racion=200
+Flautas | flautas, flauta, taquitos, taquitos dorados | 262 10 24 14 2 1 1.2 | ud=60 racion=180
+Carne asada | carne asada, carne asada mexicana, arrachera, arrachera asada | 216 26 1 12 0 0.5 0.9 | racion=200 rol=proteina
+Menudo | menudo, menudo rojo, caldo de res | 80 8 3 4 0.5 1 0.9 | racion=450 bol=450
+Chiles en nogada | chiles en nogada, chile en nogada | 218 9 14 14 2 8 0.8 | ud=250 racion=250
+Molletes | molletes, mollete mexicano | 254 9 32 10 3 2 1.2 | ud=130 racion=130
+Michelada | michelada, cerveza preparada, chelada | 38 0.4 3 0 0 2 0.5 | liquido alcohol=3.5 racion=400 vaso=400
+Agua fresca | agua fresca, agua de jamaica, agua de horchata, agua de tamarindo, agua de sandía | 33 0.2 8 0 0.1 8 0.01 | liquido vaso=300 racion=300
+Baleadas | baleada, baleadas | 242 8 30 10 3 2 1 | ud=180 racion=180
+# ───────────── Argentina, Chile, Colombia (más) ─────────────
+Medialuna | medialuna, medialunas, medialunas de manteca, croissant argentino | 374 8 45 18 2 12 0.9 | ud=55 racion=55
+Cazuela | cazuela, cazuela de ave, cazuela de vacuno, cazuela chilena | 66 4 8 2 1.5 1.5 0.7 | racion=450 bol=450
+Buñuelo colombiano | buñuelo colombiano, buñuelos colombianos | 318 8 40 14 1 3 0.8 | ud=70 racion=70
+Natilla colombiana | natilla colombiana, natilla de navidad | 156 3 28 3.5 0.3 20 0.1 | racion=150
+

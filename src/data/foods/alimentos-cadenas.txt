@@ -1,0 +1,83 @@
+# Cadenas de restaurantes: lo que más se pide en España, con las cifras que publican (o aproximadas por la ración que sirven). Formato y significado de cada
+# columna: ver alimentos.txt; los menús (hamburguesa + patatas + bebida) y sus piezas sustituibles, en alimentos-compuestos.txt.
+# Las cifras son por 100 g, calculadas de la ración de la cadena (gramos y calorías de cada producto en el comentario del grupo). Son VALORES MEDIOS Y
+# REDONDEADOS: cada cadena cambia sus recetas y sus tamaños, y las tablas de distintas fuentes no coinciden al 100 %. Sirven para saber si un Big Mac son
+# 500 o 1000 calorías, no para contarlas al gramo. Nombres de cadena sin producto («en el McDonald's») no suman nada.
+
+
+# ───────────── McDonald's ─────────────
+# Ración publicada (g · kcal): Hamburguesa 100 · 250, Big Mac 215 · 503, Doble Cheeseburger 160 · 430, McChicken 190 · 430, Cuarto de libra 200 · 520,
+# McRoyal Deluxe 240 · 590, Big Tasty 280 · 780, Filet-O-Fish 140 · 340, McMuffin 135 · 295, Sundae 165 · 280, pastelito de manzana 80 · 230.
+Big Mac | bigmac, big mac de mcdonalds, big mac de mcdonald's, mcdonalds big mac, mcdonald's big mac, hamburguesa big mac, big mac de mc | 234 12.1 19.1 12.1 1.6 3.7 1.1 | ud=215 racion=215 rapida
+Hamburguesa de McDonald's | hamburguesa de mcdonalds, hamburguesa de mcdonald's, hamburguesa mcdonalds, hamburguesa del mcdonalds, hamburguesa de mc, hamburguesa de wacdonalds | 250 13 31 9 1.9 6.5 1.3 | ud=100 racion=100 rapida
+Doble Cheeseburger | doble cheeseburger, double cheeseburger, mcdouble, doble cheese, doble cheeseburger de mcdonalds | 268.8 15 21.2 13.8 1.8 4.8 1.5 | ud=160 racion=160 rapida
+McChicken | mcchicken, mc chicken, mcpollo, mc pollo, mcchicken de mcdonalds, crispy mcpollo, hamburguesa de pollo de mcdonalds | 226.3 8.4 22.6 11.6 1.3 3.4 1 | ud=190 racion=190 rapida
+Cuarto de libra | cuarto de libra, cuarto de libra con queso, quarter pounder, quarter pounder con queso, mcdonalds cuarto de libra | 260 15 19 14 1.5 4.5 1.3 | ud=200 racion=200 rapida
+McRoyal Deluxe | mcroyal, mc royal, mcroyal deluxe, mc royal deluxe, royal deluxe, mcroyal de mcdonalds | 245.8 12.5 17.9 13.8 1.5 3.8 1.1 | ud=240 racion=240 rapida
+Big Tasty | big tasty, bigtasty, big tasty bacon, mcextreme, mc extreme, grand mcextreme, big tasty de mcdonalds | 278.6 14.3 17.1 16.8 1.2 3.6 1.3 | ud=280 racion=280 rapida
+Filet-O-Fish | filet o fish, filet-o-fish, filetofish, fish burger, mcfish, burger de pescado, hamburguesa de pescado | 242.9 10.7 27.1 10 1.6 4.5 1.2 | ud=140 racion=140 rapida
+McMuffin | mcmuffin, mc muffin, egg mcmuffin, mcmuffin de huevo, mcmuffin de bacon, mcmuffin de salchicha, muffin de mcdonalds | 218.5 12.6 21.5 8.9 1.5 2.5 1.2 | ud=135 racion=135 rapida
+Sundae | sundae, sundae de chocolate, sundae de fresa, sundae de caramelo, helado sundae | 169.7 3 27.3 5.5 0.3 22 0.2 | ud=165 racion=165
+Pastelito de manzana | pastelito de manzana, pie de manzana, pastel de manzana de mcdonalds, tarta de manzana de mcdonalds | 287.5 2.5 41.2 13.8 2 14 0.55 | ud=80 racion=80
+
+# ───────────── Burger King ─────────────
+# Ración publicada (g · kcal): Whopper 280 · 660, Whopper con queso 300 · 720, Whopper Jr 150 · 340, Doble Whopper 380 · 880, Big King 220 · 530,
+# Long Chicken 180 · 440, Crispy Chicken 200 · 520, Chicken Royale 220 · 560, aros de cebolla (9) 110 · 320.
+Whopper | whopper, whopper de burger king, hamburguesa whopper, whopper de bk, burger king whopper | 235.7 10 17.5 14.3 1.3 4 1 | ud=280 racion=280 rapida
+Whopper con queso | whopper con queso, whopper cheese, whopper queso, whopper con queso de burger king | 240 10.7 16.7 15 1.3 3.8 1.1 | ud=300 racion=300 rapida
+Whopper Jr | whopper jr, whopper junior, =whopper pequeño, =whopper mini | 226.7 10 20.7 11.3 1.5 5.5 1.1 | ud=150 racion=150 rapida
+Doble Whopper | doble whopper, =whopper doble, double whopper, doble whopper con queso, doble whopper de burger king | 231.6 12.9 12.9 13.7 1 3 1 | ud=380 racion=380 rapida
+Big King | big king, bigking, big king de burger king, king de burger king | 240.9 11.8 18.6 12.7 1.4 4.5 1.2 | ud=220 racion=220 rapida
+Long Chicken | long chicken, longchicken, long chicken de burger king | 244.4 9.4 23.3 12.8 1.4 3.5 1.1 | ud=180 racion=180 rapida
+Crispy Chicken (Burger King) | crispy chicken burger, crispy chicken de burger king, chicken crispy burger, crispy chicken sandwich | 260 11 24 13.5 1.6 3.5 1.2 | ud=200 racion=200 rapida
+Chicken Royale | chicken royale, royal chicken, pollo royale, chicken royale de burger king | 254.5 10.5 22.3 13.6 1.5 3.2 1.2 | ud=220 racion=220 rapida
+Aros de cebolla | aros de cebolla, onion rings, aros de cebolla de burger king, aros de cebolla rebozados, rebozados de cebolla | 290.9 3.6 32.7 16.4 2.5 4 1 | ud=12 racion=110 rol=guarnicion
+
+# ───────────── KFC ─────────────
+# Ración publicada (g · kcal): Twister 230 · 530, Zinger 220 · 520, alitas picantes (una) 35 · 100, popcorn chicken 120 · 330, coleslaw 100 · 150.
+Twister | twister, twister de kfc, kfc twister, twister de pollo, wrap de kfc, twister de kentucky | 230.4 10.4 22.6 10.4 1.5 2.5 1.2 | ud=230 racion=230 rapida
+Zinger | zinger, zinger de kfc, kfc zinger, burger zinger, zinger burger, hamburguesa zinger | 236.4 11.4 20.9 11.8 1.4 3 1.3 | ud=220 racion=220 rapida
+Hot wings | hot wings, alitas picantes, alitas de kfc, alitas kfc, hot wings de kfc, alitas fritas, wings, alitas hot wings, alitas de pollo kfc, alitas de pollo de kfc, alitas de kfc de pollo, alitas picantes de kfc, wings de kfc, alitas kfc picantes | 285.7 17.1 14.3 17.1 0.8 0.6 1.8 | ud=35 racion=210 rapida
+Popcorn chicken | popcorn chicken, popcorn de pollo, pollo en bolitas, bolitas de pollo, pollo popcorn, popcorn chicken de kfc | 275 16.7 15 16.7 1 0.6 1.8 | racion=120 rapida
+Coleslaw | coleslaw, ensalada de col, ensalada coleslaw, coleslaw de kfc | 150 1 12 11 1.4 7.5 0.7 | racion=100 rol=guarnicion
+
+# ───────────── Subway (el sub de 15 cm; «de 30 cm» o «footlong» es el doble) ─────────────
+# Ración publicada (g · kcal), sub de 15 cm: pavo 220 · 270, jamón 220 · 280, atún 240 · 410, pollo teriyaki 250 · 340, BMT italiano 240 · 410,
+# albóndigas 270 · 440, vegetal 200 · 230, ternera con queso 250 · 380, pollo asado 240 · 320.
+Sub de pavo | sub de pavo, subway de pavo, sub pavo, subway pavo, sub de pavo de subway, sub de pechuga de pavo, bocadillo de subway de pavo, footlong de pavo, footlong pavo | 122.7 8.2 18.2 1.8 2.2 3.6 1.1 | cm=15 ud=220 racion=220
+Sub de jamón | sub de jamón, subway de jamón, sub de jamon, sub jamón, sub de york, sub de jamón de subway, footlong de jamón, footlong de jamon, footlong jamón | 127.3 7.7 18.6 2.3 2.1 3.6 1.3 | cm=15 ud=220 racion=220
+Sub de atún | sub de atún, sub de atun, subway de atún, sub atún, sub de atún de subway, tuna sub, footlong de atún, footlong de atun, footlong atún | 170.8 8.3 17.1 7.5 1.9 2.6 0.9 | cm=15 ud=240 racion=240
+Sub de pollo teriyaki | sub de pollo teriyaki, sub pollo teriyaki, subway pollo teriyaki, sub de teriyaki, sub teriyaki, chicken teriyaki sub, subway de pollo teriyaki, footlong de pollo teriyaki, footlong teriyaki, sub de pollo al teriyaki, sub de pollo con teriyaki, subway de teriyaki | 136 10 20 2 2 6.5 1.1 | cm=15 ud=250 racion=250
+Sub de pollo | sub de pollo, subway de pollo, sub pollo, sub de pollo asado, sub de pollo a la parrilla, sub de pollo de subway, footlong de pollo, footlong pollo | 133.3 10 17.1 2.1 2 3.3 1 | cm=15 ud=240 racion=240
+Sub BMT | sub bmt, bmt, sub italiano, sub bmt italiano, italian bmt, sub de bmt, subway bmt, sub italian bmt, footlong bmt, footlong de bmt | 170.8 8.3 17.5 7.5 2 3 1.6 | cm=15 ud=240 racion=240
+Sub de albóndigas | sub de albóndigas, sub de albondigas, sub albóndigas, sub de albóndigas de subway, meatball sub, footlong de albóndigas, footlong de albondigas | 163 7.4 19.3 6.3 2.5 5 1.3 | cm=15 ud=270 racion=270
+Sub vegetal | sub vegetal, sub veggie, veggie delite, sub de verduras, subway vegetal, sub vegetariano, footlong vegetal | 115 4 20 1.5 2.8 4 0.8 | cm=15 ud=200 racion=200
+Sub de ternera | sub de ternera, sub de ternera y queso, steak and cheese, steak & cheese, sub de filete, sub steak, sub de ternera de subway, footlong de ternera | 152 10 18 4.4 2 3.8 1.2 | cm=15 ud=250 racion=250
+
+# ───────────── Starbucks (el tamaño de partida es el «tall», 355 ml; «grande» y «venti» lo suben) ─────────────
+# Ración publicada (kcal) en un tall de 355 ml: latte 170, capuchino 120, flat white 170, caramel macchiato 200, mocha 250, frappuccino 380, chai latte 240.
+Latte de Starbucks | latte de starbucks, starbucks latte, caffè latte de starbucks, café latte de starbucks, cafe latte de starbucks, latte starbucks | 47.9 3.1 4.2 2.3 0 4.1 0.12 | ud=355 racion=355 vaso=355 liquido
+Capuchino de Starbucks | capuchino de starbucks, cappuccino de starbucks, capuccino de starbucks, starbucks capuchino, starbucks cappuccino, capuchino starbucks | 33.8 2.3 2.8 1.7 0 2.7 0.1 | ud=355 racion=355 vaso=355 liquido
+Flat white de Starbucks | flat white de starbucks, starbucks flat white, flat white starbucks | 47.9 2.8 3.9 2.5 0 3.8 0.1 | ud=355 racion=355 vaso=355 liquido
+Caramel macchiato | caramel macchiato, macchiato de caramelo, caramel macchiato de starbucks, starbucks caramel macchiato, macchiato caramelo, caramelo macchiato | 56.3 2.5 7.9 1.7 0 7.5 0.12 | ud=355 racion=355 vaso=355 liquido
+Mocha de Starbucks | mocha de starbucks, caffè mocha, mocha starbucks, starbucks mocha, mocha de chocolate blanco, moca de starbucks | 70.4 2.8 9.6 2.5 0.3 8.8 0.12 | ud=355 racion=355 vaso=355 liquido
+Frappuccino | frappuccino, frapuccino, frappuccino de starbucks, starbucks frappuccino, frappuccino de caramelo, frappuccino de moca, frappuccino de chocolate, frappuccino de vainilla, frappuccino de café, frappuccino java chip, frappuccino de oreo, frappuccino de fresa | 107 1.1 16.9 3.9 0 15.5 0.15 | ud=355 racion=355 vaso=355 liquido
+Chai latte de Starbucks | chai latte de starbucks, starbucks chai latte, chai de starbucks, chai starbucks | 67.6 2.3 11.8 1.3 0 11 0.1 | ud=355 racion=355 vaso=355 liquido
+
+# ───────────── Five Guys ─────────────
+# Ración publicada (g · kcal): hamburger 270 · 700, cheeseburger 300 · 840, bacon cheeseburger 320 · 920, little hamburger 185 · 480, little cheeseburger 200 · 550,
+# hot dog 190 · 545, patatas regular 400 · 950.
+Hamburguesa de Five Guys | hamburguesa de five guys, five guys hamburguesa, five guys hamburger, five guys burger, hamburguesa five guys, hamburger de five guys, hamburger five guys | 259.3 14.4 14.8 15.9 1 3.5 1 | ud=270 racion=270 rapida
+Cheeseburger de Five Guys | cheeseburger de five guys, five guys cheeseburger, hamburguesa con queso de five guys, cheeseburger five guys | 280 15.7 13.3 18.3 0.9 3.6 1.2 | ud=300 racion=300 rapida
+Bacon cheeseburger de Five Guys | bacon cheeseburger de five guys, five guys bacon cheeseburger, hamburguesa con bacon y queso de five guys, bacon cheeseburger, bacon burger de five guys, bacon cheeseburger five guys | 287.5 15.9 12.5 19.4 0.8 3.5 1.5 | ud=320 racion=320 rapida
+Little hamburger de Five Guys | little hamburger de five guys, little hamburger, five guys little hamburger, hamburguesa pequeña de five guys, little burger de five guys | 259.5 12.4 21.1 14.1 1.4 4.5 0.8 | ud=185 racion=185 rapida
+Little cheeseburger de Five Guys | little cheeseburger de five guys, little cheeseburger, five guys little cheeseburger, hamburguesa pequeña con queso de five guys | 275 13.5 19.5 16 1.3 4.5 1.2 | ud=200 racion=200 rapida
+Hot dog de Five Guys | hot dog de five guys, five guys hot dog, perrito de five guys, perrito caliente de five guys, cheese dog de five guys | 286.8 9.5 21.6 18.4 1.2 4.5 1.5 | ud=190 racion=190 rapida
+Patatas de Five Guys | patatas de five guys, five guys patatas, patatas fritas de five guys, fries de five guys, patatas cajun, five guys fries, patatas regular de five guys | 237.5 3.5 32.5 10.2 3 0.5 0.5 | racion=400 rol=guarnicion
+
+# ───────────── Pizzerías a domicilio y otras cadenas ─────────────
+Pan de ajo | pan de ajo, pan de ajo de telepizza, pan de ajo de domino's, palitos de ajo, pan de ajo con queso, pan de ajo y queso, pan de ajo gratinado, pan con ajo | 330 8 40 15 2 2.5 1.5 | racion=100 trozo=35 ud=35
+Munchkins | munchkins, munchkin, minidonuts de dunkin, bolitas de donut, donut holes, mini donuts, minidonuts | 400 6.7 46.7 20 1.2 24 0.8 | ud=15 racion=90
+
+# ───────────── Nombres de cadenas y tiendas (se reconocen pero no suman: «un big mac de McDonald's», «jamón de Mercadona») ─────────────
+Marcas y cadenas | mcdonalds, mcdonald, mcdonald's, mc donalds, mc donald's, macdonalds, mcdo, burger king, burguer king, telepizza, tele pizza, dominos, domino, domino's, pizza hut, papa johns, papa john's, 100 montaditos, cien montaditos, fosters hollywood, foster's hollywood, fosters, foster's, vips, goiko, goiko grill, tgb, the good burger, five guys, subway, starbucks, dunkin, dunkin donuts, dunkin', tim hortons, taco bell, wendys, wendy's, popeyes, pans and company, pans & company, pans company, rodilla, ginos, gino's, la mafia, lizarran, muerde la pasta, honest greens, mercadona, carrefour, lidl, alcampo, eroski, aldi, el corte inglés, hacendado, milbona, milsani, deliplus, marca blanca, del súper, del supermercado, auchan, consum, alteza, bonpreu, entrepinares, eliges, alipende, spar, ametller origen, bonarea, la sirena, coviran, froiz, alimerka, veritas, supersol, condis, el granero integral, dulcesol, grefusa, campofrío, coren, pascual, juver, knorr, bimbo, kaiku, kellogg's, kelloggs, pescanova, calvo, central lechera asturiana, lechera asturiana, puleva, ybarra, heinz, nescafé, nestlé, maggi, buitoni, président, hellmann's, hellmanns, carbonell, luengo, borges, la española, ortiz, albo, orlando, apis, yoplait, el caserío, oscar mayer, el pozo, navidul, casa tarradellas, findus, litoral, barilla, rio mare, minute maid, granini, silueta, oroweat, facundo, kraft, mondelez, pastoret, santa teresa, la fageda, lactalis, cadbury, dr oetker, old el paso, nature valley, quaker, sol natural, el almendro, vicens, hendricks, bombay, beefeater, gordon's, gordons, tanqueray, seagram's, larios, puerto de indias, nordés, gin mare, brockmans, malfy, jack daniel's, jack daniels, johnnie walker, ballantine's, ballantines, chivas, glenfiddich, absolut, smirnoff, grey goose, havana club, bacardi, brugal, barceló, sailor jerry, cacique, panrico, siro, birba, hacendado proteico | 0 0 0 0 0 0 0 | ignorar

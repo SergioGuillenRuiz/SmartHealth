@@ -1,0 +1,34 @@
+SMARTHEALTH - VERSION WEB PARA BETATESTERS
+========================================
+
+Para ti (quien ofrece la app):
+
+  1. Descomprime esta carpeta donde quieras.
+  2. Arrancalo (hace falta Python 3.8 o mas; no hay que instalar nada mas, el propio programa
+     se baja lo que le falta la primera vez):
+       - Linux (CachyOS, etc.):  abre un terminal en esta carpeta y ejecuta   python3 iniciar-linux.py
+       - Windows:                doble clic en   iniciar-windows.py
+         (Python: https://www.python.org/downloads/  -> marca "Add python.exe to PATH")
+  3. Cuando salga un ENLACE que empieza por https://, mandaselo a tus betatesters. Ya esta.
+
+  Deja la ventana abierta mientras ellos la usen. Para apagarlo, cierrala (o Ctrl+C).
+
+Para los betatesters:
+
+  - Abren el enlace en el navegador del movil (Chrome en Android, Safari en iPhone).
+  - En el menu del navegador: "Instalar app" o "Anadir a la pantalla de inicio" (en iPhone:
+    boton Compartir > "Anadir a la pantalla de inicio"). Asi se abre como una app y no se pierde nada.
+  - Les pedira permiso para la camara (escaner de codigos de barras y fotos) y la ubicacion (entrenos):
+    hay que aceptarlos para probar esas partes.
+  - El anillo y la bascula son SIMULADOS y la app trae datos de ejemplo: lo que anoten se queda en su movil.
+
+Importante:
+
+  - El enlace CAMBIA cada vez que apagas y vuelves a encender el programa, y lo que cada tester ha
+    anotado esta ligado al enlace: si lo apagas, pideles que antes exporten su copia (icono de usuario >
+    Datos y copias de seguridad > Exportar copia) y la importen despues.
+  - Mientras este encendido, el enlace no cambia.
+  - Solo funciona mientras tu PC este encendido y con internet.
+
+Opciones: --sin-tunel (solo para la misma wifi, sin camara ni GPS), --puerto 9000, --app carpeta.
+Mas detalles (diferencias con la app de Android, solucion de problemas): docs/beta.md del repositorio.

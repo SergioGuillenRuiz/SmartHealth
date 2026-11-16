@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Lo único que este FileProvider podría servir: una subcarpeta propia de la caché de la app. La app no lo usa hoy (guarda y comparte con MediaStore, ver NativeToolsPlugin), así que sale
+  vacío de ficheros; antes exponía TODO el almacenamiento externo («path="."»), que no hace falta para nada y sería lo primero que usaría un fallo de otra parte.
+-->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <cache-path name="shared" path="shared/" />
+</paths>

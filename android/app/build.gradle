@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace = "app.smartring"
+    compileSdk = rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "app.smartring"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        // El número de versión sube con cada compilación del CI: Android solo instala un APK sobre otro si es posterior.
+        versionCode = (project.findProperty('apkVersionCode') ?: '1') as Integer
+        versionName = project.findProperty('apkVersionName') ?: '0.1'
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    signingConfigs {
+        smartring {
+            // Clave de firma FIJA (app personal, sin tienda): tiene que ser siempre la misma para que cada APK nuevo se
+            // pueda instalar sobre el anterior sin borrar los datos. NO está en el repositorio: el CI la recibe
+            // de los secretos de GitHub y la deja en un archivo temporal (ver «Preparar la clave de firma» en android.yml).
+            // Sin esas variables el APK sale SIN firmar y el CI lo rechaza.
+            def keystorePath = System.getenv('SMARTHEALTH_KEYSTORE')
+            if (keystorePath) {
+                storeFile file(keystorePath)
+                storePassword System.getenv('SMARTHEALTH_STORE_PASSWORD')
+                keyAlias System.getenv('SMARTHEALTH_KEY_ALIAS')
+                keyPassword System.getenv('SMARTHEALTH_KEY_PASSWORD')
+            }
+        }
+    }
+    lint {
+        // El APK de release lo comprueba el CI por su cuenta (firma, permisos y que no sea depurable); el lint «vital» no aporta
+        // aquí y podría cortar la compilación por avisos ajenos a la app.
+        checkReleaseBuilds = false
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.smartring
+        }
+        release {
+            signingConfig signingConfigs.smartring
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}

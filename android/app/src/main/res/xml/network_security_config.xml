@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Toda la red de la app va por HTTPS y solo a tres sitios (Open Food Facts y dos servidores de Overpass: ver la política de contenido en tools/pwa-precache.ts). Aquí se
+  deja por escrito, a nivel del sistema, que NO se admite tráfico sin cifrar con ningún destino y que solo valen las autoridades de certificación del sistema (no las que añada un usuario
+  o una app: un certificado instalado a mano no puede interceptar las consultas del mapa).
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
