@@ -2,6 +2,7 @@ import { signal } from '@preact/signals';
 import type { ComponentChildren, JSX } from 'preact';
 import { useEffect, useRef } from 'preact/hooks';
 import { recoverLostFocus } from './focus';
+import { fitToSheet } from './sheet-fit';
 import { Icon } from './icons';
 import { ToastView } from './ToastView';
 
@@ -31,6 +32,9 @@ interface SheetProps {
  */
 export function Sheet({ open, onClose, title, children, tall, dismissible = true }: SheetProps): JSX.Element {
   const ref = useRef<HTMLDialogElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
+  const fitRef = useRef<HTMLDivElement>(null);
   const idRef = useRef(0);
   if (idRef.current === 0) idRef.current = ++nextSheetId;
 
@@ -43,6 +47,34 @@ export function Sheet({ open, onClose, title, children, tall, dismissible = true
     };
   }, [open]);
   const onTop = openSheets.value[openSheets.value.length - 1] === idRef.current;
+
+  // Si el contenido se pasa por poco del alto que hay, se reduce lo justo para que se vea entero sin deslizar (ver `sheet-fit.ts`); si sobra mucho, se deja a su tamaño y con scroll.
+  useEffect(() => {
+    // Las hojas altas (el escáner, la báscula, un plato) ocupan toda la pantalla a propósito y llevan su propio reparto: no se reducen.
+    if (!open || tall) return undefined;
+    const body = bodyRef.current;
+    const inner = fitRef.current;
+    const box = boxRef.current;
+    if (!body || !inner || !box) return undefined;
+    let frame = 0;
+    const schedule = (): void => {
+      if (frame === 0) {
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          fitToSheet(body, inner, box);
+        });
+      }
+    };
+    schedule();
+    const observer = typeof MutationObserver === 'undefined' ? null : new MutationObserver(schedule);
+    observer?.observe(inner, { childList: true, subtree: true, characterData: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      if (frame !== 0) cancelAnimationFrame(frame);
+      observer?.disconnect();
+      window.removeEventListener('resize', schedule);
+    };
+  }, [open, tall]);
 
   useEffect(() => {
     const dialog = ref.current;
@@ -86,7 +118,13 @@ export function Sheet({ open, onClose, title, children, tall, dismissible = true
               </button>
             )}
           </header>
-          <div class="sheet__body">{children}</div>
+          <div class="sheet__body" ref={bodyRef}>
+            <div class="sheet__fitbox" ref={boxRef}>
+              <div class="sheet__fit" ref={fitRef}>
+                {children}
+              </div>
+            </div>
+          </div>
           <ToastView muted={!onTop} />
         </div>
       )}

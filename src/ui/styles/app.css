@@ -23,7 +23,7 @@
 .topbar {
   flex: none;
   display: grid;
-  grid-template-columns: 56px 1fr 56px;
+  grid-template-columns: 56px minmax(0, 1fr) 56px;
   align-items: center;
   min-height: calc(var(--header-h) + var(--safe-top));
   padding: var(--safe-top) 8px 0;
@@ -522,7 +522,7 @@ body:has(dialog[open]) .toast--app {
 }
 .field-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
 }
 .errors {
@@ -538,7 +538,7 @@ body:has(dialog[open]) .toast--app {
 dialog.sheet {
   width: min(100%, 560px);
   max-width: 100%;
-  max-height: calc(100dvh - 28px - var(--safe-top));
+  max-height: calc(100dvh - 12px - var(--safe-top));
   margin: auto auto 0;
   padding: 0;
   border: 0;
@@ -549,7 +549,7 @@ dialog.sheet {
   overflow: hidden;
 }
 dialog.sheet--tall {
-  height: calc(100dvh - 28px - var(--safe-top));
+  height: calc(100dvh - 12px - var(--safe-top));
 }
 dialog.sheet[open] {
   animation: sheet-in 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -570,26 +570,40 @@ dialog.sheet::backdrop {
   height: inherit;
 }
 .sheet__grab {
+  flex: none;
   width: 38px;
   height: 4px;
-  margin: 8px auto 0;
+  margin: 6px auto 0;
   border-radius: 4px;
   background: var(--surface-3);
 }
 .sheet__head {
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px 6px 20px;
+  gap: 8px;
+  padding: 4px 10px 2px 20px;
 }
+/* Un título largo (o la letra grande del sistema) se parte en líneas y el botón de cerrar se queda donde está. */
 .sheet__head h2 {
+  min-width: 0;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.sheet__head .icon-btn {
+  flex: none;
 }
 .sheet__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
-  padding: 6px 20px calc(22px + var(--safe-bottom));
+  overscroll-behavior: contain;
+  padding: 4px 20px calc(16px + var(--safe-bottom));
 }
 
 /* ───────────── Actividad ───────────── */
@@ -956,7 +970,7 @@ dialog.sheet::backdrop {
   bottom: 8px;
   z-index: 4;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 8px;
   margin-top: 14px;
   padding: 6px;
@@ -1251,7 +1265,7 @@ dialog.sheet::backdrop {
 }
 .menu-row {
   display: grid;
-  grid-template-columns: 38px 1fr 18px;
+  grid-template-columns: 38px minmax(0, 1fr) 18px;
   align-items: center;
   gap: 14px;
   width: 100%;
@@ -1305,7 +1319,7 @@ dialog.sheet::backdrop {
 }
 .totals {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
   margin: 0;
 }
@@ -1434,7 +1448,7 @@ details.more[open] > summary svg {
 }
 .kv__row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
   align-items: baseline;
 }
@@ -1516,7 +1530,7 @@ details.more[open] > summary svg {
 /* Duración del sueño y número de despertares: dos cifras grandes con su rótulo debajo. */
 .sleep-facts {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
   margin: 22px 0 10px;
   padding-top: 18px;
@@ -1947,7 +1961,7 @@ details.more[open] > summary svg {
 }
 .wk-row {
   display: grid;
-  grid-template-columns: 38px 1fr auto 18px;
+  grid-template-columns: 38px minmax(0, 1fr) auto 18px;
   align-items: center;
   gap: 12px;
   width: 100%;
@@ -1987,7 +2001,7 @@ details.more[open] > summary svg {
 }
 .wk-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px 14px;
   margin: 14px 0;
 }
@@ -2033,7 +2047,7 @@ details.more[open] > summary svg {
 }
 .ready__list li {
   display: grid;
-  grid-template-columns: 22px 1fr;
+  grid-template-columns: 22px minmax(0, 1fr);
   gap: 10px;
   align-items: start;
 }
@@ -2050,7 +2064,7 @@ details.more[open] > summary svg {
   /* La casilla oculta se coloca dentro de su propio interruptor (sin esto, con dos interruptores en una misma hoja quedaba encima del otro). */
   position: relative;
   display: grid;
-  grid-template-columns: 46px 1fr;
+  grid-template-columns: 46px minmax(0, 1fr);
   gap: 12px;
   align-items: center;
   width: 100%;
@@ -2165,7 +2179,7 @@ dialog.live {
 }
 .live__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
 }
 .metric {
@@ -2217,7 +2231,7 @@ dialog.live {
 .live__controls {
   margin-top: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
   padding-top: 10px;
 }
@@ -2528,7 +2542,7 @@ dialog.live {
 /* ───────────── Salud ───────────── */
 .stepper {
   display: grid;
-  grid-template-columns: 40px 1fr 40px;
+  grid-template-columns: 40px minmax(0, 1fr) 40px;
   align-items: center;
   min-height: 46px;
   border: 1px solid var(--line);
@@ -2731,7 +2745,7 @@ select.input {
 }
 .stest__step {
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 28px minmax(0, 1fr);
   gap: 10px;
   align-items: start;
   padding: 9px 10px;
@@ -2883,8 +2897,10 @@ select.input {
 }
 .food-top {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 18px;
+  justify-content: center;
+  gap: 12px 18px;
   margin-top: 4px;
 }
 .food-ring {
@@ -2961,7 +2977,7 @@ select.input {
 }
 .food-top__side {
   display: grid;
-  flex: 1;
+  flex: 1 1 140px;
   min-width: 0;
   gap: 12px;
 }
@@ -2983,7 +2999,9 @@ select.input {
   justify-content: center;
   gap: 6px;
   min-height: 46px;
-  padding: 0 14px;
+  padding: 6px 10px;
+  line-height: 1.15;
+  text-align: center;
   border: 0;
   border-radius: 14px;
   background: var(--face);
@@ -5089,7 +5107,7 @@ select.input {
 }
 .sleep-fix__row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
 }
 .sleep-fix__actions {
@@ -5146,7 +5164,7 @@ select.input {
 }
 .food-editbar {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 8px;
   margin-top: 12px;
 }
@@ -5188,4 +5206,92 @@ select.input {
 .np-card__text small {
   color: var(--text-2);
   font-size: 13px;
+}
+
+/* ───────────── Textos largos y letra grande ─────────────
+   Un nombre, un título o una nota muy largos (o la letra grande del sistema) no deben empujar los botones ni los indicadores fuera de su sitio: el texto se parte en líneas o se recorta con «…» y lo demás se queda donde está.
+   · `overflow-wrap: anywhere` en el texto: una palabra sin espacios (una URL, un nombre inventado) también se parte, y además deja de contar como ancho mínimo de su columna (en una rejilla o una fila flexible, las columnas con
+     texto se encogen y las de botones e iconos no);
+   · los iconos, botones sueltos e indicadores de las filas nunca se encogen (`flex: none`);
+   · en las listas (comidas, entrenos, platos, productos, resultados del mapa) un nombre ocupa como mucho dos líneas; entero se ve al abrir su detalle. */
+:where(h1, h2, h3, h4, p, li, dt, dd, label, strong, small, span, a, summary, figcaption) {
+  overflow-wrap: anywhere;
+}
+:where(.btn, button) > svg,
+:where(.card__icon, .more-btn, .menu-row__icon, .wk-row__icon, .icon-btn, .badge, .day-shift, .food-face, .meal-thumb) {
+  flex: none;
+}
+.card__head {
+  min-width: 0;
+}
+.card__title {
+  min-width: 0;
+}
+.card__right {
+  flex: none;
+  white-space: nowrap;
+}
+.food-meals__main strong,
+.wk-row__main strong,
+.menu-row__main strong,
+.guide__results strong,
+.dish-card__name,
+.meal__items strong {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+.menu-row__main small,
+.wk-row__sub,
+.food-meals__main small {
+  min-width: 0;
+}
+
+/* El contenido de una hoja va dentro de estos dos envoltorios para poder reducirlo si se pasa por poco del alto (ver `sheet-fit.ts`): la caja toma el alto ya reducido y el contenido
+   se escala desde su esquina de arriba a la izquierda. */
+.sheet__fitbox {
+  min-width: 0;
+}
+.sheet__fit {
+  min-width: 0;
+  transform-origin: 0 0;
+}
+
+/* Las cajas con icono de tamaño fijo nunca se aprietan (en una fila con texto largo quedaban como óvalos). */
+.topbtn,
+.hero-card__icon,
+.hero-sports__icon,
+.ring-hero__icon,
+.device-hero__icon,
+.sport__icon,
+.stest__mark,
+.fit-row__mark,
+.dish-card__picture,
+.dishes__add,
+.sc-card__icon,
+.cook-step__icon,
+.navmap__btn {
+  flex: none;
+}
+.ring-hero__name,
+.device-hero__name,
+.ring-hero__meta,
+.device-hero__meta {
+  min-width: 0;
+}
+/* Los números de dentro de un anillo escalan con él: con letra grande del sistema ya no tocan el borde. */
+.food-ring {
+  container-type: inline-size;
+}
+.food-top__value {
+  font-size: min(30px, 22cqw);
+}
+
+/* Cuánto acierta la estimación del sueño con las noches de la propia persona (hoja del sueño). */
+.sleep-accuracy {
+  margin: 8px 2px 0;
+  font-size: 13px;
+  color: var(--text-2);
 }
