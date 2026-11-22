@@ -2076,11 +2076,16 @@ details.more[open] > summary svg {
   font-weight: 600;
   font-size: 14.5px;
 }
+/* La casilla oculta cubre todo su interruptor (no es un punto de 1 px): así se pulsa en cualquier sitio, y tampoco la pierden de vista las herramientas de accesibilidad y de pruebas cuando
+   una hoja se reduce unas décimas para caber (un cuadrado de menos de un píxel de área no lo consideran pulsable). */
 .switch input {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
   opacity: 0;
-  width: 1px;
-  height: 1px;
+  cursor: pointer;
 }
 .switch__track {
   position: relative;
@@ -5344,4 +5349,40 @@ select.input {
   flex: none;
   margin-top: 2px;
   color: var(--ok);
+}
+
+
+/* Lo que va en una sola línea (`white-space: nowrap`: indicadores, botones, insignias…) se queda como estaba: ahí no se parte nada, y que cambie su ancho mínimo movía los indicadores de un entreno. */
+.badge,
+.badge *,
+.btn-row > .btn,
+.btn-row > .btn *,
+.card__foot .btn,
+.card__foot .btn *,
+.card__right,
+.card__right *,
+.dish-ingredients__kcal,
+.dish-ingredients__kcal *,
+.dish-use__kcal,
+.dish-use__kcal *,
+.food-macros__goal,
+.food-macros__goal *,
+.hero-stats li,
+.hero-stats li *,
+.history-totals dd,
+.history-totals dd *,
+.hud__chip,
+.hud__chip *,
+.rv-row__none,
+.rv-row__none *,
+.sr-only,
+.sr-only *,
+.stage-total__value,
+.stage-total__value *,
+.wk-row__nums,
+.wk-row__nums * {
+  overflow-wrap: normal;
+}
+.phone-access .btn {
+  color: var(--text);
 }

@@ -1,6 +1,7 @@
 import type { JSX } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { saveSleepCorrection } from '../../app/sleep-fix';
+import { phoneAccess } from '../../app/phone-activity';
 import { svc } from '../../app/services';
 import { clockOf } from '../../domain/sleep-correction';
 import type { DayBundle } from '../../app/queries';
@@ -132,7 +133,9 @@ function SleepDetail({ bundle }: { bundle: DayBundle }): JSX.Element {
         <>
           <Banner>
             {night.estimated
-              ? 'El anillo no guardó esta noche: la app la ha estimado a partir de los pasos y el pulso del anillo o, si no lo llevabas puesto, de cuándo dejó de haber actividad por la noche y cuándo volvió. Es una aproximación: las horas pueden variar en torno a una hora y no hay fases del sueño.'
+              ? phoneAccess.value.granted
+                ? 'El anillo no guardó esta noche: la app la ha estimado a partir de cuándo dejaste de usar el móvil y cuándo volviste a cogerlo, con lo que anotaste y los pasos del anillo de día (y el pulso y la respiración si lo llevabas puesto). Es una aproximación: las horas pueden variar en torno a media hora y no hay fases del sueño.'
+                : 'El anillo no guardó esta noche: la app la ha estimado a partir de los pasos y el pulso del anillo o, si no lo llevabas puesto, de cuándo dejó de haber actividad por la noche y cuándo volvió. Es una aproximación: las horas pueden variar en torno a una hora y no hay fases del sueño.'
               : night.manual
                 ? 'Las horas de esta noche las pusiste tú. No hay fases del sueño.'
                 : 'El anillo ha dado la duración de la noche, pero no las fases del sueño (profundo, ligero y REM).'}
