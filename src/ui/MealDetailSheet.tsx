@@ -13,6 +13,9 @@ import { MealThumb } from './meal-thumb';
 import { SuggestionNudge } from './MealSuggestions';
 import { Sheet } from './Sheet';
 
+/** Un nombre de más letras que esto se pone algo más pequeño para que la cabecera de la hoja no se coma media pantalla. */
+const LONG_NAME = 44;
+
 // Los detalles de una comida: lo que se anotó (calorías y cantidad), una valoración de cuánto encaja con lo que busca la persona (su objetivo de salud) con sus cinco criterios
 // —densidad calórica, densidad proteica, sal y azúcar, saciedad y si es saludable—, y los cuatro indicadores —proteína, hidratos, grasas y sal— con lo que pesan en la comida y
 // en el día, y una nota al pie con los azúcares y la fibra si se anotaron.
@@ -70,9 +73,9 @@ function MealDetail({ meal }: { meal: MealEntry }): JSX.Element {
   return (
     // Con los cinco criterios la hoja ya no cabe en una pantalla pequeña y se desplaza: al no haber nada pulsable dentro, el contenido es enfocable para poder recorrerlo con el teclado.
     <div class="meal-detail" tabIndex={0} role="group" aria-label={`Detalles de ${meal.name}`}>
-      <div class="meal-detail__head">
+      <div class={`meal-detail__head${meal.name.length > LONG_NAME ? ' is-long' : ''}`}>
         <MealThumb name={meal.name} size={72} barcode={meal.barcode} dishId={meal.dishId} />
-        <div>
+        <div class="meal-detail__title">
           <h3>{meal.name}</h3>
           <p>
             {fmtDateFull(real)} a las {fmtClock(meal.tsMs)}

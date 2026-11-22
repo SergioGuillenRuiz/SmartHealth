@@ -13,6 +13,7 @@ import { fmt2, fmtClock, fmtDuration, NBSP } from '../format';
 import { Icon } from '../icons';
 import { Banner, EmptyState, ProgressBar, Stat } from '../primitives';
 import { Sheet } from '../Sheet';
+import { PhoneActivityAccess } from '../user/PhoneActivityAccess';
 import { BigDuration, DayCaption, HeartCurve } from './parts';
 import { analyzeSleep } from './sleep-analysis';
 
@@ -137,6 +138,7 @@ function SleepDetail({ bundle }: { bundle: DayBundle }): JSX.Element {
                 : 'El anillo ha dado la duración de la noche, pero no las fases del sueño (profundo, ligero y REM).'}
           </Banner>
           {night.estimated && <EstimateAccuracy />}
+          {night.estimated && <PhoneActivityAccess compact />}
           {(night.estimated || night.manual) && <FixNight startMs={night.startMs} endMs={night.endMs} />}
         </>
       )}

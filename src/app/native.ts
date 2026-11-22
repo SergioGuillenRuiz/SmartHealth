@@ -31,6 +31,20 @@ export interface NativeToolsPlugin {
   requestBlePermissions(): Promise<PermissionStatus>;
   /** Cómo están ahora los permisos de Bluetooth y ubicación (para el diagnóstico). */
   permissionStatus(): Promise<PermissionStatus>;
+  /**
+   * El acceso a cuándo se usa el móvil (el «acceso a datos de uso» de Android: pantalla encendida y desbloqueos, solo HORAS). Sin él, el sueño de las noches sin anillo se estima con menos
+   * datos. `supported`: este Android lo ofrece; `granted`: la persona lo ha dado; `screenEvents`: el sistema da la pantalla encendida y apagada (Android 9 o posterior).
+   */
+  phoneActivityStatus(): Promise<{ supported: boolean; granted: boolean; screenEvents: boolean }>;
+  /** Abre la pantalla de ajustes de Android donde se da el acceso a los datos de uso a esta app. */
+  openPhoneActivitySettings(): Promise<void>;
+  /**
+   * Lo que hizo el móvil desde `sinceMs` hasta ahora: `uses` son los tramos con la pantalla encendida o la app en primer plano («inicio:fin;inicio:fin», ms), `firstMs` la hora del primer evento
+   * que el sistema aún conserva (antes de eso no se sabe nada) y `offs` los tramos con el móvil apagado. Sin acceso, `granted: false` y nada más.
+   */
+  readPhoneActivity(options: { sinceMs: number }): Promise<{ granted: boolean; fromMs: number; toMs: number; firstMs: number; uses: string; offs: string }>;
+  /** Programa la lectura periódica en segundo plano (cada hora, sin servicio permanente) para que lo del móvil no se pierda aunque no se abra la app. */
+  schedulePhoneActivity(): Promise<void>;
 }
 
 export const NativeTools = registerPlugin<NativeToolsPlugin>('NativeTools');

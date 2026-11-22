@@ -23,10 +23,11 @@ import type { CounterSample, HeartSample, SleepSessionRecord, StepBucket } from 
 // Las simulaciones de `sleep-estimate.sim.test.ts` (pulso cada 30 o 60 min, horarios de noche, de día, rotativos e irregulares, y una vida «dura» con artefactos,
 // noches malas, insomnio y rato despierto en la cama) lo miden.
 
-const MIN = 60_000;
-const HOUR = 60 * MIN;
+export const MIN = 60_000;
+export const HOUR = 60 * MIN;
 const DAY = 24 * HOUR;
-const BIN = 10 * MIN;
+/** La franja del modelo: 10 minutos. */
+export const BIN = 10 * MIN;
 const BINS_PER_DAY = DAY / BIN;
 /** Franjas de margen en los extremos de los datos: un tramo dormido que llega hasta ahí no se sabe dónde empieza o acaba. */
 const EDGE_BINS = 2;
@@ -112,7 +113,7 @@ export interface SleepEstimateInput {
   awakeMarks?: readonly number[];
 }
 
-interface Span {
+export interface Span {
   startMs: number;
   endMs: number;
 }
@@ -244,12 +245,7 @@ function candidateNights(input: SleepEstimateInput, p: SleepParams): Span[] {
     if (inRange(i)) marked[i] = 1;
   }
 
-  const dayOf = new Int32Array(n);
-  const slotOf = new Int32Array(n);
-  for (let i = 0; i < n; i++) {
-    dayOf[i] = localDayIndex(t0 + i * BIN + BIN / 2);
-    slotOf[i] = localBinOfDay(t0 + i * BIN + BIN / 2);
-  }
+  const { dayOf, slotOf } = dayAndSlot(t0, n);
 
   // Lo que dice la franja por sí sola: pasos, entrenos y marcas (las lecturas de pulso y respiración se suman después, con los niveles de la persona).
   const base = new Float32Array(n);
@@ -356,44 +352,7 @@ function candidateNights(input: SleepEstimateInput, p: SleepParams): Span[] {
   }
 
   // Segunda pasada: el hábito de la persona (cuándo ha dormido los demás días, a esa hora) refuerza o resta.
-  const firstDay = at(dayOf, 0);
-  const days = at(dayOf, n - 1) - firstDay + 1;
-  const asleepAt = new Float32Array(days * BINS_PER_DAY);
-  const seenAt = new Float32Array(days * BINS_PER_DAY);
-  for (let i = 0; i < n; i++) {
-    const cell = (at(dayOf, i) - firstDay) * BINS_PER_DAY + at(slotOf, i);
-    seenAt[cell] = 1;
-    asleepAt[cell] = at(asleepBins, i);
-  }
-  let asleepTotal = 0;
-  let seenTotal = 0;
-  for (let k = 0; k < asleepAt.length; k++) {
-    asleepTotal += at(asleepAt, k);
-    seenTotal += at(seenAt, k);
-  }
-  const baseRate = Math.min(0.6, Math.max(0.15, asleepTotal / Math.max(1, seenTotal)));
-  const logit = (x: number): number => Math.log(x / (1 - x));
-  const withPrior = new Float32Array(n);
-  for (let i = 0; i < n; i++) {
-    const day = at(dayOf, i) - firstDay;
-    const slot = at(slotOf, i);
-    let asleep = 0;
-    let observed = 0;
-    for (let other = Math.max(0, day - p.priorDays); other <= Math.min(days - 1, day + p.priorDays); other++) {
-      if (other === day) continue;
-      for (let s = Math.max(0, slot - 3); s <= Math.min(BINS_PER_DAY - 1, slot + 3); s++) {
-        asleep += at(asleepAt, other * BINS_PER_DAY + s);
-        observed += at(seenAt, other * BINS_PER_DAY + s);
-      }
-    }
-    let prior = 0;
-    if (observed >= 6) {
-      const rate = Math.min(0.95, Math.max(0.05, asleep / observed));
-      prior = Math.max(-p.priorNeg, Math.min(p.priorPos, p.prior * (logit(rate) - logit(baseRate))));
-    }
-    withPrior[i] = at(evidence, i) + prior;
-  }
-  const state = decode(withPrior, n, p);
+  const state = decode(withHabit(evidence, asleepBins, dayOf, slotOf, p), n, p);
 
   // Lo que dice cada lectura por sí sola con los niveles finales: las «claramente dormidas» y «claramente despiertas» son las anclas de los límites.
   const anchors = samples.map((s) => {
@@ -499,6 +458,63 @@ function candidateNights(input: SleepEstimateInput, p: SleepParams): Span[] {
   return nights;
 }
 
+/**
+ * La evidencia con el hábito de la persona sumado: en cada franja del día, cuánto ha dormido en las mismas franjas (±30 min) los demás días de alrededor (a lo sumo `priorDays`
+ * a cada lado) frente a lo normal en ella, a partir de lo que dio una primera pasada (`asleepBins`). Ayuda con los horarios regulares y casi nada con los irregulares.
+ */
+export function withHabit(evidence: Float32Array, asleepBins: Uint8Array, dayOf: Int32Array, slotOf: Int32Array, p: SleepParams): Float32Array {
+  const n = evidence.length;
+  const firstDay = at(dayOf, 0);
+  const days = at(dayOf, n - 1) - firstDay + 1;
+  const asleepAt = new Float32Array(days * BINS_PER_DAY);
+  const seenAt = new Float32Array(days * BINS_PER_DAY);
+  for (let i = 0; i < n; i++) {
+    const cell = (at(dayOf, i) - firstDay) * BINS_PER_DAY + at(slotOf, i);
+    seenAt[cell] = 1;
+    asleepAt[cell] = at(asleepBins, i);
+  }
+  let asleepTotal = 0;
+  let seenTotal = 0;
+  for (let k = 0; k < asleepAt.length; k++) {
+    asleepTotal += at(asleepAt, k);
+    seenTotal += at(seenAt, k);
+  }
+  const baseRate = Math.min(0.6, Math.max(0.15, asleepTotal / Math.max(1, seenTotal)));
+  const logit = (x: number): number => Math.log(x / (1 - x));
+  const withPrior = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const day = at(dayOf, i) - firstDay;
+    const slot = at(slotOf, i);
+    let asleep = 0;
+    let observed = 0;
+    for (let other = Math.max(0, day - p.priorDays); other <= Math.min(days - 1, day + p.priorDays); other++) {
+      if (other === day) continue;
+      for (let s = Math.max(0, slot - 3); s <= Math.min(BINS_PER_DAY - 1, slot + 3); s++) {
+        asleep += at(asleepAt, other * BINS_PER_DAY + s);
+        observed += at(seenAt, other * BINS_PER_DAY + s);
+      }
+    }
+    let prior = 0;
+    if (observed >= 6) {
+      const rate = Math.min(0.95, Math.max(0.05, asleep / observed));
+      prior = Math.max(-p.priorNeg, Math.min(p.priorPos, p.prior * (logit(rate) - logit(baseRate))));
+    }
+    withPrior[i] = at(evidence, i) + prior;
+  }
+  return withPrior;
+}
+
+/** Número de día local y franja de 10 min del día de cada franja de `n` desde `t0` (para el hábito: no depende del cambio de hora). */
+export function dayAndSlot(t0: number, n: number): { dayOf: Int32Array; slotOf: Int32Array } {
+  const dayOf = new Int32Array(n);
+  const slotOf = new Int32Array(n);
+  for (let i = 0; i < n; i++) {
+    dayOf[i] = localDayIndex(t0 + i * BIN + BIN / 2);
+    slotOf[i] = localBinOfDay(t0 + i * BIN + BIN / 2);
+  }
+  return { dayOf, slotOf };
+}
+
 /** ¿Distingue la persona dormida de despierta con alguna de las dos señales? (Sin eso, solo quedarían los pasos y no se opina.) */
 function hasAnyModel(readings: ReadonlyArray<{ day: number }>, modelFor: (day: number) => DayModel): boolean {
   const seenDays = new Set(readings.map((r) => r.day));
@@ -531,7 +547,7 @@ export interface KnownNight {
   estimate: Span;
 }
 
-function pairsWithKnown(nights: readonly Span[], real: readonly SleepSessionRecord[], p: SleepParams): KnownNight[] {
+export function pairsWithKnown(nights: readonly Span[], real: readonly SleepSessionRecord[], p: SleepParams): KnownNight[] {
   const pairs: KnownNight[] = [];
   for (const known of mergeSessions(real, p)) {
     if (known.endMs - known.startMs < MIN_ESTIMATED_SLEEP_MS) continue;
@@ -555,7 +571,7 @@ function pairsWithKnown(nights: readonly Span[], real: readonly SleepSessionReco
  * Cuánto se adelanta (+) o se retrasa (−) la estimación respecto a lo que se sabe de la propia persona. Mide los pares «noche conocida / estimación sin ella» y, con al
  * menos tres, devuelve el desvío mediano del inicio y del final, atenuado cuando hay pocos pares y acotado. `null` si no hay pares bastantes.
  */
-function calibrationOf(nights: readonly Span[], real: readonly SleepSessionRecord[], p: SleepParams): { startMs: number; endMs: number; pairs: number } | null {
+export function calibrationOf(nights: readonly Span[], real: readonly SleepSessionRecord[], p: SleepParams): { startMs: number; endMs: number; pairs: number } | null {
   const pairs = pairsWithKnown(nights, real, p);
   if (pairs.length < p.calibrationMinPairs) return null;
   const trust = pairs.length / (pairs.length + p.calibrationSoft);
@@ -599,7 +615,7 @@ export function summarizeBacktest(pairs: readonly KnownNight[]): BacktestSummary
  * Viterbi de tres estados sobre la evidencia de cada franja: 0 despierto, 1 dormido y 2 despierto DENTRO de la noche (solo entre dos
  * tramos dormidos, para que una escapada al baño no la parta). Devuelve 1 donde se duerme (el despertar de dentro cuenta como parte de la noche).
  */
-function decode(evidence: Float32Array, n: number, p: SleepParams): Uint8Array {
+export function decode(evidence: Float32Array, n: number, p: SleepParams): Uint8Array {
   const none = -1e18;
   const score = [new Float64Array(n), new Float64Array(n), new Float64Array(n)];
   const back = [new Uint8Array(n), new Uint8Array(n), new Uint8Array(n)];

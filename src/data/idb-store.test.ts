@@ -1159,3 +1159,46 @@ describe('putMany: lo mismo que guardar uno a uno, en una sola transacción', ()
     expect(((await store.getWorkout('w2')) as WorkoutRecord & { day?: unknown }).day).toBeUndefined();
   });
 });
+
+describe('uso del móvil (solo horas, para estimar el sueño)', () => {
+  const MIN = 60_000;
+
+  it('guarda los tramos de uso y los leídos, y los devuelve unidos; lo que cruza la medianoche vuelve entero', async () => {
+    await store.addPhoneActivity({
+      uses: [{ startMs: at(9, 23, 50), endMs: at(10, 0, 20) }, { startMs: at(10, 7, 30), endMs: at(10, 7, 40) }],
+      coverage: [{ startMs: at(9, 12), endMs: at(10, 9) }],
+    });
+    const loaded = await store.loadPhoneActivity(at(9, 0), at(11, 0));
+    expect(loaded.uses).toEqual([{ startMs: at(9, 23, 50), endMs: at(10, 0, 20) }, { startMs: at(10, 7, 30), endMs: at(10, 7, 40) }]);
+    expect(loaded.coverage).toEqual([{ startMs: at(9, 12), endMs: at(10, 9) }]);
+    expect(await store.lastPhoneRead()).toBe(at(10, 9));
+  });
+
+  it('una lectura nueva se une a lo que ya había (sin duplicar) y tramos casi pegados forman uno', async () => {
+    await store.addPhoneActivity({ uses: [{ startMs: at(9, 10, 0), endMs: at(9, 10, 5) }], coverage: [{ startMs: at(9, 8), endMs: at(9, 12) }] });
+    await store.addPhoneActivity({ uses: [{ startMs: at(9, 10, 4), endMs: at(9, 10, 9) }, { startMs: at(9, 11), endMs: at(9, 11, 2) }], coverage: [{ startMs: at(9, 11, 45), endMs: at(9, 15) }] });
+    const loaded = await store.loadPhoneActivity(at(9, 0), at(10, 0));
+    expect(loaded.uses).toEqual([{ startMs: at(9, 10, 0), endMs: at(9, 10, 9) }, { startMs: at(9, 11), endMs: at(9, 11, 2) }]);
+    // 08:00–12:00 y 11:45–15:00 se solapan: un solo tramo leído de 08:00 a 15:00.
+    expect(loaded.coverage).toEqual([{ startMs: at(9, 8), endMs: at(9, 15) }]);
+  });
+
+  it('solo devuelve lo cercano al rango pedido y nunca lo que no se guardó; sin nada leído, no hay última lectura', async () => {
+    expect(await store.lastPhoneRead()).toBeNull();
+    await store.addPhoneActivity({ uses: [{ startMs: at(1, 10), endMs: at(1, 10, 3) }], coverage: [{ startMs: at(1, 8), endMs: at(1, 12) }] });
+    expect((await store.loadPhoneActivity(at(20, 0), at(21, 0))).uses).toEqual([]);
+    expect((await store.loadPhoneActivity(at(1, 0), at(2, 0))).uses).toHaveLength(1);
+  });
+
+  it('ignora lo roto que pudiera haber guardado y no tumba la carga', async () => {
+    await store.addPhoneActivity({ uses: [{ startMs: at(9, 10), endMs: at(9, 10, 3) }], coverage: [] });
+    expect((await store.loadPhoneActivity(at(9, 0), at(10, 0))).coverage).toEqual([]);
+    expect(MIN).toBe(60_000);
+  });
+
+  it('el borrado de todos los datos también borra el uso del móvil', async () => {
+    await store.addPhoneActivity({ uses: [{ startMs: at(9, 10), endMs: at(9, 10, 3) }], coverage: [{ startMs: at(9, 8), endMs: at(9, 12) }] });
+    await store.wipe();
+    expect(await store.loadPhoneActivity(at(9, 0), at(10, 0))).toEqual({ uses: [], coverage: [] });
+  });
+});
