@@ -2531,7 +2531,7 @@ dialog.live {
   white-space: nowrap;
 }
 .hud__chip strong {
-  font-size: 23px;
+  font-size: 21px;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
