@@ -6,6 +6,7 @@ import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
+import android.os.Build;
 
 /**
  * La lectura del uso del móvil en segundo plano, una vez por hora: un trabajo del sistema (sin servicio permanente ni notificación) que tarda milisegundos y deja el resultado en
@@ -22,12 +23,12 @@ public class PhoneActivityJob extends JobService {
         if (scheduler == null || scheduler.getPendingJob(JOB_ID) != null) {
             return;
         }
-        JobInfo info = new JobInfo.Builder(JOB_ID, new ComponentName(context, PhoneActivityJob.class))
-            .setPeriodic(PERIOD_MS)
-            .setRequiresBatteryNotLow(true)
-            .setPersisted(false)
-            .build();
-        scheduler.schedule(info);
+        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, new ComponentName(context, PhoneActivityJob.class)).setPeriodic(PERIOD_MS).setPersisted(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // «Batería no baja» existe desde Android 8: antes, el trabajo corre con el criterio normal del sistema.
+            builder.setRequiresBatteryNotLow(true);
+        }
+        scheduler.schedule(builder.build());
     }
 
     @Override
