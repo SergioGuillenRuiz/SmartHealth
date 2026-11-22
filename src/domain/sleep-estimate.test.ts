@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { estimateSleep, MIN_ESTIMATED_SLEEP_MS, type SleepEstimateInput } from './sleep-estimate';
+import { backtestEstimate, estimateSleep, MIN_ESTIMATED_SLEEP_MS, summarizeBacktest, type SleepEstimateInput } from './sleep-estimate';
 import type { HeartSample, SleepSessionRecord, StepBucket } from './types';
 
 // TZ = Europe/Madrid (vitest.config.ts). Octubre de 2026: del 5 al 14, sin cambio de hora (es el 25).
@@ -16,14 +16,14 @@ interface Plan {
 const NIGHT_SLEEPER: Plan['asleep'] = (hour) => hour >= 23 || hour < 7;
 const DAY_SLEEPER: Plan['asleep'] = (hour) => hour >= 6 && hour < 16;
 
-/** Diez días con el pulso cada hora (dormido ~55, despierto 70–85) y un tramo de pasos en cada hora despierta. */
-function scenario(plan: Plan): { heart: HeartSample[]; buckets: StepBucket[] } {
+/** Diez días con el pulso cada hora (dormido ~55, despierto 70–85) y un tramo de pasos en cada hora despierta. Con `breathing`, cada lectura trae también la respiración (dormido 12–13, despierto 16–18). */
+function scenario(plan: Plan, breathing = false): { heart: HeartSample[]; buckets: StepBucket[] } {
   const heart: HeartSample[] = [];
   const buckets: StepBucket[] = [];
   for (let day = plan.fromDay ?? 5; day <= (plan.toDay ?? 14); day++) {
     for (let hour = 0; hour < 24; hour++) {
       const sleeping = plan.asleep(hour);
-      heart.push({ tsMs: at(day, hour), bpm: sleeping ? 53 + (hour % 4) : 70 + (hour % 5) * 3, source: 'ring-auto' });
+      heart.push({ tsMs: at(day, hour), bpm: sleeping ? 53 + (hour % 4) : 70 + (hour % 5) * 3, source: 'ring-auto', ...(breathing ? { resp: sleeping ? 12 + (hour % 2) : 16 + (hour % 3) } : {}) });
       if (!sleeping) buckets.push({ startMs: at(day, hour, 5), endMs: at(day, hour, 35), steps: 120, ringDistanceM: 80, ringCalories: 5 });
     }
   }
@@ -224,5 +224,103 @@ describe('estimateSleep', () => {
   it('nunca da una noche de más de 14 h', () => {
     const data = scenario({ asleep: () => true });
     expect(estimateSleep(input({ heart: data.heart, buckets: [] }))).toEqual([]);
+  });
+});
+
+describe('estimateSleep: la respiración', () => {
+  const flatHeart = (data: { heart: HeartSample[]; buckets: StepBucket[] }): HeartSample[] => data.heart.map((h, i) => ({ ...h, bpm: 62 + (i % 3) }));
+
+  it('si el pulso no distingue dormida de despierta pero la respiración sí, se estima igual', () => {
+    const data = scenario({ asleep: NIGHT_SLEEPER }, true);
+    expect(estimateSleep(input({ heart: flatHeart(data).map((h) => ({ ...h, resp: undefined })), buckets: [] }))).toEqual([]);
+    const sessions = estimateSleep(input({ heart: flatHeart(data), buckets: [] }));
+    expect(sessions.length).toBeGreaterThanOrEqual(7);
+    for (const session of sessions) {
+      const startHour = new Date(session.startMs).getHours() + new Date(session.startMs).getMinutes() / 60;
+      const endHour = new Date(session.endMs).getHours() + new Date(session.endMs).getMinutes() / 60;
+      expect(startHour).toBeGreaterThanOrEqual(21.5);
+      expect(startHour).toBeLessThanOrEqual(23.75);
+      expect(endHour).toBeGreaterThanOrEqual(6);
+      expect(endHour).toBeLessThanOrEqual(7.5);
+    }
+  });
+
+  it('una lectura de pulso disparada en mitad de la noche (el sensor se mueve) no la parte si la respiración sigue siendo de dormido, ni se convierte en «el nivel de despierto»', () => {
+    // Con ratos despierto y quieto (sin pasos en una de cada tres horas): la persona tiene sus dos niveles de verdad y una sola lectura de 118 no los cambia.
+    const data = scenario({ asleep: NIGHT_SLEEPER }, true);
+    const buckets = data.buckets.filter((b) => new Date(b.startMs).getHours() % 3 !== 0);
+    const heart = data.heart.map((h) => (h.tsMs === at(10, 3) ? { ...h, bpm: 118 } : h));
+    const night = estimateSleep(input({ heart, buckets })).filter((s) => s.endMs > at(10, 0) && s.startMs < at(10, 8));
+    expect(night).toHaveLength(1);
+    expect(night[0]?.endMs ?? 0).toBeGreaterThan(at(10, 6));
+    expect(estimateSleep(input({ heart, buckets })).length).toBeGreaterThanOrEqual(8);
+  });
+});
+
+describe('estimateSleep: lo que la persona hizo con la app', () => {
+  it('algo anotado a las 2 de la madrugada (despierta) parte la noche si va seguido de más rato despierto, y una marca suelta de otro momento no cambia nada', () => {
+    const data = scenario({ asleep: NIGHT_SLEEPER });
+    const covering = (sessions: SleepSessionRecord[], day: number) => sessions.filter((s) => s.endMs > at(day, 0) && s.startMs < at(day, 8));
+    const plain = covering(estimateSleep(input(data)), 10);
+    expect(plain).toHaveLength(1);
+    // Un vaso de agua a las 15:00 (despierta de todos modos): igual.
+    expect(covering(estimateSleep(input(data, { awakeMarks: [at(10, 15)] })), 10)).toEqual(plain);
+    // Marcas cada pocos minutos de 01:00 a 04:30 (estuvo despierta con el móvil): ya no es una noche de 8 h.
+    const marks = Array.from({ length: 22 }, (_, i) => at(10, 1) + i * 10 * 60_000);
+    const split = covering(estimateSleep(input(data, { awakeMarks: marks })), 10);
+    expect(split.every((s) => s.endMs - s.startMs < 6 * HOUR)).toBe(true);
+  });
+});
+
+describe('estimateSleep: aprende de las noches que el anillo sí guardó', () => {
+  // Quien se acuesta a las 23:00 pero el anillo da su sueño desde las 23:50 y hasta las 06:40: la estimación sola dice 23:00–07:00.
+  const data = scenario({ asleep: NIGHT_SLEEPER });
+  const ring = (day: number): SleepSessionRecord => ({ startMs: at(day, 23, 50), endMs: at(day + 1, 6, 40), segments: [] });
+
+  it('con tres o más noches conocidas, las demás se corrigen en la dirección del desvío (sin pasarse)', () => {
+    const base = estimateSleep(input(data, { real: [] }));
+    const known = [ring(5), ring(6), ring(7)];
+    const learned = estimateSleep(input(data, { real: known }));
+    const noKnown = (day: number) => (list: SleepSessionRecord[]) => list.find((s) => s.startMs > at(day, 20) && s.startMs < at(day + 1, 3));
+    const day = 10;
+    const before = noKnown(day)(base);
+    const after = noKnown(day)(learned);
+    expect(before).toBeDefined();
+    expect(after).toBeDefined();
+    // Antes ≈ 23:00 y 07:00 (la hora real de dormir); la guía del anillo (23:50 → 06:40) mueve el inicio más tarde y el final más pronto.
+    expect(after!.startMs).toBeGreaterThan(before!.startMs);
+    expect(after!.endMs).toBeLessThan(before!.endMs);
+    // Atenuado (3 pares de 3 + 3 = la mitad) y acotado a una hora.
+    expect(after!.startMs - before!.startMs).toBeLessThanOrEqual(60 * 60_000);
+    expect(before!.endMs - after!.endMs).toBeLessThanOrEqual(60 * 60_000);
+  });
+
+  it('con menos de tres noches conocidas no se toca nada', () => {
+    const base = estimateSleep(input(data, { real: [] }));
+    const two = estimateSleep(input(data, { real: [ring(5), ring(6)] }));
+    const day10 = (list: SleepSessionRecord[]) => list.find((s) => s.startMs > at(10, 20) && s.startMs < at(11, 3));
+    expect(day10(two)).toEqual(day10(base));
+  });
+});
+
+describe('backtestEstimate', () => {
+  const data = scenario({ asleep: NIGHT_SLEEPER });
+
+  it('compara cada noche conocida con lo que se habría estimado sin saberla', () => {
+    const known: SleepSessionRecord[] = [7, 8, 9].map((day) => ({ startMs: at(day, 23, 0), endMs: at(day + 1, 7, 0), segments: [] }));
+    const pairs = backtestEstimate(input(data, { real: known }));
+    expect(pairs).toHaveLength(3);
+    const summary = summarizeBacktest(pairs);
+    expect(summary?.nights).toBe(3);
+    // Los datos son perfectos y las noches conocidas, exactas: el error es del orden de lo que da la propia medida (una lectura por hora).
+    expect(summary?.startMin).toBeLessThanOrEqual(35);
+    expect(summary?.endMin).toBeLessThanOrEqual(35);
+    expect(summary?.durationMin).toBeLessThanOrEqual(60);
+  });
+
+  it('sin noches conocidas, o con una que no se parece a nada de lo estimado, no hay con qué comparar', () => {
+    expect(summarizeBacktest(backtestEstimate(input(data, { real: [] })))).toBeNull();
+    const far: SleepSessionRecord = { startMs: at(8, 12), endMs: at(8, 17), segments: [] }; // una tarde quieta
+    expect(backtestEstimate(input(data, { real: [far] }))).toEqual([]);
   });
 });

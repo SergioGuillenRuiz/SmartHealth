@@ -5,7 +5,7 @@ import { cleanSocialProfile, isSocialProfile, isUntouched, type SocialProfile } 
 import { addDays, dayKeyOf, endOfDayMs, startOfDayMs, DAY_MS, type DayKey } from '../domain/dates';
 import { mealDay, MAX_DAY_SHIFT } from '../domain/day-credit';
 import { maxOf, minOf } from '../domain/extent';
-import { BASELINE_DAYS, estimateSleep } from '../domain/sleep-estimate';
+import { backtestEstimate, BASELINE_DAYS, estimateSleep, summarizeBacktest, type BacktestSummary } from '../domain/sleep-estimate';
 import { estimateSleepOffRing, OFFRING } from '../domain/sleep-offring';
 import { sortProfile, type ProfileEntry } from '../domain/profile';
 import { sanitizeJointMetrics } from '../domain/joint-metrics';
@@ -275,8 +275,16 @@ export class IdbStore implements Store {
     ]);
     // Los que empezaron antes del rango y siguen dentro (cruzan la medianoche): no son del rango, pero sus pasos sí.
     const carryWorkouts = earlier.filter((w) => w.endMs > start);
-    // Las noches que el anillo no dio se estiman con el pulso y los pasos (nunca se guardan: ver `sleep-estimate.ts`).
-    const asked = await this.lastSleepAskMs();
+    // Lo que la persona hizo con la app dice cuándo estaba despierta: una comida o un vaso de agua anotados y las veces que la app estuvo abierta sincronizando.
+    const habitFrom = start - OFFRING.habitDays * DAY_MS;
+    const habitTo = end + OFFRING.habitDays * DAY_MS;
+    const [asked, marks, realNights] = await Promise.all([
+      this.lastSleepAskMs(),
+      this.appActivity(start - BASELINE_DAYS * DAY_MS, end + BASELINE_DAYS * DAY_MS),
+      this.db.getAll('sleep', bound(habitFrom, habitTo)),
+    ]);
+    const { logged: loggedTimes, syncs: syncTimes } = marks;
+    // Las noches que el anillo no dio se estiman con el pulso, la respiración y los pasos (nunca se guardan: ver `sleep-estimate.ts`).
     const [heartAround, bucketsAround, countersAround, workoutsAround, sleepAround] = near;
     const estimated = estimateSleep({
       heart: heartAround,
@@ -287,25 +295,16 @@ export class IdbStore implements Store {
       askedAtMs: asked,
       fromMs: start,
       toMs: end,
+      awakeMarks: [...loggedTimes, ...syncTimes],
     });
     // Y las noches SIN anillo (no hay pulso ni pasos que mirar), con los huecos de actividad: lo anotado, la app abierta y los pasos de antes y después. Solo donde ni el anillo ni la otra estimación dieron nada.
-    const habitFrom = start - OFFRING.habitDays * DAY_MS;
-    const habitTo = end + OFFRING.habitDays * DAY_MS;
-    const [loggedMeals, loggedWater, syncKeys, realNights] = await Promise.all([
-      this.listMeals(start - BASELINE_DAYS * DAY_MS, end + BASELINE_DAYS * DAY_MS),
-      this.listWater(start - BASELINE_DAYS * DAY_MS, end + BASELINE_DAYS * DAY_MS),
-      // Solo las horas (la clave de cada registro): sus trazas pesan mucho y aquí no hacen falta.
-      this.db.getAllKeys('syncs'),
-      this.db.getAll('sleep', bound(habitFrom, habitTo)),
-    ]);
     const offRing = estimateSleepOffRing({
       buckets: bucketsAround,
       counters: countersAround,
       heart: heartAround,
       workouts: workoutsAround,
-      // Una comida pasada a otro día conserva la hora a la que se anotó, que no es la de ese día: no dice cuándo estaba despierta la persona.
-      logged: [...loggedMeals.filter((m) => m.day === undefined || m.day === dayKeyOf(m.tsMs)).map((m) => m.tsMs), ...loggedWater.map((w) => w.tsMs)],
-      syncs: syncKeys.filter((ts): ts is number => typeof ts === 'number').filter((ts) => ts >= start - BASELINE_DAYS * DAY_MS && ts < end + BASELINE_DAYS * DAY_MS),
+      logged: loggedTimes,
+      syncs: syncTimes,
       real: realNights,
       askedAtMs: asked,
       fromMs: start,
@@ -323,6 +322,37 @@ export class IdbStore implements Store {
       meals: await this.mealsOfWindow(start, end),
       water: await this.listWater(start, end),
     };
+  }
+
+  /** Las horas en que la persona hizo algo con la app (anotó una comida o agua, o la app estuvo abierta sincronizando) entre `from` y `to`: estaba despierta. */
+  private async appActivity(from: number, to: number): Promise<{ logged: number[]; syncs: number[] }> {
+    const [meals, water, syncKeys] = await Promise.all([
+      this.listMeals(from, to),
+      this.listWater(from, to),
+      // Solo las horas (la clave de cada registro): sus trazas pesan mucho y aquí no hacen falta.
+      this.db.getAllKeys('syncs'),
+    ]);
+    return {
+      // Una comida pasada a otro día conserva la hora a la que se anotó, que no es la de ese día: no dice cuándo estaba despierta la persona.
+      logged: [...meals.filter((m) => m.day === undefined || m.day === dayKeyOf(m.tsMs)).map((m) => m.tsMs), ...water.map((w) => w.tsMs)],
+      syncs: syncKeys.filter((ts): ts is number => typeof ts === 'number').filter((ts) => ts >= from && ts < to),
+    };
+  }
+
+  async sleepAccuracy(nowMs: number, days = 60): Promise<BacktestSummary | null> {
+    const start = nowMs - days * DAY_MS;
+    const around = IDBKeyRange.bound(start - BASELINE_DAYS * DAY_MS, nowMs, false, true);
+    const [heart, buckets, counters, workouts, sleep, marks] = await Promise.all([
+      this.db.getAll('heart', around),
+      this.db.getAll('buckets', around),
+      this.db.getAll('counters', around),
+      this.db.getAllFromIndex('workouts', 'byStart', around),
+      this.db.getAll('sleep', around),
+      this.appActivity(start - BASELINE_DAYS * DAY_MS, nowMs),
+    ]);
+    return summarizeBacktest(
+      backtestEstimate({ heart, buckets, counters, workouts, real: sleep, askedAtMs: nowMs, fromMs: start, toMs: nowMs, awakeMarks: [...marks.logged, ...marks.syncs] }),
+    );
   }
 
   async stats(): Promise<StoreStats> {

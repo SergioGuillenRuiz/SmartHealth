@@ -28,6 +28,10 @@ const MAX_CADENCE_SPM = 260;
 const MAX_COUNTER_STEPS = 60_000;
 /** Margen fijo (pasos) sobre el ritmo máximo para el total del día: la muñeca puede contar de más y el reloj del anillo va unos segundos atrás. */
 const COUNTER_SLACK_STEPS = 100;
+/** Respiraciones por minuto creíbles en reposo y con algo de esfuerzo; 0 es el «no hay dato» del anillo. */
+const MIN_BREATHS = 6;
+const MAX_BREATHS = 40;
+const isBreathing = (value: number): boolean => value >= MIN_BREATHS && value <= MAX_BREATHS;
 const MIN_SLEEP_SEC = 10 * 60;
 const MAX_SLEEP_SEC = 20 * 3600;
 
@@ -89,7 +93,7 @@ export function sanitizeHistory(records: HistoryRecords, nowMs: number, live: Li
     }
     if (r.steps <= MAX_COUNTER_STEPS) counters.set(r.tsMs, { tsMs: r.tsMs, steps: r.steps });
     else drop('contador de pasos imposible');
-    if (r.bpm >= 30 && r.bpm <= 220) heart.set(r.tsMs, { tsMs: r.tsMs, bpm: r.bpm, source: 'ring-auto' });
+    if (r.bpm >= 30 && r.bpm <= 220) heart.set(r.tsMs, { tsMs: r.tsMs, bpm: r.bpm, source: 'ring-auto', ...(isBreathing(r.respiratoryRate) ? { resp: r.respiratoryRate } : {}) });
     if (r.spo2 >= 70 && r.spo2 <= 100) spo2.set(r.tsMs, { tsMs: r.tsMs, percent: r.spo2 });
   }
 
@@ -102,7 +106,9 @@ export function sanitizeHistory(records: HistoryRecords, nowMs: number, live: Li
       drop('FC fuera de rango');
       continue;
     }
-    heart.set(r.tsMs, { tsMs: r.tsMs, bpm: r.bpm, source: 'ring-auto' });
+    // La respiración solo viene en el registro de constantes: se conserva aunque el historial de pulso (que manda en el pulso) tenga la última palabra.
+    const resp = heart.get(r.tsMs)?.resp;
+    heart.set(r.tsMs, { tsMs: r.tsMs, bpm: r.bpm, source: 'ring-auto', ...(resp !== undefined ? { resp } : {}) });
   }
 
   for (const r of records.spo2) {

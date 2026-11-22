@@ -26,6 +26,11 @@ export interface HeartSample {
   tsMs: number;
   bpm: number;
   source: HeartSource;
+  /**
+   * Respiraciones por minuto en esa misma medida automática del anillo (viene en su registro de constantes y antes se tiraba). Dormido son ~12–14 y despierto
+   * ~15–20, una diferencia más limpia que la del pulso: la usa la estimación del sueño. Ausente si el anillo no la dio.
+   */
+  resp?: number;
 }
 
 export interface Spo2Sample {

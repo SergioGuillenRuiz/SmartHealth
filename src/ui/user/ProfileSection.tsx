@@ -127,7 +127,7 @@ export function GoalsSection(): JSX.Element {
               ]}
               block
             />
-            <span class="field__hint">Se aplica en la próxima sincronización. Menos tiempo = curva de pulso más fina y algo más de batería gastada por el anillo.</span>
+            <span class="field__hint">Se aplica en la próxima sincronización. Menos tiempo = curva de pulso más fina, un sueño estimado bastante más preciso (las noches que el anillo no guarda se calculan con estas lecturas) y algo más de batería gastada por el anillo.</span>
           </div>
           <label class="switch">
             <input type="checkbox" checked={cfg.autoSync} onChange={(e) => void saveSettings({ autoSync: e.currentTarget.checked })} />
