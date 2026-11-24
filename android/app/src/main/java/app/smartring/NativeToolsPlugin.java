@@ -130,20 +130,33 @@ public class NativeToolsPlugin extends Plugin {
             out.put("firstMs", 0);
             out.put("uses", "");
             out.put("offs", "");
+            out.put("lastEventMs", 0);
+            out.put("screenEvents", 0);
+            out.put("unlockEvents", 0);
+            out.put("appEvents", 0);
             call.resolve(out);
             return;
         }
         PhoneActivityStore.Saved saved = PhoneActivityStore.saved(getContext());
         List<long[]> uses = PhoneActivityStore.union(PhoneActivity.clip(saved.uses, since, now), live.uses, PhoneActivity.MERGE_GAP_MS);
         List<long[]> offs = PhoneActivityStore.union(PhoneActivity.clip(saved.offs, since, now), live.offs, 0L);
-        // Con lectura de fondo continua hasta ahora, se sabe desde que esta empezó; si no, desde el primer evento que Android aún conserva.
-        long first = live.firstMs;
+        // Se sabe qué pasó desde el primer evento que Android aún conserva (y no desde el primer evento de lo pedido: una noche con el móvil quieto no tiene ninguno y quedaba sin cubrir). Con lectura
+        // de fondo continua hasta ahora, desde que esta empezó, que puede ser anterior a lo que Android guarda.
+        long first = PhoneActivityReader.earliestEvent(getContext(), now);
+        if (first <= 0) {
+            first = live.firstMs;
+        }
         if (saved.coverFromMs > 0 && saved.lastReadMs > 0 && saved.lastReadMs >= since - PhoneActivityStore.OVERLAP_MS) {
             first = first > 0 ? Math.min(first, saved.coverFromMs) : saved.coverFromMs;
         }
         out.put("firstMs", first);
         out.put("uses", PhoneActivity.format(uses));
         out.put("offs", PhoneActivity.format(offs));
+        // Qué da este móvil (solo cuántos eventos de cada clase, nada más): lo enseña el diagnóstico de la hoja del sueño.
+        out.put("lastEventMs", live.lastEventMs);
+        out.put("screenEvents", live.screenEvents);
+        out.put("unlockEvents", live.unlockEvents);
+        out.put("appEvents", live.appEvents);
         call.resolve(out);
     }
 

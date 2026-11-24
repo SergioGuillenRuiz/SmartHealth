@@ -22,6 +22,22 @@ export interface PhoneAccess {
 
 export const phoneAccess = signal<PhoneAccess>({ checked: false, supported: false, granted: false });
 
+/** Lo que dio la última lectura buena, para que la persona (y quien arregle esto) vea que funciona: solo fechas y cifras, nunca qué apps ni qué se hizo. */
+export interface PhoneDiag {
+  /** Cuándo se hizo la lectura. */
+  readAtMs: number;
+  /** Desde cuándo conserva el sistema eventos (0: ninguno) y la hora del último. */
+  firstMs: number;
+  lastEventMs: number;
+  /** Cuántos eventos de pantalla, de desbloqueo y de apps delante vio el sistema, y cuántos tramos de uso salieron de ellos. */
+  screenEvents: number;
+  unlockEvents: number;
+  appEvents: number;
+  uses: number;
+}
+
+export const phoneDiag = signal<PhoneDiag | null>(null);
+
 /** Los primeros días que se piden al leer por primera vez: el sistema conserva unos pocos y de lo que no tiene no se dice nada. */
 const FIRST_READ_MS = 10 * DAY_MS;
 /** Se vuelve a leer un poco de lo ya leído: la lectura anterior pudo cortar un uso en marcha. */
@@ -73,10 +89,20 @@ export function syncPhoneActivity(force = false): Promise<void> {
         return;
       }
       lastRunMs = nowMs;
+      const spans = parseSpans(result.uses);
+      phoneDiag.value = {
+        readAtMs: nowMs,
+        firstMs: result.firstMs,
+        lastEventMs: result.lastEventMs ?? 0,
+        screenEvents: result.screenEvents ?? 0,
+        unlockEvents: result.unlockEvents ?? 0,
+        appEvents: result.appEvents ?? 0,
+        uses: spans.length,
+      };
       // Se lee entero desde el primer evento que el sistema conserva (antes de eso no se sabe qué pasó), menos los ratos con el móvil apagado.
       const coverageFrom = result.firstMs > 0 ? Math.max(result.fromMs, result.firstMs) : result.toMs;
       const coverage = withoutSpans(coverageFrom < result.toMs ? [{ startMs: coverageFrom, endMs: result.toMs }] : [], parseSpans(result.offs));
-      const uses = mergeSpans(parseSpans(result.uses), 60_000);
+      const uses = mergeSpans(spans, 60_000);
       if (uses.length === 0 && coverage.length === 0) return;
       await store.addPhoneActivity({ uses, coverage });
       // Lo guardado cambia las estimaciones del sueño: las pantallas que las enseñan se recargan.
@@ -98,12 +124,28 @@ export function startPhoneActivity(): () => void {
   }
   void syncPhoneActivity(true);
   void NativeTools.schedulePhoneActivity().catch(() => undefined);
-  const onVisible = (): void => {
-    if (document.visibilityState !== 'visible') return;
+  const onBack = (): void => {
     // Al volver de los ajustes de Android el acceso puede haber cambiado: se mira siempre, y si acaba de darse se lee ya.
     const wasGranted = phoneAccess.value.granted;
     void refreshPhoneAccess().then((access) => syncPhoneActivity(access.granted && !wasGranted));
   };
+  const onVisible = (): void => {
+    if (document.visibilityState === 'visible') onBack();
+  };
   document.addEventListener('visibilitychange', onVisible);
-  return () => document.removeEventListener('visibilitychange', onVisible);
+  // El WebView de algunos móviles no avisa con `visibilitychange` al volver de otra pantalla (los ajustes de Android): Capacitor sí avisa con «resume».
+  let stopped = false;
+  let removeResume: (() => void) | null = null;
+  void import('@capacitor/app')
+    .then(({ App }) => App.addListener('resume', onBack))
+    .then((handle) => {
+      if (stopped) void handle.remove();
+      else removeResume = () => void handle.remove();
+    })
+    .catch(() => undefined);
+  return () => {
+    stopped = true;
+    document.removeEventListener('visibilitychange', onVisible);
+    removeResume?.();
+  };
 }

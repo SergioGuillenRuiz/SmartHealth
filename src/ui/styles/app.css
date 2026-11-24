@@ -5350,6 +5350,12 @@ select.input {
   margin-top: 2px;
   color: var(--ok);
 }
+.phone-access__diag {
+  display: block;
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--text-3);
+}
 
 
 /* Lo que va en una sola línea (`white-space: nowrap`: indicadores, botones, insignias…) se queda como estaba: ahí no se parte nada, y que cambie su ancho mínimo movía los indicadores de un entreno. */

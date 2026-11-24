@@ -336,9 +336,13 @@ export class IdbStore implements Store {
       toMs: end,
     }).filter((night) => !nearRing(night));
     const estimated = [...ringEstimated, ...fromPhone];
-    // Y las noches SIN anillo ni registro del móvil (de antes de darle acceso, o con el móvil apagado), con los huecos de actividad: lo anotado, la app abierta y los pasos de antes y después. Solo donde ni
-    // el anillo ni el móvil dieron nada y el registro del móvil no cubría esa noche: donde sí la cubría y no hubo noche, es que no la hubo.
-    const phoneKnew = (night: { startMs: number; endMs: number }): boolean => phoneCovered(phone.coverage, night.startMs, night.endMs) >= 0.5 * (night.endMs - night.startMs);
+    // Y las noches SIN anillo ni registro del móvil (de antes de darle acceso, o con el móvil apagado), con los huecos de actividad: lo anotado, la app abierta y los pasos de antes y después. Donde
+    // el registro del móvil sí cubría la noche y la estimación del móvil no sacó ninguna, solo se descarta si el móvil MOSTRÓ que estaba despierta (lo usó buena parte de esa noche): si no, que no
+    // salga nada sería peor que la aproximación de siempre (un fallo de la lectura o un registro raro dejaban días sin noche).
+    const phoneSawAwake = (night: { startMs: number; endMs: number }): boolean => {
+      const length = night.endMs - night.startMs;
+      return phoneCovered(phone.coverage, night.startMs, night.endMs) >= 0.5 * length && phoneCovered(phone.uses, night.startMs, night.endMs) >= 0.35 * length;
+    };
     const offRing = estimateSleepOffRing({
       buckets: bucketsAround,
       counters: countersAround,
@@ -350,7 +354,7 @@ export class IdbStore implements Store {
       askedAtMs: asked,
       fromMs: start,
       toMs: end,
-    }).filter((night) => !phoneKnew(night) && !estimated.some((e) => e.startMs < night.endMs + OFFRING.nearRealMs && e.endMs > night.startMs - OFFRING.nearRealMs));
+    }).filter((night) => !phoneSawAwake(night) && !estimated.some((e) => e.startMs < night.endMs + OFFRING.nearRealMs && e.endMs > night.startMs - OFFRING.nearRealMs));
     const allEstimated = offRing.length > 0 ? [...estimated, ...offRing] : estimated;
     return {
       buckets,

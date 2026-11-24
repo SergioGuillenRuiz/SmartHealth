@@ -51,6 +51,10 @@ export interface PhoneSleepInput {
   syncs: readonly number[];
   /** Las noches conocidas (del anillo o corregidas a mano): donde hay una no se estima y con ellas se corrige el sesgo. */
   real: readonly SleepSessionRecord[];
+  /**
+   * Cuándo se le pidió por última vez el sueño al anillo. NO limita esta estimación: el móvil sabe por sí solo cuándo se acabó la noche (el primer uso tras ella), y quien deja el anillo de
+   * noche puede pasar horas sin sincronizarlo (no está conectado, está cargando…): esperar a eso dejaba la última noche sin salir. Si luego el anillo trae esa noche, manda la suya.
+   */
   askedAtMs: number | null;
   fromMs: number;
   toMs: number;
@@ -58,7 +62,6 @@ export interface PhoneSleepInput {
 
 /** Las noches de la persona que se deducen del móvil. `[]` si no se le ha pedido el sueño al anillo o no hay cobertura del registro del móvil. */
 export function estimateSleepFromPhone(input: PhoneSleepInput, params: PhoneParams = PHONE_PARAMS, model: SleepParams = PARAMS): SleepSessionRecord[] {
-  if (input.askedAtMs === null) return [];
   const nights = candidatePhoneNights(input, params, model);
   const shift = calibrationOf(nights, input.real, model);
   const out: SleepSessionRecord[] = [];
@@ -68,7 +71,6 @@ export function estimateSleepFromPhone(input: PhoneSleepInput, params: PhonePara
     const length = endMs - startMs;
     if (length < MIN_ESTIMATED_SLEEP_MS || length > MAX_ESTIMATED_SLEEP_MS) continue;
     if (endMs <= input.fromMs || startMs >= input.toMs) continue;
-    if (endMs > input.askedAtMs) continue;
     if (input.real.some((r) => r.startMs < endMs + model.nearRealMs && r.endMs > startMs - model.nearRealMs)) continue;
     out.push({ startMs: Math.round(startMs), endMs: Math.round(endMs), segments: [], estimated: true });
   }
@@ -203,8 +205,12 @@ export function candidatePhoneNights(input: PhoneSleepInput, p: PhoneParams, mod
     if (before !== undefined && startMs - before <= p.edgeReachMs) startMs = Math.min(endMs, Math.max(before + p.latencyMin * MIN, before));
     const after = firstActivityAfter(endMs - BIN);
     if (after !== undefined && after - endMs <= p.edgeReachMs) endMs = Math.max(startMs, Math.min(endMs, after - p.leadMin * MIN));
-    // Un tramo pegado al principio o al final de lo cubierto está cortado (empezó antes o sigue en curso).
-    const cut = i < 2 || j > n - 2 || !at(covered, i - 1) || !at(covered, j);
+    // Un tramo cortado es el que empieza o acaba sin que se sepa qué pasó antes o después (el principio o el final de lo leído, o un hueco del registro): empezó antes o sigue en curso. Si la
+    // franja de al lado tiene una marca de «despierta» (un uso del móvil, un paso…), el tramo está cerrado aunque esa franja no esté cubierta del todo: quien se despierta y abre la app en esos
+    // diez minutos tiene la noche entera, y esperar a otra lectura la dejaba sin salir justo cuando se mira.
+    const awakeBefore = i >= 1 && at(strongest, i - 1) < 0;
+    const awakeAfter = j < n && at(strongest, j) < 0;
+    const cut = (!awakeBefore && (i < 2 || !at(covered, i - 1))) || (!awakeAfter && (j >= n - 1 || !at(covered, j)));
     if (endMs > startMs && !cut) blocks.push({ startMs, endMs });
     i = j;
   }

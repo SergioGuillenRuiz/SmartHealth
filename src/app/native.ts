@@ -42,7 +42,19 @@ export interface NativeToolsPlugin {
    * Lo que hizo el móvil desde `sinceMs` hasta ahora: `uses` son los tramos con la pantalla encendida o la app en primer plano («inicio:fin;inicio:fin», ms), `firstMs` la hora del primer evento
    * que el sistema aún conserva (antes de eso no se sabe nada) y `offs` los tramos con el móvil apagado. Sin acceso, `granted: false` y nada más.
    */
-  readPhoneActivity(options: { sinceMs: number }): Promise<{ granted: boolean; fromMs: number; toMs: number; firstMs: number; uses: string; offs: string }>;
+  readPhoneActivity(options: { sinceMs: number }): Promise<{
+    granted: boolean;
+    fromMs: number;
+    toMs: number;
+    firstMs: number;
+    uses: string;
+    offs: string;
+    /** Qué da este móvil: la hora del último evento y cuántos de pantalla, desbloqueo y apps delante (solo cifras). Una versión antigua de la parte nativa no los manda. */
+    lastEventMs?: number;
+    screenEvents?: number;
+    unlockEvents?: number;
+    appEvents?: number;
+  }>;
   /** Programa la lectura periódica en segundo plano (cada hora, sin servicio permanente) para que lo del móvil no se pierda aunque no se abra la app. */
   schedulePhoneActivity(): Promise<void>;
 }

@@ -535,6 +535,11 @@ jobs:
         # Arranca el servicio de ubicación como lo haría la app, le da posiciones con `adb emu geo fix` y comprueba que sigue grabando
         # con la pantalla apagada y la app oculta (tools/android-tracking.mjs).
         run: node tools/android-tracking.mjs apk
+      - name: Probar la lectura del uso del móvil (sueño sin anillo)
+        if: always() && steps.kvm.outputs.disponible == 'true'
+        # Da el acceso a «datos de uso» con appops, hace lo que haría una persona con el móvil (aviso que enciende la pantalla, coger el móvil y usarlo) y comprueba que Android lo registra,
+        # que el plugin lo lee, que el trabajo de fondo lo guarda y que llega a la base de datos de la web (tools/android-phone-activity.mjs).
+        run: node tools/android-phone-activity.mjs apk
       - name: Registro del emulador
         if: always() && steps.kvm.outputs.disponible == 'true'
         run: tail -n 40 "$RUNNER_TEMP/emulator.log" || true

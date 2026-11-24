@@ -99,15 +99,30 @@ describe('estimateSleepFromPhone', () => {
     expect(logged.filter((s) => s.endMs > at(10, 0) && s.startMs < at(10, 9)).every((s) => s.endMs - s.startMs < 6 * HOUR)).toBe(true);
   });
 
-  it('primero la forma normal: sin pedir el sueño al anillo, o antes de que acabara la noche, no se estima; ni donde hay una noche conocida', () => {
+  it('no espera a sincronizar el anillo: el móvil sabe cuándo acabó la noche; pero donde hay una noche conocida no se estima', () => {
     const phone = scenario();
-    expect(estimateSleepFromPhone(input(phone, { askedAtMs: null }))).toEqual([]);
-    const asked = at(9, 12);
-    const sessions = estimateSleepFromPhone(input(phone, { askedAtMs: asked }));
-    expect(sessions.length).toBeGreaterThanOrEqual(3);
-    expect(sessions.every((s) => s.endMs <= asked)).toBe(true);
+    expect(estimateSleepFromPhone(input(phone, { askedAtMs: null })).length).toBeGreaterThanOrEqual(7);
+    expect(estimateSleepFromPhone(input(phone, { askedAtMs: at(9, 12) })).length).toBeGreaterThanOrEqual(7);
     const known: SleepSessionRecord = { startMs: at(8, 23, 40), endMs: at(9, 7, 20), segments: [] };
     expect(estimateSleepFromPhone(input(phone, { real: [known] })).some((s) => s.startMs < known.endMs + 90 * MIN && s.endMs > known.startMs - 90 * MIN)).toBe(false);
+  });
+
+  it('la noche sale aunque se abra la app a los pocos minutos de despertar (la lectura acaba en la misma franja que el primer uso)', () => {
+    // La noche del 13 al 14: se despierta a las 07:30 y la lectura llega a las 07:34. Antes se daba por «cortada» y no salía hasta una lectura posterior.
+    const full = scenario();
+    const phone: PhoneActivity = { uses: full.uses.filter((u) => u.startMs < at(14, 7, 34)), coverage: [{ startMs: at(5, 0), endMs: at(14, 7, 34) }] };
+    const sessions = estimateSleepFromPhone(input(phone, { fromMs: at(13, 12), toMs: at(14, 12) }));
+    const night = sessions.find((s) => s.endMs > at(14, 6) && s.startMs < at(14, 9));
+    expect(night).toBeDefined();
+    expect(night!.endMs).toBeGreaterThanOrEqual(at(14, 7, 10));
+    expect(night!.endMs).toBeLessThanOrEqual(at(14, 7, 31));
+  });
+
+  it('pero una noche que sigue en curso (sin ningún uso en la última franja) sigue sin darse', () => {
+    const full = scenario();
+    const phone: PhoneActivity = { uses: full.uses.filter((u) => u.startMs < at(14, 7, 0)), coverage: [{ startMs: at(5, 0), endMs: at(14, 7, 34) }] };
+    const sessions = estimateSleepFromPhone(input(phone, { fromMs: at(13, 12), toMs: at(14, 12) }));
+    expect(sessions.some((s) => s.endMs > at(14, 6) && s.startMs < at(14, 9))).toBe(false);
   });
 
   it('solo devuelve lo que toca el rango pedido', () => {

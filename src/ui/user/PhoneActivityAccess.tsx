@@ -1,6 +1,8 @@
 import type { JSX } from 'preact';
-import { openPhoneAccessSettings, phoneAccess } from '../../app/phone-activity';
+import { openPhoneAccessSettings, phoneAccess, phoneDiag } from '../../app/phone-activity';
+import { svc } from '../../app/services';
 import { Icon } from '../icons';
+import { describePhoneDiag } from '../phone-diag';
 
 /**
  * El acceso al uso del móvil para estimar el sueño de las noches sin anillo (ver `app/phone-activity.ts`). Solo existe en la app de Android: en la web no sale nada. Dice qué se lee y qué no (solo
@@ -13,7 +15,10 @@ export function PhoneActivityAccess({ compact }: { compact?: boolean }): JSX.Ele
     return (
       <p class="phone-access phone-access--on" role="status">
         <Icon name="Check" size={16} />
-        <span>Se lee a qué horas usas el móvil (solo horas, nunca qué apps) para afinar el sueño que se estima.</span>
+        <span>
+          Se lee a qué horas usas el móvil (solo horas, nunca qué apps) para afinar el sueño que se estima.
+          <small class="phone-access__diag">{describePhoneDiag(phoneDiag.value, svc().now())}</small>
+        </span>
       </p>
     );
   }

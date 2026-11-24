@@ -46,7 +46,11 @@ final class PhoneActivityStore {
         offs.addAll(result.offs);
         long coverFrom = contiguous ? prefs.getLong(KEY_COVER_FROM, 0L) : 0L;
         if (coverFrom == 0L) {
-            coverFrom = result.firstMs;
+            // Desde el primer evento que el sistema conserva (no desde el primero de esta lectura: un rato quieto no tiene eventos y aun así está leído).
+            coverFrom = PhoneActivityReader.earliestEvent(context, nowMs);
+            if (coverFrom == 0L) {
+                coverFrom = result.firstMs;
+            }
         }
         prefs
             .edit()
