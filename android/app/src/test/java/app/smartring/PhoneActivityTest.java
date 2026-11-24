@@ -44,9 +44,18 @@ public class PhoneActivityTest {
     }
 
     @Test
-    public void abrirUnaAppConLaPantallaEncendidaCuentaAunqueSeaBreve() {
-        List<PhoneActivity.Event> list = events(e(PhoneActivity.SCREEN_ON, T0 + 5 * MIN), e(PhoneActivity.APP_ON, T0 + 5 * MIN + 3_000), e(PhoneActivity.SCREEN_OFF, T0 + 5 * MIN + 10_000));
+    public void tocarLaPantallaCuentaAunqueSeaBreve() {
+        List<PhoneActivity.Event> list = events(e(PhoneActivity.SCREEN_ON, T0 + 5 * MIN), e(PhoneActivity.TOUCH, T0 + 5 * MIN + 3_000), e(PhoneActivity.SCREEN_OFF, T0 + 5 * MIN + 10_000));
         assertEquals(1, PhoneActivity.uses(list, T0, T0 + 60 * MIN, true).size());
+    }
+
+    @Test
+    public void unaAppQueSeReanudaSolaAlEncenderLaPantallaNoEsUso() {
+        // En un móvil sin bloqueo de pantalla, un aviso que enciende la pantalla 8 s reanuda la app de antes: la prueba en un Android real lo vio y contaba como uso.
+        List<PhoneActivity.Event> list = events(
+            e(PhoneActivity.SCREEN_ON, T0 + 5 * MIN), e(PhoneActivity.APP_ON, T0 + 5 * MIN + 300), e(PhoneActivity.APP_OFF, T0 + 5 * MIN + 7_800), e(PhoneActivity.SCREEN_OFF, T0 + 5 * MIN + 8_000)
+        );
+        assertTrue(PhoneActivity.uses(list, T0, T0 + 60 * MIN, true).isEmpty());
     }
 
     @Test

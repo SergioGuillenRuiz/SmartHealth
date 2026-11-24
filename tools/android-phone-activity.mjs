@@ -175,13 +175,15 @@ try {
   shell(`am start -W -n ${PKG}/.MainActivity`);
   await waitForApp(60_000);
 
-  // Lo que Android tiene registrado (la verdad de lo que ha pasado), por si algo no cuadra.
-  const log = tryShell('dumpsys usagestats')
-    .split('\n')
-    .filter((line) => /SCREEN_INTERACTIVE|SCREEN_NON_INTERACTIVE|KEYGUARD_(SHOWN|HIDDEN)|DEVICE_(STARTUP|SHUTDOWN)/.test(line))
-    .slice(-14);
-  note(`eventos del sistema (últimos): ${log.length === 0 ? '(ninguno visible en dumpsys)' : ''}`);
-  for (const line of log) note(`  ${line.trim().slice(0, 150)}`);
+  // Lo que Android tiene registrado (la verdad de lo que ha pasado), por si algo no cuadra: las pantallas y, del rato del aviso, TODOS los eventos (es lo que decide si cuenta como uso).
+  const dump = tryShell('dumpsys usagestats').split('\n').filter((line) => /time="\d{4}-\d\d-\d\d \d\d:\d\d:\d\d"/.test(line));
+  const clockOf = (line) => /time="\d{4}-\d\d-\d\d (\d\d:\d\d:\d\d)"/.exec(line)?.[1] ?? '';
+  const screens = dump.filter((line) => /SCREEN_INTERACTIVE|SCREEN_NON_INTERACTIVE|KEYGUARD_(SHOWN|HIDDEN)|DEVICE_(STARTUP|SHUTDOWN)/.test(line)).slice(-14);
+  note(`eventos de pantalla del sistema (últimos): ${screens.length === 0 ? '(ninguno visible en dumpsys)' : ''}`);
+  for (const line of screens) note(`  ${line.trim().slice(0, 150)}`);
+  const inNotify = dump.filter((line) => clockOf(line) >= clock(tNotifyStart - 1_000) && clockOf(line) <= clock(tNotifyEnd + 1_000));
+  note(`TODOS los eventos durante el aviso (${clock(tNotifyStart)}–${clock(tNotifyEnd)}): ${inNotify.length === 0 ? '(ninguno)' : ''}`);
+  for (const line of inNotify) note(`  ${line.trim().slice(0, 170)}`);
 
   // ───── 4) La lectura del plugin ─────
   const since = tNotifyStart - 120_000;

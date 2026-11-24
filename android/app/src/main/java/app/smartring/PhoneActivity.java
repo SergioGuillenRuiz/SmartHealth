@@ -11,8 +11,9 @@ import java.util.List;
  *
  * Solo salen HORAS (de cuándo a cuándo): ni qué apps ni qué se hizo. Un tramo es:
  * <ul>
- *   <li>un rato con la pantalla encendida en que la persona hizo algo: la desbloqueó, abrió una app o la tuvo encendida al menos {@link #MIN_SCREEN_MS}. Una pantalla que se enciende sola
- *       unos segundos (una notificación) NO cuenta: no es que esté despierta, y a las seis de la mañana movería la hora de despertar una hora;</li>
+ *   <li>un rato con la pantalla encendida en que la persona hizo algo: la desbloqueó, la tocó o la tuvo encendida al menos {@link #MIN_SCREEN_MS}. Una pantalla que se enciende sola
+ *       unos segundos (una notificación) NO cuenta: no es que esté despierta, y a las seis de la mañana movería la hora de despertar una hora. Tampoco cuenta que una app «se ponga delante» al
+ *       encenderse la pantalla: en un móvil sin bloqueo de pantalla la app de antes se reanuda sola (lo vio la prueba en un Android real), y eso no es hacer nada;</li>
  *   <li>un desbloqueo suelto (si el sistema no da la pantalla), como una medio minuto de uso;</li>
  *   <li>sin eventos de pantalla (Android anterior a la 9): el tiempo con alguna app delante.</li>
  * </ul>
@@ -27,6 +28,8 @@ final class PhoneActivity {
     static final int APP_OFF = 5;
     static final int SHUTDOWN = 6;
     static final int STARTUP = 7;
+    /** La persona tocó la pantalla de una app (USER_INTERACTION del sistema). */
+    static final int TOUCH = 8;
 
     /** Una pantalla encendida menos tiempo que esto, sin desbloqueo ni app, es un aviso que la enciende sola y no cuenta. */
     static final long MIN_SCREEN_MS = 25_000L;
@@ -99,7 +102,7 @@ final class PhoneActivity {
                     } else {
                         out.add(new long[] { e.atMs, Math.min(toMs, e.atMs + UNLOCK_MS) });
                     }
-                } else if (e.type == APP_ON) {
+                } else if (e.type == TOUCH) {
                     if (screenOnAt >= 0) {
                         acted = true;
                     }

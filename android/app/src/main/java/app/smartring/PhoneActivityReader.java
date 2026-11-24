@@ -18,6 +18,7 @@ final class PhoneActivityReader {
     // Los tipos de {@code UsageEvents.Event}, como números para no depender de la versión con que se compile (algunos existen desde Android 9).
     private static final int ACTIVITY_RESUMED = 1; // MOVE_TO_FOREGROUND hasta Android 9
     private static final int ACTIVITY_PAUSED = 2; // MOVE_TO_BACKGROUND hasta Android 9
+    private static final int USER_INTERACTION = 7;
     private static final int SCREEN_INTERACTIVE = 15;
     private static final int SCREEN_NON_INTERACTIVE = 16;
     private static final int KEYGUARD_HIDDEN = 18;
@@ -160,6 +161,9 @@ final class PhoneActivityReader {
                     case KEYGUARD_HIDDEN:
                         result.unlockEvents++;
                         list.add(new PhoneActivity.Event(PhoneActivity.UNLOCK, at));
+                        break;
+                    case USER_INTERACTION:
+                        list.add(new PhoneActivity.Event(PhoneActivity.TOUCH, at));
                         break;
                     case ACTIVITY_RESUMED:
                         result.appEvents++;
