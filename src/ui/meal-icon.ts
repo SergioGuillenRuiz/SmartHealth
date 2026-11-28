@@ -101,7 +101,7 @@ const RULES: ReadonlyArray<readonly [icon: string, role: Role, words: string]> =
 
 /**
  * Ilustraciones más finas que el tipo general (`RULES`): un gofre no es «un postre» ni un mango «una fruta cualquiera». Cada una dice el archivo de la ilustración (de `food-photos/`: ver
- * `tools/build-food-icons.ts`), el icono de línea de repuesto (de `RULES`) y las palabras que la señalan. Van ANTES que las generales: con la misma posición y la misma longitud gana la
+ * `scripts/vendor-food-icons.mjs`), el icono de línea de repuesto (de `RULES`) y las palabras que la señalan. Van ANTES que las generales: con la misma posición y la misma longitud gana la
  * primera. Si el archivo de la ilustración no está empaquetado, la miniatura usa la del tipo general (`mealArt` lo resuelve con `hasArt`).
  */
 const DETAIL: ReadonlyArray<readonly [art: string, icon: string, role: Role, words: string]> = [

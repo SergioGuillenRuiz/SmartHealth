@@ -46,14 +46,6 @@ on:
         description: 'Solo regenerar la base de productos de Open Food Facts (España) y confirmarla en esta rama. No compila el APK.'
         type: boolean
         default: false
-      iconos:
-        description: 'Solo bajar las ilustraciones 3D de comida que falten (Fluent Emoji, MIT) y confirmarlas en esta rama. No compila el APK.'
-        type: boolean
-        default: false
-      iconos_solo:
-        description: 'Con «iconos»: claves concretas a repetir aunque ya estén (separadas por comas, p. ej. mango,pancakes). Vacío: solo las que faltan.'
-        type: string
-        default: ''
       web_beta:
         description: 'Solo empaquetar la VERSIÓN WEB para betatesters (ZIP con la app y el servidor para el PC de quien la sirve; ver beta-web/) y publicarla como release beta-web-N. No compila el APK.'
         type: boolean
@@ -63,15 +55,15 @@ permissions:
   contents: read
 
 concurrency:
-  # Renombrar un release, regenerar la base de productos o bajar los iconos de comida no compila nada: no deben cancelar (ni ser cancelados por) una compilación
+  # Renombrar un release, regenerar la base de productos no compila nada: no deben cancelar (ni ser cancelados por) una compilación
   # en curso de la misma rama (ni por un push mientras descargan el volcado, que tarda).
-  group: apk-${{ github.ref }}${{ inputs.renombrar != '' && '-renombrar' || '' }}${{ inputs.productos && '-productos' || '' }}${{ inputs.iconos && '-iconos' || '' }}${{ inputs.web_beta && '-web-beta' || '' }}
+  group: apk-${{ github.ref }}${{ inputs.renombrar != '' && '-renombrar' || '' }}${{ inputs.productos && '-productos' || '' }}${{ inputs.web_beta && '-web-beta' || '' }}
   cancel-in-progress: true
 
 jobs:
   apk:
     name: Compilar el APK
-    if: inputs.renombrar == '' && !inputs.productos && !inputs.iconos && !inputs.web_beta
+    if: inputs.renombrar == '' && !inputs.productos && !inputs.web_beta
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -389,70 +381,6 @@ jobs:
             sleep $((i * 5))
           done
           echo "::error::No se pudo subir la base a la rama."
-          exit 1
-
-  iconos:
-    name: Bajar los iconos de comida (Fluent Emoji)
-    # Baja las ilustraciones 3D que falten de `EXTRA_ICONS` (tools/build-food-icons.ts: Node sin dependencias; ImageMagick para reducir) del repositorio público de Microsoft
-    # (Fluent Emoji, licencia MIT) y deja el resultado como artefacto. La app no las pide por internet: viajan dentro del APK. Solo lee el repositorio; lo que escribe en la rama
-    # es el trabajo siguiente.
-    if: github.event_name == 'workflow_dispatch' && inputs.iconos
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Instalar ImageMagick con WebP
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick webp
-      - name: Bajar los iconos
-        env:
-          SOLO: ${{ inputs.iconos_solo }}
-        run: node tools/build-food-icons.ts --dir src/ui/food-photos ${SOLO:+--only "$SOLO"}
-      - uses: actions/upload-artifact@v4
-        with:
-          name: iconos-comida
-          path: src/ui/food-photos/*.webp
-          retention-days: 7
-
-  confirmar-iconos:
-    name: Confirmar los iconos de comida en la rama
-    needs: iconos
-    if: github.event_name == 'workflow_dispatch' && inputs.iconos
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    # Lo único que escribe en el repositorio: solo descarga los archivos ya generados y los confirma. No ejecuta nada del proyecto.
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: iconos-comida
-          path: out
-      - name: Confirmar y subir
-        run: |
-          # Un mínimo de cordura antes de escribir nada: hay iconos, son WebP y ninguno es enorme.
-          COUNT=$(find out -name '*.webp' | wc -l)
-          test "$COUNT" -ge 50 || { echo "::error::Solo hay $COUNT iconos; no se confirma nada."; exit 1; }
-          for f in out/*.webp; do
-            test "$(head -c 4 "$f")" = "RIFF" || { echo "::error::$f no es WebP."; exit 1; }
-            test "$(stat -c %s "$f")" -lt 30000 || { echo "::error::$f pesa demasiado."; exit 1; }
-          done
-          cp out/*.webp src/ui/food-photos/
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/ui/food-photos
-          if git diff --cached --quiet; then echo "Los iconos no han cambiado."; exit 0; fi
-          git commit -m "Datos: ilustraciones 3D de comida de Fluent Emoji ($COUNT), $(date -u +%F)"
-          for i in 1 2 3 4; do
-            if git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
-            sleep $((i * 5))
-          done
-          echo "::error::No se pudieron subir los iconos a la rama."
           exit 1
 
   emulador:

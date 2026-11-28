@@ -5,8 +5,8 @@ import { hasIcon } from './icons';
 import { artUrl, mealPhotoUrl, PHOTO_FILE } from './meal-photo';
 
 const FILES = readdirSync(new URL('./food-photos/', import.meta.url))
-  .filter((name) => name.endsWith('.webp'))
-  .map((name) => name.replace(/\.webp$/, ''));
+  .filter((name) => name.endsWith('.svg'))
+  .map((name) => name.replace(/\.svg$/, ''));
 
 describe('imágenes de las comidas', () => {
   it('cada tipo de comida que reconoce `meal-icon.ts` tiene su imagen', () => {
@@ -20,8 +20,8 @@ describe('imágenes de las comidas', () => {
     // Las ilustraciones finas (`DETAIL` en `meal-icon.ts`) son archivos aparte: cuentan como usadas aunque el CI aún no las haya bajado.
     const used = new Set([...Object.values(PHOTO_FILE), ...DETAIL_ARTS.map((d) => d.art)]);
     const detail = new Set(DETAIL_ARTS.map((d) => d.art));
-    for (const file of used) if (!detail.has(file)) expect(FILES, `falta food-photos/${file}.webp`).toContain(file);
-    for (const file of FILES) expect(used.has(file), `food-photos/${file}.webp no lo usa nadie`).toBe(true);
+    for (const file of used) if (!detail.has(file)) expect(FILES, `falta food-photos/${file}.svg`).toContain(file);
+    for (const file of FILES) expect(used.has(file), `food-photos/${file}.svg no lo usa nadie`).toBe(true);
     for (const icon of Object.keys(PHOTO_FILE)) expect(MEAL_ICON_NAMES, `«${icon}» ya no es un icono de comida`).toContain(icon);
   });
 

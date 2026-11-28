@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: 'es2022',
     sourcemap: false,
-    // Las imágenes de las comidas (unas 75 de 3-5 KB) van como archivos aparte, no como texto dentro del código: el código de arranque no crece 300 KB.
-    assetsInlineLimit: (file) => (file.endsWith('.webp') ? false : undefined),
+    // Las ilustraciones de las comidas (130 SVG de 1-15 KB, `ui/food-photos/`) van como archivos aparte, no como texto dentro del código: el código de arranque no crece medio megabyte.
+    assetsInlineLimit: (file) => (/[\\/]food-photos[\\/]/.test(file) ? false : undefined),
   },
 }));

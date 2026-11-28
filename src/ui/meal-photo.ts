@@ -1,7 +1,7 @@
-// La imagen de cada tipo de comida: una ilustración en 3D (de los «Fluent Emoji» de Microsoft, licencia MIT: ver `LICENSE.txt` y `docs/atribuciones.md`) en lugar del icono de línea. Van dentro de
+// La imagen de cada tipo de comida: una ilustración (los emojis de «Noto Emoji» de Google, SVG con licencia Apache-2.0: ver `food-photos/LICENSE.txt` y `docs/atribuciones.md`) en lugar del icono de línea. Van dentro de
 // la app (la app no usa internet). El tipo sale de `meal-icon.ts` (qué alimento principal lleva el nombre); el archivo, de esta tabla. Una prueba comprueba que todos los tipos tienen imagen.
 
-const IMAGES = import.meta.glob<string>('./food-photos/*.webp', { eager: true, query: '?url', import: 'default' });
+const IMAGES = import.meta.glob<string>('./food-photos/*.svg', { eager: true, query: '?url', import: 'default' });
 
 /** Para cada nombre de icono de `meal-icon.ts`, el archivo (sin extensión) de `food-photos/`. */
 export const PHOTO_FILE: Readonly<Record<string, string>> = {
@@ -88,13 +88,13 @@ export const PHOTO_FILE: Readonly<Record<string, string>> = {
 /** La URL de la imagen de un tipo de comida (el nombre de su icono), o `null` si no hay. */
 export function mealPhotoUrl(iconName: string): string | null {
   const file = PHOTO_FILE[iconName];
-  return file === undefined ? null : (IMAGES[`./food-photos/${file}.webp`] ?? null);
+  return file === undefined ? null : (IMAGES[`./food-photos/${file}.svg`] ?? null);
 }
 
 /** La imagen de una ilustración (la clave de `mealArt`): la de un tipo general se busca en la tabla; las finas son archivos sueltos de `food-photos/`. `null` si no está empaquetada. */
 export function artUrl(art: string): string | null {
-  return IMAGES[`./food-photos/${PHOTO_FILE[art] ?? art}.webp`] ?? null;
+  return IMAGES[`./food-photos/${PHOTO_FILE[art] ?? art}.svg`] ?? null;
 }
 
 /** Las claves de las ilustraciones empaquetadas (para las pruebas). */
-export const PACKED_ART_KEYS: readonly string[] = Object.keys(IMAGES).map((path) => path.replace(/^.*\//, '').replace(/\.webp$/, ''));
+export const PACKED_ART_KEYS: readonly string[] = Object.keys(IMAGES).map((path) => path.replace(/^.*\//, '').replace(/\.svg$/, ''));

@@ -81,9 +81,10 @@ Los archivos están tal cual los sirve Google Fonts (WOFF2, alfabetos latino y l
 
 ## Imágenes de las comidas
 
-- **[Fluent UI Emoji](https://github.com/microsoft/fluentui-emoji)** de Microsoft (licencia MIT, copia en `src/ui/food-photos/LICENSE.txt`): las ilustraciones en 3D de la lista de comidas y de su hoja de detalles
-  (`src/ui/food-photos/*.webp`, versiones reducidas a 160 px de los PNG «3D»). No son fotos de los productos: cada una sirve para todo un tipo de comida (la hamburguesa para cualquier hamburguesa); lo que se
-  reconoce como qué comida es lo decide `src/ui/meal-icon.ts` y la tabla de `src/ui/meal-photo.ts` dice qué imagen le toca. Van dentro de la app: no se pide ninguna imagen por internet.
+- **[Noto Emoji](https://github.com/googlefonts/noto-emoji)** de Google (licencia Apache-2.0, copia y procedencia en `src/ui/food-photos/LICENSE.txt`): las ilustraciones de la lista de comidas y de su hoja de detalles
+  (`src/ui/food-photos/*.svg`, 130 dibujos). Se copian sin cambios en sus trazos y colores del paquete `@iconify-json/noto` 1.2.10 con `scripts/vendor-food-icons.mjs`. No son fotos de los productos: cada una sirve para todo un tipo
+  de comida (la hamburguesa para cualquier hamburguesa); lo que se reconoce como qué comida es lo decide `src/ui/meal-icon.ts` y la tabla de `src/ui/meal-photo.ts` dice qué imagen le toca. Van dentro de la app: no se pide ninguna imagen
+  por internet. (Hasta entonces se usaron los «Fluent Emoji» 3D de Microsoft, licencia MIT; ya no están.)
 
 ## Fuentes de las metas de agua y de la nota de cada comida
 
@@ -97,8 +98,8 @@ No se copia ningún código ni dato de estas fuentes: son las referencias de las
 
 ## Miniaturas de las comidas
 
-- Las **ilustraciones 3D** de los tipos de comida son de los «Fluent Emoji» de Microsoft ([repositorio](https://github.com/microsoft/fluentui-emoji), licencia MIT; copia de la licencia en `src/ui/food-photos/LICENSE.txt`). Las generales van
-  en el repositorio y las finas las baja y reduce el CI (`tools/build-food-icons.ts`) del mismo repositorio.
+- Las **ilustraciones** de los tipos de comida son de «Noto Emoji» de Google ([repositorio](https://github.com/googlefonts/noto-emoji), licencia Apache-2.0; copia de la licencia en `src/ui/food-photos/LICENSE.txt`). Van todas en el repositorio
+  (`scripts/vendor-food-icons.mjs` las copia del paquete `@iconify-json/noto`).
 - La **foto del producto** de las comidas anotadas con código de barras se pide, con conexión, a [Open Food Facts](https://world.openfoodfacts.org) (imágenes bajo la licencia CC BY-SA de la base; la app solo las enseña, no las guarda). Solo se
   envía el código del producto. Sin conexión o sin foto, se usa la ilustración.
 

@@ -220,7 +220,7 @@ export function NutritionCard({
         onOpen={onCardClick}
       >
         <CardHeader
-          icon={onWater ? "Droplets" : "Utensils"}
+          icon={onWater ? "Droplets" : "Apple"}
           title={onWater ? "Hidratación" : "Nutrición"}
           color={onWater ? "var(--water)" : "var(--kcal)"}
           right={
