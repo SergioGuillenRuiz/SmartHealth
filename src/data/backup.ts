@@ -336,7 +336,8 @@ const cleanCounter = (v: CounterSample): CounterSample => ({ tsMs: v.tsMs, steps
 const isHeart = (v: unknown): v is HeartSample =>
   isRecord(v) && num(v.tsMs) && between(v.bpm, 20, 260) && (v.source === 'ring-auto' || v.source === 'ring-spot' || v.source === 'workout');
 const plausibleHeart = (v: HeartSample): boolean => tsOk(v.tsMs);
-const cleanHeart = (v: HeartSample): HeartSample => ({ tsMs: v.tsMs, bpm: v.bpm, source: v.source });
+/** La respiración es opcional (las copias de antes no la traen) y, si trae un valor imposible, se omite sin descartar la lectura de pulso. */
+const cleanHeart = (v: HeartSample): HeartSample => ({ tsMs: v.tsMs, bpm: v.bpm, source: v.source, ...(between(v.resp, 6, 40) ? { resp: v.resp as number } : {}) });
 const isSpo2 = (v: unknown): v is Spo2Sample => isRecord(v) && num(v.tsMs) && between(v.percent, 50, 100);
 const plausibleSpo2 = (v: Spo2Sample): boolean => tsOk(v.tsMs);
 const cleanSpo2 = (v: Spo2Sample): Spo2Sample => ({ tsMs: v.tsMs, percent: v.percent });

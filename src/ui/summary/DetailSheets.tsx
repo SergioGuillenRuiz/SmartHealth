@@ -1,16 +1,20 @@
 import type { JSX } from 'preact';
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { saveSleepCorrection } from '../../app/sleep-fix';
+import { phoneAccess } from '../../app/phone-activity';
+import { svc } from '../../app/services';
 import { clockOf } from '../../domain/sleep-correction';
 import type { DayBundle } from '../../app/queries';
 import { measureSheetOpen, settings, summaryPanel } from '../../app/state';
 import { MIN_SAMPLES_FOR_CURVE, type HeartDay } from '../../domain/heart';
 import { nightFacts, type SleepDay } from '../../domain/sleep';
+import type { BacktestSummary } from '../../domain/sleep-estimate';
 import { Hypnogram, STAGE_COLOR, STAGE_LABEL, type HypnoSegment } from '../charts/Hypnogram';
 import { fmt2, fmtClock, fmtDuration, NBSP } from '../format';
 import { Icon } from '../icons';
 import { Banner, EmptyState, ProgressBar, Stat } from '../primitives';
 import { Sheet } from '../Sheet';
+import { PhoneActivityAccess } from '../user/PhoneActivityAccess';
 import { BigDuration, DayCaption, HeartCurve } from './parts';
 import { analyzeSleep } from './sleep-analysis';
 
@@ -129,17 +133,53 @@ function SleepDetail({ bundle }: { bundle: DayBundle }): JSX.Element {
         <>
           <Banner>
             {night.estimated
-              ? 'El anillo no guardó esta noche: la app la ha estimado a partir de los pasos y el pulso del anillo o, si no lo llevabas puesto, de cuándo dejó de haber actividad por la noche y cuándo volvió. Es una aproximación: las horas pueden variar en torno a una hora y no hay fases del sueño.'
+              ? phoneAccess.value.granted
+                ? 'El anillo no guardó esta noche: la app la ha estimado a partir de cuándo dejaste de usar el móvil y cuándo volviste a cogerlo, con lo que anotaste y los pasos del anillo de día (y el pulso y la respiración si lo llevabas puesto). Es una aproximación: las horas pueden variar en torno a media hora y no hay fases del sueño.'
+                : 'El anillo no guardó esta noche: la app la ha estimado a partir de los pasos y el pulso del anillo o, si no lo llevabas puesto, de cuándo dejó de haber actividad por la noche y cuándo volvió. Es una aproximación: las horas pueden variar en torno a una hora y no hay fases del sueño.'
               : night.manual
                 ? 'Las horas de esta noche las pusiste tú. No hay fases del sueño.'
                 : 'El anillo ha dado la duración de la noche, pero no las fases del sueño (profundo, ligero y REM).'}
           </Banner>
+          {night.estimated && <EstimateAccuracy />}
+          {night.estimated && <PhoneActivityAccess compact />}
           {(night.estimated || night.manual) && <FixNight startMs={night.startMs} endMs={night.endMs} />}
         </>
       )}
 
       <NapsList naps={sleep.naps} />
     </div>
+  );
+}
+
+/** Menos noches que estas conocidas y la mediana no dice nada: no se enseña. */
+const MIN_NIGHTS_TO_SHOW = 3;
+
+/**
+ * Cuánto se equivoca la estimación CON LOS DATOS DE ESTA PERSONA: en las noches que sí guardó el anillo o que corrigió a mano, qué habría estimado la app sin saberlas.
+ * Es la única cifra de acierto que no es de un simulador. No se enseña si hay menos de tres noches con las que comparar.
+ */
+function EstimateAccuracy(): JSX.Element | null {
+  const [summary, setSummary] = useState<BacktestSummary | null>(null);
+  useEffect(() => {
+    let alive = true;
+    const { store, now } = svc();
+    store
+      .sleepAccuracy(now())
+      .then((found) => {
+        if (alive) setSummary(found);
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, []);
+  if (!summary || summary.nights < MIN_NIGHTS_TO_SHOW) return null;
+  return (
+    <p class="sleep-accuracy">
+      En tus {summary.nights} noches que guardó el anillo o que corregiste, esta estimación (sin saberlas) se habría equivocado, de mediana, {summary.startMin}
+      {NBSP}min al acostarte y {summary.endMin}
+      {NBSP}min al levantarte. Cada noche que corriges a mano la ajusta mejor a ti.
+    </p>
   );
 }
 

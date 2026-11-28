@@ -42,6 +42,21 @@ describe('parseBackup: una copia válida se acepta tal cual', () => {
   });
 });
 
+describe('parseBackup: la respiración de las lecturas de pulso', () => {
+  it('se conserva si es creíble, y las copias de antes (sin ella) se siguen aceptando', () => {
+    const withResp = valid();
+    (withResp.data.heart[0] as { resp?: number }).resp = 13;
+    expect(parseBackup(withResp).heart).toEqual([{ tsMs: at(10), bpm: 64, source: 'ring-auto', resp: 13 }]);
+    expect(parseBackup(valid()).heart).toEqual([{ tsMs: at(10), bpm: 64, source: 'ring-auto' }]);
+  });
+
+  it('una respiración imposible se omite sin perder la lectura de pulso', () => {
+    const file = valid();
+    (file.data.heart[0] as { resp?: number }).resp = 900;
+    expect(parseBackup(file).heart).toEqual([{ tsMs: at(10), bpm: 64, source: 'ring-auto' }]);
+  });
+});
+
 describe('parseBackup: datos imposibles se rechazan antes de escribir nada', () => {
   it.each([
     ['una altura de −50 cm', (d: ReturnType<typeof valid>['data']) => void (d.profile[0]!.heightCm = -50), /perfil/],

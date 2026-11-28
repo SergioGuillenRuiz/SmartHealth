@@ -263,7 +263,7 @@ test.describe('el entreno con navegación guiada: dos pestañas', () => {
       const live = await startWorkout(page, context, 'Caminar', true);
       await expect(guide(live).getByLabel('Destino')).toBeVisible({ timeout: 15_000 });
       // Los valores más anchos de un entreno normal (el cronómetro de más de 9 horas se achica: ver `live-hud.test.ts`).
-      // Se les pone el tamaño que la app les daría (`hudValueSize`: 7 caracteres, 21 px) como al pintarlos de verdad.
+      // Se les pone el tamaño que la app les daría (`hudValueSize`: 7 caracteres, 19 px) como al pintarlos de verdad.
       const values = ['9:59:59', '188', '12.345', '123,45'];
       await live.locator('.hud').evaluate(
         (el, shown) => {

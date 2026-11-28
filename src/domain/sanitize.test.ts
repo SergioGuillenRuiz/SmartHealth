@@ -26,8 +26,22 @@ describe('sanitizeHistory', () => {
     rec.heart.push({ tsMs: h(2), bpm: 68 });
     rec.spo2.push({ tsMs: h(2), percent: 97 });
     const rows = sanitizeHistory(rec, NOW);
-    expect(rows.heart).toEqual([{ tsMs: h(2), bpm: 68, source: 'ring-auto' }]);
+    // El pulso lo manda el historial dedicado, pero la respiración solo viene en las constantes: se conserva.
+    expect(rows.heart).toEqual([{ tsMs: h(2), bpm: 68, source: 'ring-auto', resp: 14 }]);
     expect(rows.spo2).toEqual([{ tsMs: h(2), percent: 97 }]);
+  });
+
+  it('la respiración de las constantes se guarda con el pulso (la usa la estimación del sueño); sin dato o imposible, solo el pulso', () => {
+    const rec = emptyHistory();
+    rec.all.push({ tsMs: h(5), steps: 100, bpm: 60, spo2: 97, respiratoryRate: 13 });
+    rec.all.push({ tsMs: h(4), steps: 100, bpm: 61, spo2: 97, respiratoryRate: 0 }); // 0: el anillo no la midió
+    rec.all.push({ tsMs: h(3), steps: 100, bpm: 62, spo2: 97, respiratoryRate: 90 }); // imposible
+    const rows = sanitizeHistory(rec, NOW);
+    const byTs = new Map(rows.heart.map((x) => [x.tsMs, x]));
+    expect(byTs.get(h(5))).toEqual({ tsMs: h(5), bpm: 60, source: 'ring-auto', resp: 13 });
+    expect(byTs.get(h(4))).toEqual({ tsMs: h(4), bpm: 61, source: 'ring-auto' });
+    expect(byTs.get(h(3))).toEqual({ tsMs: h(3), bpm: 62, source: 'ring-auto' });
+    expect(rows.dropped).toEqual({});
   });
 
   it('descarta fechas imposibles (reloj roto) y futuras, y lo cuenta', () => {

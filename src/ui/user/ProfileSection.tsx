@@ -15,6 +15,7 @@ import { Icon } from '../icons';
 import { Banner, EmptyState, Segmented } from '../primitives';
 import { Stepper } from '../Stepper';
 import { weightGoalMessageNow } from '../weight-goal-view';
+import { PhoneActivityAccess } from './PhoneActivityAccess';
 
 /** «Mis datos»: altura, peso, sexo y edad (lo que afina distancia y calorías). Cada cambio se guarda con su fecha. */
 export function ProfileSection(): JSX.Element {
@@ -112,6 +113,7 @@ export function GoalsSection(): JSX.Element {
           <small>Si una misma comida poco adecuada se repite varias veces en la semana, la hoja de detalles lo avisa y propone recetas más sanas del mismo tipo, ajustadas a tu objetivo.</small>
         </span>
       </label>
+      <PhoneActivityAccess />
       {hasRing.value && (
         <>
           <div class="field">
@@ -127,7 +129,7 @@ export function GoalsSection(): JSX.Element {
               ]}
               block
             />
-            <span class="field__hint">Se aplica en la próxima sincronización. Menos tiempo = curva de pulso más fina y algo más de batería gastada por el anillo.</span>
+            <span class="field__hint">Se aplica en la próxima sincronización. Menos tiempo = curva de pulso más fina, un sueño estimado bastante más preciso (las noches que el anillo no guarda se calculan con estas lecturas) y algo más de batería gastada por el anillo.</span>
           </div>
           <label class="switch">
             <input type="checkbox" checked={cfg.autoSync} onChange={(e) => void saveSettings({ autoSync: e.currentTarget.checked })} />

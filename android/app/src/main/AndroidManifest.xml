@@ -33,6 +33,12 @@
           hay GPS) y dispositivo conectado (el anillo): Android exige su aviso fijo y lo mantiene vivo. Lo arranca la app, con la app
           a la vista.
         -->
+        <!-- La lectura horaria del uso del móvil (solo horas) para estimar el sueño: ver PhoneActivityJob. -->
+        <service
+            android:name=".PhoneActivityJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <service
             android:name=".TrackingService"
             android:exported="false"
@@ -70,4 +76,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- Para pedir a Android que no restrinja la app en segundo plano (el ahorro de batería de algunos fabricantes cierra los servicios). -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <!-- Permiso especial («acceso a datos de uso»): lo da la persona en los ajustes. Solo se leen horas de uso del móvil, nunca qué apps. -->
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
 </manifest>

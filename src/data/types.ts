@@ -1,4 +1,6 @@
 import type { SavedRing } from '../ble/transport';
+import type { BacktestSummary } from '../domain/sleep-estimate';
+import type { PhoneActivity } from '../domain/phone-activity';
 import type { SavedScale } from '../domain/scale';
 import type { ProfileEntry } from '../domain/profile';
 import type { RawRange } from '../domain/summary';
@@ -168,6 +170,17 @@ export interface Store {
    * entrenos que empezaron antes de `start` y siguen dentro vienen en `carryWorkouts`.
    */
   loadWindow(start: number, end: number): Promise<RawRange>;
+  /**
+   * Cuánto se equivoca la estimación del sueño CON LOS DATOS DE ESTA PERSONA: en cada noche que guardó el anillo o que ella corrigió a mano (de los últimos `days` días), qué
+   * habría estimado la app sin saberla (ver `backtestEstimate`). `null` si no hay ninguna noche con la que comparar.
+   */
+  sleepAccuracy(nowMs: number, days?: number): Promise<BacktestSummary | null>;
+  /** Guarda lo que se supo del uso del móvil (tramos de uso y tramos leídos enteros): se une a lo que ya hay. Ver `phone-activity.ts`. */
+  addPhoneActivity(batch: PhoneActivity): Promise<void>;
+  /** El uso del móvil guardado entre `fromMs` y `toMs`. */
+  loadPhoneActivity(fromMs: number, toMs: number): Promise<PhoneActivity>;
+  /** Hasta cuándo se leyó el registro del móvil la última vez (`null`: nunca). */
+  lastPhoneRead(): Promise<number | null>;
   stats(): Promise<StoreStats>;
   /** Lo más reciente de cada tipo de dato: sirve para ver si el anillo está midiendo. */
   latestData(): Promise<LatestData>;

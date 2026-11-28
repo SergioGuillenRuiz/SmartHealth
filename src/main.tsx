@@ -9,6 +9,7 @@ import { startPersonal } from './app/personal';
 import { registerServiceWorker } from './app/pwa';
 import { recoverWorkoutDraft } from './app/workout-actions';
 import { installServices } from './app/services';
+import { phoneAccess, startPhoneActivity } from './app/phone-activity';
 import type { ScaleTransport } from './ble/scale/transport';
 import type { RingTransport } from './ble/transport';
 import { WebBluetoothTransport } from './ble/webbluetooth';
@@ -68,6 +69,8 @@ async function boot(): Promise<void> {
     if (params.has('scalepaired')) await store.setScale({ id: SIM_SCALE_ID, name: SIM_SCALE_NAME, decoder: simScaleDecoder(format), pairedMs: now() });
     // El navegador por audio de la demostración usa una ciudad de mentira; las pruebas leen su estado (la ruta y la fase) con `window.__smartringNav`.
     const nav = await import('./app/nav/navigator');
+    // El acceso al uso del móvil solo existe en Android: las pruebas lo simulan poniendo aquí lo que daría el sistema (`window.__smartringPhoneAccess.value = { checked, supported, granted }`).
+    (window as unknown as { __smartringPhoneAccess?: unknown }).__smartringPhoneAccess = phoneAccess;
     (window as unknown as { __smartringNav?: unknown }).__smartringNav = { phase: () => nav.navState.value.phase, route: () => nav.navState.value.route?.points ?? null, state: () => nav.navState.value.guidance };
   } else if (isNative()) {
     // Dentro de la app de Android el Bluetooth es el nativo: un WebView no tiene Web Bluetooth.
@@ -99,6 +102,9 @@ async function boot(): Promise<void> {
   // Con la app a la vista, los datos del anillo se traen solos. En la demostración solo si se pide con `?auto=1`: las demás
   // pruebas cuentan lo que hace el anillo simulado y no esperan conexiones que no han pedido.
   if (transport.kind === 'native' || beta || (demo && params.has('auto'))) startAutoSync();
+
+  // El uso del móvil (cuándo se enciende la pantalla) afina el sueño de las noches sin anillo: solo horas, solo si la persona dio el acceso en Android.
+  startPhoneActivity();
 
   registerServiceWorker();
 

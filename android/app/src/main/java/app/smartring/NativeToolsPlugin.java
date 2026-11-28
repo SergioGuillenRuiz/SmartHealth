@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.Settings;
 import android.provider.MediaStore;
 import android.view.WindowManager;
 import com.getcapacitor.JSObject;
@@ -20,6 +21,7 @@ import com.getcapacitor.annotation.Permission;
 import com.getcapacitor.annotation.PermissionCallback;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -72,6 +74,101 @@ public class NativeToolsPlugin extends Plugin {
 
     private boolean granted(String permission) {
         return getContext().checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    // ───────────────────────── el uso del móvil (para estimar el sueño sin anillo) ─────────────────────────
+
+    /** ¿Ofrece este Android el acceso a los datos de uso y lo ha dado la persona? */
+    @PluginMethod
+    public void phoneActivityStatus(PluginCall call) {
+        JSObject out = new JSObject();
+        out.put("supported", Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
+        out.put("granted", PhoneActivityReader.granted(getContext()));
+        out.put("screenEvents", PhoneActivityReader.screenEvents());
+        call.resolve(out);
+    }
+
+    /** Abre los ajustes de Android donde se da a esta app el acceso a los datos de uso (en versiones nuevas, directamente en su fila). */
+    @PluginMethod
+    public void openPhoneActivitySettings(PluginCall call) {
+        try {
+            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                intent.setData(Uri.parse("package:" + getContext().getPackageName()));
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+            call.resolve();
+        } catch (RuntimeException e) {
+            try {
+                Intent fallback = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(fallback);
+                call.resolve();
+            } catch (RuntimeException second) {
+                call.reject("No se pudieron abrir los ajustes de acceso a los datos de uso.", second);
+            }
+        }
+    }
+
+    /**
+     * El uso del móvil desde «sinceMs» hasta ahora: lo que lee de Android en este momento junto con lo que guardó la lectura horaria de fondo. Solo horas: «uses» son los tramos con el móvil en uso,
+     * «offs» los ratos apagado y «firstMs» desde cuándo se sabe todo (antes no se dice nada). Sin acceso, «granted: false».
+     */
+    @PluginMethod
+    public void readPhoneActivity(PluginCall call) {
+        long now = System.currentTimeMillis();
+        long since = call.getLong("sinceMs", now - 24L * 3_600_000);
+        if (since <= 0 || since > now) {
+            since = now - 24L * 3_600_000;
+        }
+        PhoneActivityReader.Result live = PhoneActivityReader.read(getContext(), since, now);
+        JSObject out = new JSObject();
+        out.put("granted", live.granted);
+        out.put("fromMs", since);
+        out.put("toMs", now);
+        if (!live.granted) {
+            out.put("firstMs", 0);
+            out.put("uses", "");
+            out.put("offs", "");
+            out.put("lastEventMs", 0);
+            out.put("screenEvents", 0);
+            out.put("unlockEvents", 0);
+            out.put("appEvents", 0);
+            call.resolve(out);
+            return;
+        }
+        PhoneActivityStore.Saved saved = PhoneActivityStore.saved(getContext());
+        List<long[]> uses = PhoneActivityStore.union(PhoneActivity.clip(saved.uses, since, now), live.uses, PhoneActivity.MERGE_GAP_MS);
+        List<long[]> offs = PhoneActivityStore.union(PhoneActivity.clip(saved.offs, since, now), live.offs, 0L);
+        // Se sabe qué pasó desde el primer evento que Android aún conserva (y no desde el primer evento de lo pedido: una noche con el móvil quieto no tiene ninguno y quedaba sin cubrir). Con lectura
+        // de fondo continua hasta ahora, desde que esta empezó, que puede ser anterior a lo que Android guarda.
+        long first = PhoneActivityReader.earliestEvent(getContext(), now);
+        if (first <= 0) {
+            first = live.firstMs;
+        }
+        if (saved.coverFromMs > 0 && saved.lastReadMs > 0 && saved.lastReadMs >= since - PhoneActivityStore.OVERLAP_MS) {
+            first = first > 0 ? Math.min(first, saved.coverFromMs) : saved.coverFromMs;
+        }
+        out.put("firstMs", first);
+        out.put("uses", PhoneActivity.format(uses));
+        out.put("offs", PhoneActivity.format(offs));
+        // Qué da este móvil (solo cuántos eventos de cada clase, nada más): lo enseña el diagnóstico de la hoja del sueño.
+        out.put("lastEventMs", live.lastEventMs);
+        out.put("screenEvents", live.screenEvents);
+        out.put("unlockEvents", live.unlockEvents);
+        out.put("appEvents", live.appEvents);
+        call.resolve(out);
+    }
+
+    /** Programa la lectura horaria en segundo plano (si no lo estaba ya). */
+    @PluginMethod
+    public void schedulePhoneActivity(PluginCall call) {
+        try {
+            PhoneActivityJob.schedule(getContext());
+            call.resolve();
+        } catch (RuntimeException e) {
+            call.reject("No se pudo programar la lectura del uso del móvil.", e);
+        }
     }
 
     /**

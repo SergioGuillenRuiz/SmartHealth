@@ -338,6 +338,74 @@ describe('loadRange: las noches SIN anillo se estiman con los huecos de activida
   });
 });
 
+describe('loadRange: las noches SIN anillo de noche se estiman con el uso del móvil (de punta a punta, con el almacén)', () => {
+  /** El anillo solo de día (pulso y pasos de 09:00 a 22:30). */
+  const ringOnlyByDay = (): IngestRows => {
+    const rows = emptyRows();
+    for (let day = 1; day <= 10; day++) {
+      for (let hour = 9; hour <= 22; hour++) {
+        rows.heart.push({ tsMs: at(day, hour), bpm: 70 + (hour % 4) * 3, source: 'ring-auto' });
+        rows.buckets.push({ startMs: at(day, hour, 5), endMs: at(day, hour, 35), steps: 150, ringDistanceM: 100, ringCalories: 6 });
+      }
+    }
+    return rows;
+  };
+  /** Un móvil usado cada ~40 min de 07:30 a 23:30, quieto de noche; lo leído, del día 1 a las 23:59 del 10. */
+  const phoneLife = async (opts: { dense?: boolean; coverageTo?: number } = {}): Promise<void> => {
+    const uses: Array<{ startMs: number; endMs: number }> = [];
+    for (let day = 1; day <= 10; day++) {
+      for (let t = at(day, 7, 30); t < at(day, 23, 30); t += 40 * 60_000) uses.push({ startMs: t, endMs: t + 2 * 60_000 });
+      if (opts.dense) uses.push({ startMs: at(day, 0, 20), endMs: at(day, 6, 40) }); // tuvo el móvil en uso casi toda la noche
+    }
+    await store.addPhoneActivity({ uses, coverage: [{ startMs: at(1, 0), endMs: opts.coverageTo ?? at(10, 23, 59) }] });
+  };
+  const nightOf = async (day: number) => (await store.loadRange(key(day), key(day))).sleep.filter((n) => n.estimated === true && n.endMs > at(day, 0) && n.endMs < at(day, 12));
+  const sync = (tsMs: number, outcomes: Array<{ type: string; status: string }>) =>
+    store.addSync({ tsMs, ringName: 'R99', firmware: null, batteryPercent: null, durationMs: 1, interrupted: false, outcomes: outcomes.map((o) => ({ ...o, bytes: 0, ms: 5 })), added: { buckets: 0, counters: 0, heart: 0, spo2: 0, sleep: 0 }, dropped: {}, liveSteps: null });
+
+  it('sale la noche entre el último uso y el primero aunque el anillo no se haya sincronizado nunca', async () => {
+    await store.ingest(ringOnlyByDay());
+    await phoneLife();
+    const [night, ...rest] = await nightOf(8);
+    expect(rest).toEqual([]);
+    expect(night).toBeDefined();
+    expect(night!.segments).toEqual([]);
+    // Último uso del día 7: 22:50–22:52 (+15 min para dormirse); primero del 8: 07:30 (−8 min).
+    expect(night!.startMs).toBeGreaterThanOrEqual(at(7, 23, 0));
+    expect(night!.startMs).toBeLessThanOrEqual(at(8, 0, 10));
+    expect(night!.endMs).toBeGreaterThanOrEqual(at(8, 7, 10));
+    expect(night!.endMs).toBeLessThanOrEqual(at(8, 7, 31));
+  });
+
+  it('con una sincronización posterior que no trae el sueño pasa lo mismo, y no se guarda nada', async () => {
+    await store.ingest(ringOnlyByDay());
+    await phoneLife();
+    await sync(at(8, 9, 10), [{ type: 'sleep', status: 'empty' }]);
+    expect((await nightOf(8)).length).toBe(1);
+    expect((await store.stats()).counts.sleep).toBe(0);
+  });
+
+  it('la noche que acaba de terminar sale ya (la lectura llega a los pocos minutos del primer uso)', async () => {
+    await store.ingest(ringOnlyByDay());
+    await phoneLife({ coverageTo: at(8, 7, 34) });
+    expect((await nightOf(8)).length).toBe(1);
+  });
+
+  it('una noche que el anillo SÍ dio manda sobre la del móvil', async () => {
+    await store.ingest({ ...ringOnlyByDay(), sleep: [{ startMs: at(7, 23, 30), endMs: at(8, 7, 30), segments: [{ stage: 'light', startMs: at(7, 23, 30), durationSec: 8 * 3600 }] }] });
+    await phoneLife();
+    await sync(at(8, 9, 10), [{ type: 'sleep', status: 'ok' }]);
+    expect(await nightOf(8)).toEqual([]);
+  });
+
+  it('si el móvil estuvo en uso casi toda la noche, no se inventa una noche con los huecos del anillo', async () => {
+    await store.ingest(ringOnlyByDay());
+    await sync(at(8, 9, 10), [{ type: 'sleep', status: 'empty' }]);
+    await phoneLife({ dense: true });
+    expect(await nightOf(8)).toEqual([]);
+  });
+});
+
 describe('loadRange: entrenos que cruzan la medianoche', () => {
   it('un entreno que empezó el día anterior y sigue dentro del rango sale aparte, sin contarse como del rango', async () => {
     await store.putWorkout({ id: 'late', sport: 'run', startMs: at(9, 23, 30), endMs: at(10, 0, 30), pausedMs: 0, source: 'manual', distanceM: 8000, distanceSource: 'manual' });
@@ -1157,5 +1225,48 @@ describe('putMany: lo mismo que guardar uno a uno, en una sola transacción', ()
     await store.putMany({});
     await store.putMany({ workouts: [{ ...workout('w2', at(9, 18)), day: '2026-07-01' } as WorkoutRecord] });
     expect(((await store.getWorkout('w2')) as WorkoutRecord & { day?: unknown }).day).toBeUndefined();
+  });
+});
+
+describe('uso del móvil (solo horas, para estimar el sueño)', () => {
+  const MIN = 60_000;
+
+  it('guarda los tramos de uso y los leídos, y los devuelve unidos; lo que cruza la medianoche vuelve entero', async () => {
+    await store.addPhoneActivity({
+      uses: [{ startMs: at(9, 23, 50), endMs: at(10, 0, 20) }, { startMs: at(10, 7, 30), endMs: at(10, 7, 40) }],
+      coverage: [{ startMs: at(9, 12), endMs: at(10, 9) }],
+    });
+    const loaded = await store.loadPhoneActivity(at(9, 0), at(11, 0));
+    expect(loaded.uses).toEqual([{ startMs: at(9, 23, 50), endMs: at(10, 0, 20) }, { startMs: at(10, 7, 30), endMs: at(10, 7, 40) }]);
+    expect(loaded.coverage).toEqual([{ startMs: at(9, 12), endMs: at(10, 9) }]);
+    expect(await store.lastPhoneRead()).toBe(at(10, 9));
+  });
+
+  it('una lectura nueva se une a lo que ya había (sin duplicar) y tramos casi pegados forman uno', async () => {
+    await store.addPhoneActivity({ uses: [{ startMs: at(9, 10, 0), endMs: at(9, 10, 5) }], coverage: [{ startMs: at(9, 8), endMs: at(9, 12) }] });
+    await store.addPhoneActivity({ uses: [{ startMs: at(9, 10, 4), endMs: at(9, 10, 9) }, { startMs: at(9, 11), endMs: at(9, 11, 2) }], coverage: [{ startMs: at(9, 11, 45), endMs: at(9, 15) }] });
+    const loaded = await store.loadPhoneActivity(at(9, 0), at(10, 0));
+    expect(loaded.uses).toEqual([{ startMs: at(9, 10, 0), endMs: at(9, 10, 9) }, { startMs: at(9, 11), endMs: at(9, 11, 2) }]);
+    // 08:00–12:00 y 11:45–15:00 se solapan: un solo tramo leído de 08:00 a 15:00.
+    expect(loaded.coverage).toEqual([{ startMs: at(9, 8), endMs: at(9, 15) }]);
+  });
+
+  it('solo devuelve lo cercano al rango pedido y nunca lo que no se guardó; sin nada leído, no hay última lectura', async () => {
+    expect(await store.lastPhoneRead()).toBeNull();
+    await store.addPhoneActivity({ uses: [{ startMs: at(1, 10), endMs: at(1, 10, 3) }], coverage: [{ startMs: at(1, 8), endMs: at(1, 12) }] });
+    expect((await store.loadPhoneActivity(at(20, 0), at(21, 0))).uses).toEqual([]);
+    expect((await store.loadPhoneActivity(at(1, 0), at(2, 0))).uses).toHaveLength(1);
+  });
+
+  it('ignora lo roto que pudiera haber guardado y no tumba la carga', async () => {
+    await store.addPhoneActivity({ uses: [{ startMs: at(9, 10), endMs: at(9, 10, 3) }], coverage: [] });
+    expect((await store.loadPhoneActivity(at(9, 0), at(10, 0))).coverage).toEqual([]);
+    expect(MIN).toBe(60_000);
+  });
+
+  it('el borrado de todos los datos también borra el uso del móvil', async () => {
+    await store.addPhoneActivity({ uses: [{ startMs: at(9, 10), endMs: at(9, 10, 3) }], coverage: [{ startMs: at(9, 8), endMs: at(9, 12) }] });
+    await store.wipe();
+    expect(await store.loadPhoneActivity(at(9, 0), at(10, 0))).toEqual({ uses: [], coverage: [] });
   });
 });

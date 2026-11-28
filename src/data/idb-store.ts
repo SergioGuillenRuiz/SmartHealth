@@ -5,8 +5,10 @@ import { cleanSocialProfile, isSocialProfile, isUntouched, type SocialProfile } 
 import { addDays, dayKeyOf, endOfDayMs, startOfDayMs, DAY_MS, type DayKey } from '../domain/dates';
 import { mealDay, MAX_DAY_SHIFT } from '../domain/day-credit';
 import { maxOf, minOf } from '../domain/extent';
-import { BASELINE_DAYS, estimateSleep } from '../domain/sleep-estimate';
+import { backtestEstimate, BASELINE_DAYS, estimateSleep, summarizeBacktest, type BacktestSummary } from '../domain/sleep-estimate';
 import { estimateSleepOffRing, OFFRING } from '../domain/sleep-offring';
+import { backtestPhoneSleep, estimateSleepFromPhone } from '../domain/sleep-phone';
+import { awakeInstants, coveredMs as phoneCovered, mergeSpans as mergePhoneSpans, type PhoneActivity, type PhoneSpan } from '../domain/phone-activity';
 import { sortProfile, type ProfileEntry } from '../domain/profile';
 import { sanitizeJointMetrics } from '../domain/joint-metrics';
 import { sanitizeNutritionPanel } from '../domain/nutrition-panel';
@@ -60,6 +62,24 @@ const ALL_MEALS = IDBKeyRange.bound(MEALS_PREFIX, 'meals;', false, true);
 const WATER_PREFIX = 'water:';
 const waterKey = (day: DayKey): string => `${WATER_PREFIX}${day}`;
 const ALL_WATER = IDBKeyRange.bound(WATER_PREFIX, 'water;', false, true);
+
+/** El uso del móvil de un día, en `kv`: `phone:AAAA-MM-DD` → `{ u: [[inicio, fin]…], c: [[inicio, fin]…] }` (tramos de uso y tramos leídos enteros, recortados a ese día). Solo horas. */
+const PHONE_PREFIX = 'phone:';
+const phoneKey = (day: DayKey): string => `${PHONE_PREFIX}${day}`;
+const ALL_PHONE = IDBKeyRange.bound(PHONE_PREFIX, 'phone;', false, true);
+/** Cuántos días de uso del móvil se conservan: lo que no se mira ya (la estimación usa unas semanas) no se guarda. */
+const PHONE_DAYS_KEPT = 120;
+interface PhoneDay {
+  u: Array<[number, number]>;
+  c: Array<[number, number]>;
+}
+const isSpanPair = (v: unknown): v is [number, number] => Array.isArray(v) && v.length === 2 && Number.isFinite(v[0]) && Number.isFinite(v[1]) && (v[1] as number) >= (v[0] as number);
+const asPhoneDay = (value: unknown): PhoneDay => {
+  const v = (typeof value === 'object' && value !== null ? value : {}) as Partial<PhoneDay>;
+  return { u: Array.isArray(v.u) ? v.u.filter(isSpanPair) : [], c: Array.isArray(v.c) ? v.c.filter(isSpanPair) : [] };
+};
+const toPairs = (spans: readonly PhoneSpan[]): Array<[number, number]> => spans.map((s) => [s.startMs, s.endMs]);
+const toSpans = (pairs: ReadonlyArray<[number, number]>): PhoneSpan[] => pairs.map(([startMs, endMs]) => ({ startMs, endMs }));
 
 /** Los platos guardados, uno por clave en `kv` (`dish:<id>`): con su foto un plato pesa decenas de KB y así guardar o usar uno no reescribe los demás. */
 const DISH_PREFIX = 'dish:';
@@ -275,10 +295,20 @@ export class IdbStore implements Store {
     ]);
     // Los que empezaron antes del rango y siguen dentro (cruzan la medianoche): no son del rango, pero sus pasos sí.
     const carryWorkouts = earlier.filter((w) => w.endMs > start);
-    // Las noches que el anillo no dio se estiman con el pulso y los pasos (nunca se guardan: ver `sleep-estimate.ts`).
-    const asked = await this.lastSleepAskMs();
+    // Lo que la persona hizo con la app dice cuándo estaba despierta: una comida o un vaso de agua anotados y las veces que la app estuvo abierta sincronizando.
+    const habitFrom = start - OFFRING.habitDays * DAY_MS;
+    const habitTo = end + OFFRING.habitDays * DAY_MS;
+    const [asked, marks, realNights] = await Promise.all([
+      this.lastSleepAskMs(),
+      this.appActivity(start - BASELINE_DAYS * DAY_MS, end + BASELINE_DAYS * DAY_MS),
+      this.db.getAll('sleep', bound(habitFrom, habitTo)),
+    ]);
+    const { logged: loggedTimes, syncs: syncTimes } = marks;
+    // Lo que se sabe del uso del móvil (cuándo se encendió la pantalla): es lo más fiable que hay de «estaba despierta», también para las noches con el anillo.
+    const phone = await this.loadPhoneActivity(start - BASELINE_DAYS * DAY_MS, end + BASELINE_DAYS * DAY_MS);
+    // Las noches que el anillo no dio se estiman con el pulso, la respiración y los pasos (nunca se guardan: ver `sleep-estimate.ts`).
     const [heartAround, bucketsAround, countersAround, workoutsAround, sleepAround] = near;
-    const estimated = estimateSleep({
+    const ringEstimated = estimateSleep({
       heart: heartAround,
       buckets: bucketsAround,
       counters: countersAround,
@@ -287,30 +317,44 @@ export class IdbStore implements Store {
       askedAtMs: asked,
       fromMs: start,
       toMs: end,
+      awakeMarks: [...loggedTimes, ...syncTimes, ...awakeInstants(phone.uses)],
     });
-    // Y las noches SIN anillo (no hay pulso ni pasos que mirar), con los huecos de actividad: lo anotado, la app abierta y los pasos de antes y después. Solo donde ni el anillo ni la otra estimación dieron nada.
-    const habitFrom = start - OFFRING.habitDays * DAY_MS;
-    const habitTo = end + OFFRING.habitDays * DAY_MS;
-    const [loggedMeals, loggedWater, syncKeys, realNights] = await Promise.all([
-      this.listMeals(start - BASELINE_DAYS * DAY_MS, end + BASELINE_DAYS * DAY_MS),
-      this.listWater(start - BASELINE_DAYS * DAY_MS, end + BASELINE_DAYS * DAY_MS),
-      // Solo las horas (la clave de cada registro): sus trazas pesan mucho y aquí no hacen falta.
-      this.db.getAllKeys('syncs'),
-      this.db.getAll('sleep', bound(habitFrom, habitTo)),
-    ]);
+    // Sin anillo de noche (lo normal): lo que dice el móvil, con los pasos de día del anillo y lo anotado. Donde el anillo dio pulso, manda la estimación con anillo.
+    const nearRing = (night: { startMs: number; endMs: number }): boolean =>
+      ringEstimated.some((e) => e.startMs < night.endMs + OFFRING.nearRealMs && e.endMs > night.startMs - OFFRING.nearRealMs);
+    const fromPhone = estimateSleepFromPhone({
+      phone,
+      buckets: bucketsAround,
+      counters: countersAround,
+      heart: heartAround,
+      workouts: workoutsAround,
+      logged: loggedTimes,
+      syncs: syncTimes,
+      real: sleepAround,
+      askedAtMs: asked,
+      fromMs: start,
+      toMs: end,
+    }).filter((night) => !nearRing(night));
+    const estimated = [...ringEstimated, ...fromPhone];
+    // Y las noches SIN anillo ni registro del móvil (de antes de darle acceso, o con el móvil apagado), con los huecos de actividad: lo anotado, la app abierta y los pasos de antes y después. Donde
+    // el registro del móvil sí cubría la noche y la estimación del móvil no sacó ninguna, solo se descarta si el móvil MOSTRÓ que estaba despierta (lo usó buena parte de esa noche): si no, que no
+    // salga nada sería peor que la aproximación de siempre (un fallo de la lectura o un registro raro dejaban días sin noche).
+    const phoneSawAwake = (night: { startMs: number; endMs: number }): boolean => {
+      const length = night.endMs - night.startMs;
+      return phoneCovered(phone.coverage, night.startMs, night.endMs) >= 0.5 * length && phoneCovered(phone.uses, night.startMs, night.endMs) >= 0.35 * length;
+    };
     const offRing = estimateSleepOffRing({
       buckets: bucketsAround,
       counters: countersAround,
       heart: heartAround,
       workouts: workoutsAround,
-      // Una comida pasada a otro día conserva la hora a la que se anotó, que no es la de ese día: no dice cuándo estaba despierta la persona.
-      logged: [...loggedMeals.filter((m) => m.day === undefined || m.day === dayKeyOf(m.tsMs)).map((m) => m.tsMs), ...loggedWater.map((w) => w.tsMs)],
-      syncs: syncKeys.filter((ts): ts is number => typeof ts === 'number').filter((ts) => ts >= start - BASELINE_DAYS * DAY_MS && ts < end + BASELINE_DAYS * DAY_MS),
+      logged: loggedTimes,
+      syncs: syncTimes,
       real: realNights,
       askedAtMs: asked,
       fromMs: start,
       toMs: end,
-    }).filter((night) => !estimated.some((e) => e.startMs < night.endMs + OFFRING.nearRealMs && e.endMs > night.startMs - OFFRING.nearRealMs));
+    }).filter((night) => !phoneSawAwake(night) && !estimated.some((e) => e.startMs < night.endMs + OFFRING.nearRealMs && e.endMs > night.startMs - OFFRING.nearRealMs));
     const allEstimated = offRing.length > 0 ? [...estimated, ...offRing] : estimated;
     return {
       buckets,
@@ -323,6 +367,91 @@ export class IdbStore implements Store {
       meals: await this.mealsOfWindow(start, end),
       water: await this.listWater(start, end),
     };
+  }
+
+  async addPhoneActivity(batch: PhoneActivity): Promise<void> {
+    // Cada tramo se reparte por los días que toca (el uso que cruza la medianoche cuenta en los dos).
+    const perDay = new Map<DayKey, { u: PhoneSpan[]; c: PhoneSpan[] }>();
+    const add = (kind: 'u' | 'c', span: PhoneSpan): void => {
+      for (let day = dayKeyOf(span.startMs); ; day = addDays(day, 1)) {
+        const startMs = Math.max(span.startMs, startOfDayMs(day));
+        const endMs = Math.min(span.endMs, endOfDayMs(day));
+        if (endMs >= startMs) {
+          const entry = perDay.get(day) ?? { u: [], c: [] };
+          entry[kind].push({ startMs, endMs });
+          perDay.set(day, entry);
+        }
+        if (endOfDayMs(day) >= span.endMs) break;
+      }
+    };
+    for (const span of batch.uses) add('u', span);
+    for (const span of batch.coverage) add('c', span);
+    if (perDay.size === 0) return;
+    const tx = this.db.transaction('kv', 'readwrite');
+    const kv = tx.objectStore('kv');
+    for (const [day, entry] of perDay) {
+      const stored = asPhoneDay(await kv.get(phoneKey(day)));
+      await kv.put(
+        { u: toPairs(mergePhoneSpans([...toSpans(stored.u), ...entry.u], 60_000)), c: toPairs(mergePhoneSpans([...toSpans(stored.c), ...entry.c], 1_000)) } satisfies PhoneDay,
+        phoneKey(day),
+      );
+    }
+    // Lo antiguo (respecto a lo más reciente que se guarda) se borra: no se mira y solo ocuparía.
+    const newest = [...perDay.keys()].sort().pop() ?? dayKeyOf(Date.now());
+    const oldest = addDays(newest, -PHONE_DAYS_KEPT);
+    for (const key of await kv.getAllKeys(IDBKeyRange.bound(PHONE_PREFIX, phoneKey(oldest), false, true))) await kv.delete(key);
+    await tx.done;
+  }
+
+  async loadPhoneActivity(fromMs: number, toMs: number): Promise<PhoneActivity> {
+    const range = IDBKeyRange.bound(phoneKey(addDays(dayKeyOf(fromMs), -1)), phoneKey(addDays(dayKeyOf(toMs), 1)));
+    const days = (await this.db.getAll('kv', range)).map(asPhoneDay);
+    return {
+      uses: mergePhoneSpans(days.flatMap((d) => toSpans(d.u)), 60_000),
+      coverage: mergePhoneSpans(days.flatMap((d) => toSpans(d.c)), 1_000),
+    };
+  }
+
+  async lastPhoneRead(): Promise<number | null> {
+    const keys = await this.db.getAllKeys('kv', ALL_PHONE);
+    const last = keys[keys.length - 1];
+    if (typeof last !== 'string') return null;
+    const day = asPhoneDay(await this.db.get('kv', last));
+    const ends = day.c.map((p) => p[1]);
+    return ends.length > 0 ? Math.max(...ends) : null;
+  }
+
+  /** Las horas en que la persona hizo algo con la app (anotó una comida o agua, o la app estuvo abierta sincronizando) entre `from` y `to`: estaba despierta. */
+  private async appActivity(from: number, to: number): Promise<{ logged: number[]; syncs: number[] }> {
+    const [meals, water, syncKeys] = await Promise.all([
+      this.listMeals(from, to),
+      this.listWater(from, to),
+      // Solo las horas (la clave de cada registro): sus trazas pesan mucho y aquí no hacen falta.
+      this.db.getAllKeys('syncs'),
+    ]);
+    return {
+      // Una comida pasada a otro día conserva la hora a la que se anotó, que no es la de ese día: no dice cuándo estaba despierta la persona.
+      logged: [...meals.filter((m) => m.day === undefined || m.day === dayKeyOf(m.tsMs)).map((m) => m.tsMs), ...water.map((w) => w.tsMs)],
+      syncs: syncKeys.filter((ts): ts is number => typeof ts === 'number').filter((ts) => ts >= from && ts < to),
+    };
+  }
+
+  async sleepAccuracy(nowMs: number, days = 60): Promise<BacktestSummary | null> {
+    const start = nowMs - days * DAY_MS;
+    const around = IDBKeyRange.bound(start - BASELINE_DAYS * DAY_MS, nowMs, false, true);
+    const [heart, buckets, counters, workouts, sleep, marks, phone] = await Promise.all([
+      this.db.getAll('heart', around),
+      this.db.getAll('buckets', around),
+      this.db.getAll('counters', around),
+      this.db.getAllFromIndex('workouts', 'byStart', around),
+      this.db.getAll('sleep', around),
+      this.appActivity(start - BASELINE_DAYS * DAY_MS, nowMs),
+      this.loadPhoneActivity(start - BASELINE_DAYS * DAY_MS, nowMs),
+    ]);
+    // Lo normal es el móvil (sin anillo de noche); con el anillo puesto de noche, la estimación con anillo. Se enseña la que tenga más noches con las que comparar.
+    const ring = backtestEstimate({ heart, buckets, counters, workouts, real: sleep, askedAtMs: nowMs, fromMs: start, toMs: nowMs, awakeMarks: [...marks.logged, ...marks.syncs, ...awakeInstants(phone.uses)] });
+    const fromPhone = backtestPhoneSleep({ phone, buckets, counters, heart, workouts, logged: marks.logged, syncs: marks.syncs, real: sleep, askedAtMs: nowMs, fromMs: start, toMs: nowMs });
+    return summarizeBacktest(fromPhone.length >= ring.length ? fromPhone : ring);
   }
 
   async stats(): Promise<StoreStats> {
