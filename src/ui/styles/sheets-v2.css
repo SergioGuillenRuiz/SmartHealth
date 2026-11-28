@@ -375,9 +375,15 @@
   align-items: center;
   gap: 10px;
   width: auto;
-  padding: 0;
+  /* Un margen de 2 px alrededor: ahí queda la casilla oculta (1 px), de modo que el punto de pulsación de la casilla cae en la propia etiqueta y no encima de la pista del interruptor. */
+  padding: 2px;
+  margin: -2px;
   border: 0;
   background: transparent;
+}
+:root[data-sheets='2'] .device > .switch:has(input:checked) input {
+  top: 0;
+  left: 0;
 }
 :root[data-sheets='2'] .device > .switch:has(input:checked) .switch__text {
   font-size: 13px;

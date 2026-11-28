@@ -5,6 +5,8 @@ import { activePage, expect, goTab, openDemo, test } from './fixtures';
 // El panel de Nutrición modular (ronda 59): hasta dos filas de cuatro indicadores que la persona elige, quita y añade, como los gráficos de evolución.
 
 const panel = (page: Page): Locator => activePage(page).getByRole('group', { name: 'Comida del día' });
+/** «Elegir indicadores» va en la cabecera de la tarjeta (al lado del botón que la gira), no dentro del panel de los indicadores. */
+const editButton = (page: Page): Locator => activePage(page).getByRole('region', { name: 'Nutrición', exact: true }).getByRole('button', { name: 'Elegir indicadores' });
 const tiles = (page: Page): Locator => panel(page).getByRole('list', { name: 'Nutrientes del día' }).getByRole('listitem').filter({ has: page.locator('.food-ring') });
 const names = async (page: Page): Promise<string[]> => (await panel(page).locator('.food-macros__name').allInnerTexts()).map((t) => t.trim());
 
@@ -32,11 +34,11 @@ test.describe('panel de nutrición modular', () => {
 
   test('de serie trae los cuatro de siempre (proteína, hidratos, grasas y sal) y un botón para elegirlos', async ({ page }) => {
     expect(await names(page)).toEqual(['Proteína', 'Hidratos', 'Grasas', 'Sal']);
-    await expect(panel(page).getByRole('button', { name: 'Elegir indicadores' })).toBeVisible();
+    await expect(editButton(page)).toBeVisible();
   });
 
   test('editar: se añaden fibra, azúcares y agua (dos filas de cuatro), se quita la sal, se aplica y queda guardado al recargar', async ({ page }) => {
-    await panel(page).getByRole('button', { name: 'Elegir indicadores' }).click();
+    await editButton(page).click();
     await expect(panel(page).getByRole('button', { name: 'Aplicar' })).toBeVisible();
     await addIndicator(page, 'Fibra');
     await addIndicator(page, 'Azúcares');
@@ -48,7 +50,7 @@ test.describe('panel de nutrición modular', () => {
     await removeIndicator(page, 'Sal');
     expect(await names(page)).toEqual(['Proteína', 'Hidratos', 'Grasas', 'Fibra', 'Azúcares', 'Agua']);
     await panel(page).getByRole('button', { name: 'Aplicar' }).click();
-    await expect(panel(page).getByRole('button', { name: 'Elegir indicadores' })).toBeVisible();
+    await expect(editButton(page)).toBeVisible();
     expect(await names(page)).toEqual(['Proteína', 'Hidratos', 'Grasas', 'Fibra', 'Azúcares', 'Agua']);
     // Lo guardado sigue al recargar (se espera a que esté escrito: la recarga lo perdía a veces).
     await expect
@@ -73,7 +75,7 @@ test.describe('panel de nutrición modular', () => {
   });
 
   test('descartar deja todo como estaba; en edición un toque en la tarjeta no la gira, y ninguno es válido (sin filas)', async ({ page }) => {
-    await panel(page).getByRole('button', { name: 'Elegir indicadores' }).click();
+    await editButton(page).click();
     await removeIndicator(page, 'Sal');
     await removeIndicator(page, 'Grasas');
     expect(await names(page)).toEqual(['Proteína', 'Hidratos']);
@@ -81,17 +83,17 @@ test.describe('panel de nutrición modular', () => {
     await expect(activePage(page).getByRole('region', { name: 'Nutrición', exact: true }).getByRole('group', { name: 'Comida del día' })).toBeVisible();
     await panel(page).getByRole('button', { name: 'Descartar' }).click();
     expect(await names(page)).toEqual(['Proteína', 'Hidratos', 'Grasas', 'Sal']);
-    await panel(page).getByRole('button', { name: 'Elegir indicadores' }).click();
+    await editButton(page).click();
     for (const name of ['Proteína', 'Hidratos', 'Grasas', 'Sal']) await removeIndicator(page, name);
     await panel(page).getByRole('button', { name: 'Aplicar' }).click();
     await expect(panel(page).getByRole('list', { name: 'Nutrientes del día' })).toHaveCount(0);
-    await expect(panel(page).getByRole('button', { name: 'Elegir indicadores' })).toBeVisible();
+    await expect(editButton(page)).toBeVisible();
   });
 
   for (const scheme of ['light', 'dark'] as const) {
     test(`la edición y el selector cumplen la accesibilidad (axe, tema ${scheme === 'light' ? 'claro' : 'oscuro'})`, async ({ page }) => {
       await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
-      await panel(page).getByRole('button', { name: 'Elegir indicadores' }).click();
+      await editButton(page).click();
       await addIndicator(page, 'Fibra');
       const tags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
       const editing = await new AxeBuilder({ page }).withTags(tags).include('main.pager > section.page:not([inert])').analyze();
