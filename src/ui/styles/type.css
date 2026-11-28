@@ -1,0 +1,42 @@
+/* La voz de las cifras y los títulos: Bricolage Grotesque (`--num`) para lo que se lee de un vistazo —las cifras grandes, los títulos de tarjeta y de hoja, la barra superior— y Figtree
+   (`--font`, la del resto de la app) para el texto corrido, las etiquetas y los botones. Va después de `app.css` para ganar a las reglas de cada componente sin subir la especificidad. */
+.hero-ring__value,
+.food-top__value,
+.food-top__left strong,
+.tile__value,
+.stat__value,
+.metric__value,
+.live__timer,
+.meal-detail__kcal strong,
+.topbar__title,
+.daynav__label strong,
+.sheet__head h2,
+.ready__name,
+.hero-card__head h2,
+.card__title,
+.wk-row__nums strong,
+.chip strong,
+.live__sport {
+  font-family: var(--num);
+  font-optical-sizing: auto;
+}
+/* Las cifras grandes, algo más pesadas y apretadas: así la fuente se ve como una cifra y no como un texto grande. */
+.hero-ring__value,
+.tile__value,
+.live__timer,
+.metric__value,
+.food-top__value {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+.topbar__title,
+.daynav__label strong {
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+.card__title,
+.hero-card__head h2 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}

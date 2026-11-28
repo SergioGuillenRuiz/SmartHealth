@@ -55,6 +55,15 @@ sandía, piña, patatas fritas, kebab, wrap, pasta y arroz). La pala de pádel y
 sensor) y el icono de la aplicación (`public/icon.svg`: una manzana con una línea de pulso, de donde salen los PNG de la PWA y los de Android, también el monocromo, con
 `npm run icons` y `node scripts/make-android-icons.mjs`; el icono anterior, el del anillo, está archivado en `branding/anillo/`).
 
+## Tipografías
+
+La app lleva dentro dos fuentes variables de [Google Fonts](https://fonts.google.com), las dos con licencia **SIL Open Font License 1.1** (OFL), que permite usarlas y redistribuirlas con la app:
+
+- **[Figtree](https://fonts.google.com/specimen/Figtree)** © 2022 The Figtree Project Authors (<https://github.com/erikdkennedy/figtree>): el texto de la app.
+- **[Bricolage Grotesque](https://fonts.google.com/specimen/Bricolage+Grotesque)** © 2022 The Bricolage Grotesque Project Authors (<https://github.com/ateliertriay/bricolage>): las cifras y los títulos.
+
+Los archivos están tal cual los sirve Google Fonts (WOFF2, alfabetos latino y latino extendido) en `src/ui/styles/fonts/`, junto con el texto completo de cada licencia (`OFL-Figtree.txt`, `OFL-BricolageGrotesque.txt`). No se piden a internet: van en el paquete.
+
 ## Dependencias
 
 | Paquete | Licencia |

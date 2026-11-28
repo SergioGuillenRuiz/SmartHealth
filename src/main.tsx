@@ -17,8 +17,10 @@ import { App } from './ui/App';
 import { applySheetStyle } from './ui/sheet-style';
 import { blockTextSelection } from './ui/text-selection';
 import { bootSucceeded, ErrorBoundary, FatalScreen, retryBootOnce, storeNameFor } from './ui/FatalScreen';
+import './ui/styles/fonts.css';
 import './ui/styles/tokens.css';
 import './ui/styles/app.css';
+import './ui/styles/type.css';
 import './ui/styles/charts.css';
 import './ui/styles/sheets-v2.css';
 

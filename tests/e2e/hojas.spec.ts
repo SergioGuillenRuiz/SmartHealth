@@ -28,7 +28,7 @@ test.describe('hojas con un mismo aspecto', () => {
     await expect(page.locator('html')).toHaveAttribute('data-sheets', '2');
   });
 
-  test('la valoración de una comida: bloque plano de 22 px con su medidor de tres tramos (sin dibujos de fondo), y cada criterio conserva su marca (bien, regular, mal) y su palabra', async ({ page }) => {
+  test('la valoración de una comida: bloque plano de 22 px con su medidor de tres tramos (sin dibujos de fondo), y cada criterio es una fila plana que conserva su marca (bien, regular, mal) y su palabra', async ({ page }) => {
     await logMeal(page, 'una barrita de proteínas y un yogur natural');
     await activePage(page).locator('.food-meals__main').first().click();
     const detail = sheet(page, 'Comida');
@@ -49,7 +49,8 @@ test.describe('hojas con un mismo aspecto', () => {
       await expect(row).toHaveClass(/is-(good|ok|bad|unknown)/);
       await expect(row.locator('.fit-row__mark')).toHaveCount(1);
       await expect(row.locator('.fit-row__value')).toHaveCount(1);
-      expect(await radius(row)).toBe('16px');
+      // Sin tarjeta blanca por criterio dentro del bloque: filas planas separadas por una raya.
+      expect(await row.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
     }
   });
 
@@ -68,12 +69,17 @@ test.describe('hojas con un mismo aspecto', () => {
     expect(await eat.locator('.meal__other').evaluate((el) => getComputedStyle(el).textTransform)).toBe('uppercase');
   });
 
-  test('los dispositivos: bloques de 22 px y el interruptor de dentro con fondo propio', async ({ page }) => {
+  test('los dispositivos: tarjetas de 24 px y, con el anillo en uso, el interruptor en la cabecera de su tarjeta (encima del estado)', async ({ page }) => {
     await page.getByRole('button', { name: /^Dispositivos:/ }).click();
     const devices = sheet(page, 'Dispositivos');
     const first = devices.locator('.device').first();
     await expect(first).toBeVisible();
-    expect(await radius(first)).toBe('22px');
-    expect(await radius(first.locator('.switch').first())).toBe('16px');
+    expect(await radius(first)).toBe('24px');
+    const title = await first.locator('.device__title').boundingBox();
+    const toggle = await first.locator('.switch').first().boundingBox();
+    const hero = await first.locator('.ring-hero').boundingBox();
+    if (!title || !toggle || !hero) throw new Error('faltan las cajas de la cabecera de dispositivos');
+    expect(toggle.y + toggle.height).toBeLessThanOrEqual(hero.y); // la cabecera va encima del estado del anillo
+    expect(toggle.x).toBeGreaterThan(title.x + title.width); // y el interruptor, a la derecha del título
   });
 });

@@ -275,3 +275,168 @@
 :root[data-sheets='2'] .recipe-card .cook-step__time {
   background: var(--surface);
 }
+
+/* ───────────── Detalle de una comida: primero las cifras, después la valoración ─────────────
+   El orden está en `MealDetailSheet.tsx` (kcal, reparto y cuatro indicadores, cantidades y, al final, la valoración). Aquí, el reparto como una barra redonda y los indicadores como filas con su
+   cifra en grande —sin cuatro mosaicos de tres líneas—, y la valoración como una lista plana dentro de su bloque (sin una tarjeta blanca por criterio dentro de un bloque gris). */
+:root[data-sheets='2'] .meal-detail__kcal {
+  margin: 14px 0 12px;
+}
+:root[data-sheets='2'] .meal-detail__bar {
+  height: 10px;
+  margin-bottom: 6px;
+  border-radius: 999px;
+}
+:root[data-sheets='2'] .meal-detail__macros {
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin: 0 0 16px;
+}
+:root[data-sheets='2'] .meal-detail__macros div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    'name value day'
+    'energy value day';
+  align-items: center;
+  column-gap: 14px;
+  row-gap: 1px;
+  padding: 11px 0;
+  border-radius: 0;
+  background: transparent;
+  border-top: 1px solid var(--line);
+}
+:root[data-sheets='2'] .meal-detail__macros div:first-child {
+  border-top: 0;
+}
+:root[data-sheets='2'] .meal-detail__macros dt {
+  grid-area: name;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+:root[data-sheets='2'] .meal-detail__macros dd:not(.meal-detail__sub) {
+  grid-area: value;
+  font-family: var(--num);
+  font-size: 18px;
+  font-weight: 650;
+  text-align: right;
+}
+:root[data-sheets='2'] .meal-detail__macros dd.meal-detail__sub--energy {
+  grid-area: energy;
+}
+:root[data-sheets='2'] .meal-detail__macros dd.meal-detail__sub--day {
+  grid-area: day;
+  text-align: right;
+  white-space: nowrap;
+}
+:root[data-sheets='2'] .meal-detail__note {
+  margin: -6px 0 16px;
+}
+:root[data-sheets='2'] .meal-fit h4 {
+  font-family: var(--num);
+  font-size: 19px;
+}
+:root[data-sheets='2'] .meal-fit .fit-rows {
+  gap: 0;
+}
+:root[data-sheets='2'] .meal-fit .fit-row {
+  padding: 12px 0;
+  border-radius: 0;
+  background: transparent;
+  border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+}
+:root[data-sheets='2'] .meal-fit .fit-row:first-child {
+  border-top: 0;
+}
+
+/* ───────────── Dispositivos: una tarjeta por aparato, con el estado a la vista ─────────────
+   Con el aparato en uso, el interruptor sube a la cabecera de su tarjeta (su frase explicativa queda para lectores de pantalla); apagado, vuelve a su fila de siempre porque ahí explica
+   qué se pierde. «Sincronizar» es la única acción fuerte: las demás son texto, y olvidar, en rojo discreto. */
+:root[data-sheets='2'] .device {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  row-gap: 14px;
+  padding: 18px 16px 16px;
+  border-radius: 24px;
+}
+:root[data-sheets='2'] .device > * {
+  grid-column: 1 / -1;
+}
+:root[data-sheets='2'] .device > .device__title {
+  grid-column: 1;
+  grid-row: 1;
+}
+:root[data-sheets='2'] .device > .switch:has(input:checked) {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 10px;
+  width: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+:root[data-sheets='2'] .device > .switch:has(input:checked) .switch__text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+:root[data-sheets='2'] .device > .switch:has(input:checked) .switch__text small {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+:root[data-sheets='2'] .ring-hero {
+  padding: 14px;
+  border-radius: 20px;
+  background: var(--surface);
+}
+:root[data-sheets='2'] .ring-hero__name {
+  font-family: var(--num);
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+:root[data-sheets='2'] .device .btn-row:has(.btn--small) {
+  display: flex;
+  gap: 4px;
+  justify-content: space-between;
+}
+:root[data-sheets='2'] .device .btn--small:not(.btn--danger) {
+  flex: 1;
+  min-height: 42px;
+  border: 0;
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 600;
+  box-shadow: none;
+}
+:root[data-sheets='2'] .device .btn--small.btn--ghost {
+  color: var(--danger-text);
+}
+:root[data-sheets='2'] .device .btn--primary.btn--block {
+  min-height: 52px;
+  border-radius: 18px;
+}
+:root[data-sheets='2'] .ring-more .linkish {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-decoration-thickness: 1px;
+}
+:root[data-sheets='2'] .sc-wiz {
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--surface);
+}
+:root[data-sheets='2'] .sc-wiz__title {
+  font-size: 16px;
+  font-weight: 650;
+}

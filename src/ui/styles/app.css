@@ -27,8 +27,7 @@
   align-items: center;
   min-height: calc(var(--header-h) + var(--safe-top));
   padding: var(--safe-top) 8px 0;
-  background: var(--surface);
-  border-bottom: 1px solid var(--line);
+  background: var(--bg);
 }
 
 .topbar__title {
@@ -63,7 +62,7 @@
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  border: 2px solid var(--surface);
+  border: 2px solid var(--bg);
   background: var(--warn);
 }
 
@@ -74,7 +73,7 @@
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  border: 2px solid var(--surface);
+  border: 2px solid var(--bg);
   background: var(--text-3);
 }
 .ringbtn__dot--ok {
@@ -179,7 +178,7 @@
   min-height: calc(var(--nav-h) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
   background: var(--surface);
-  border-top: 1px solid var(--line);
+  box-shadow: 0 -10px 30px -22px rgba(14, 40, 31, 0.35);
 }
 .nav button {
   position: relative;
@@ -243,11 +242,10 @@ body:has(dialog[open]) .toast--app {
 /* ───────────── Tarjetas ───────────── */
 .card {
   background: var(--surface);
-  border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 18px;
+  margin-bottom: 14px;
 }
 .card__head {
   display: flex;
@@ -258,15 +256,15 @@ body:has(dialog[open]) .toast--app {
 .card__icon {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
   background: color-mix(in srgb, currentColor 13%, transparent);
 }
 .card__title {
   flex: 1;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
 }
 .card__right {
   display: flex;
@@ -412,9 +410,9 @@ body:has(dialog[open]) .toast--app {
 
 .segmented {
   display: inline-flex;
-  padding: 3px;
-  border-radius: 12px;
-  background: var(--surface-3);
+  padding: 4px;
+  border-radius: 15px;
+  background: var(--surface-2);
   gap: 2px;
 }
 .segmented--block {
@@ -425,19 +423,18 @@ body:has(dialog[open]) .toast--app {
   padding: 0 4px;
 }
 .segmented__item {
-  min-height: 32px;
+  min-height: 36px;
   padding: 0 12px;
   border: 0;
-  border-radius: 9px;
+  border-radius: 11px;
   background: transparent;
   color: var(--text-2);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
 }
 .segmented__item.is-active {
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow);
+  background: var(--text);
+  color: var(--surface);
 }
 
 /* ───────────── Botones y formularios ───────────── */
@@ -614,9 +611,9 @@ dialog.sheet::backdrop {
 .hero-card__icon {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
   background: var(--hero-chip);
 }
 .hero-ring {
@@ -1645,6 +1642,56 @@ details.more[open] > summary svg {
 .device-hero__meta {
   font-size: 13px;
   color: var(--text-2);
+}
+/* El estado del anillo en etiquetas: cuándo se sincronizó (verde; ámbar si hace tiempo) y la batería con su barrita (roja si queda poca). */
+.ring-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 4px;
+}
+.chip-s {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.chip-s--ok {
+  background: color-mix(in srgb, var(--ok) 14%, var(--surface));
+  color: var(--good-text);
+}
+.chip-s--warn {
+  background: var(--warn-soft);
+  color: var(--warn-text);
+}
+.chip-s > i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.chip-s__battery {
+  width: 22px;
+  height: 8px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--ok) var(--p), var(--surface-3) var(--p));
+}
+.chip-s__battery.is-low {
+  background: linear-gradient(90deg, var(--danger) var(--p), var(--surface-3) var(--p));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .chip-s--ok {
+    color: var(--ok);
+  }
+}
+:root[data-theme='dark'] .chip-s--ok {
+  color: var(--ok);
 }
 .progress {
   margin: 14px 0;
@@ -5101,17 +5148,18 @@ select.input {
 }
 
 /* El panel de Nutrición modular (ronda 59): hasta dos filas de cuatro indicadores; al editar, cada uno se menea y lleva su cruz, y un «+» añade otro. */
+/* «Elegir indicadores»: un botón con icono en la cabecera de la tarjeta, al lado del que la gira (mismo tamaño y forma). El nombre accesible es el de siempre. */
 .food-edit {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin: 10px 0 0 auto;
-  padding: 6px 4px;
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: -4px 0;
+  padding: 0;
   border: 0;
-  background: none;
-  color: var(--text-2);
-  font-size: 13.5px;
-  font-weight: 600;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text);
 }
 .food-macros li {
   position: relative;

@@ -13,9 +13,9 @@ import { MealThumb } from './meal-thumb';
 import { SuggestionNudge } from './MealSuggestions';
 import { Sheet } from './Sheet';
 
-// Los detalles de una comida: lo que se anotó (calorías y cantidad), una valoración de cuánto encaja con lo que busca la persona (su objetivo de salud) con sus cinco criterios
-// —densidad calórica, densidad proteica, sal y azúcar, saciedad y si es saludable—, y los cuatro indicadores —proteína, hidratos, grasas y sal— con lo que pesan en la comida y
-// en el día, y una nota al pie con los azúcares y la fibra si se anotaron.
+// Los detalles de una comida, de lo concreto a lo interpretado: lo que se anotó (calorías y cantidad), los cuatro indicadores —proteína, hidratos, grasas y sal— con lo que pesan en la comida y
+// en el día (y una nota con los azúcares y la fibra si se anotaron), las cantidades, y al final una valoración de cuánto encaja con lo que busca la persona (su objetivo de salud) con sus
+// cinco criterios —densidad calórica, densidad proteica, sal y azúcar, saciedad y si es saludable—.
 
 const LABEL: Record<IndicatorKey, string> = { proteinG: 'Proteína', carbsG: 'Hidratos', fatG: 'Grasas', saltG: 'Sal' };
 const COLOR: Record<IndicatorKey, string> = {
@@ -89,6 +89,32 @@ function MealDetail({ meal }: { meal: MealEntry }): JSX.Element {
         </span>
       </p>
 
+      {facts.hasMacros ? (
+        <>
+          <div class="meal-detail__bar" aria-hidden="true">
+            {macros.map((m) => (
+              <span key={m.key} style={{ flexGrow: Math.max(0, (m.energyShare ?? 0) * 100), background: COLOR[m.key] }} />
+            ))}
+          </div>
+          <dl class="meal-detail__macros">
+            {facts.indicators.map((m) => (
+              <div key={m.key}>
+                <dt>
+                  <span class="meal-detail__dot" style={{ background: COLOR[m.key] }} aria-hidden="true" />
+                  {LABEL[m.key]}
+                </dt>
+                <dd>{m.grams === null ? '—' : `${fmtUpTo1(m.grams)}${NBSP}g`}</dd>
+                {m.energyShare !== null && <dd class="meal-detail__sub meal-detail__sub--energy">{`${percent(m.energyShare)} de sus calorías`}</dd>}
+                {m.dayShare !== null && <dd class="meal-detail__sub meal-detail__sub--day">{`${percent(m.dayShare)} ${m.key === 'saltG' ? 'del máximo diario' : 'de tu meta'}`}</dd>}
+              </div>
+            ))}
+          </dl>
+          {extras && <p class="meal-detail__note">{extras}</p>}
+        </>
+      ) : (
+        <p class="field__hint">Solo se anotaron las calorías.</p>
+      )}
+
       <MealAmounts meal={meal} />
 
       <SuggestionNudge meal={meal} level={fit.level} />
@@ -122,31 +148,6 @@ function MealDetail({ meal }: { meal: MealEntry }): JSX.Element {
         {fit.note !== null && <p class="fit-note">{fit.note}</p>}
       </section>
 
-      {facts.hasMacros ? (
-        <>
-          <div class="meal-detail__bar" aria-hidden="true">
-            {macros.map((m) => (
-              <span key={m.key} style={{ flexGrow: Math.max(0, (m.energyShare ?? 0) * 100), background: COLOR[m.key] }} />
-            ))}
-          </div>
-          <dl class="meal-detail__macros">
-            {facts.indicators.map((m) => (
-              <div key={m.key}>
-                <dt>
-                  <span class="meal-detail__dot" style={{ background: COLOR[m.key] }} aria-hidden="true" />
-                  {LABEL[m.key]}
-                </dt>
-                <dd>{m.grams === null ? '—' : `${fmtUpTo1(m.grams)}${NBSP}g`}</dd>
-                {m.energyShare !== null && <dd class="meal-detail__sub">{`${percent(m.energyShare)} de sus calorías`}</dd>}
-                {m.dayShare !== null && <dd class="meal-detail__sub">{`${percent(m.dayShare)} ${m.key === 'saltG' ? 'del máximo diario' : 'de tu meta'}`}</dd>}
-              </div>
-            ))}
-          </dl>
-          {extras && <p class="meal-detail__note">{extras}</p>}
-        </>
-      ) : (
-        <p class="field__hint">Solo se anotaron las calorías.</p>
-      )}
     </div>
   );
 }

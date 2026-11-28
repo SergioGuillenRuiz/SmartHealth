@@ -10,6 +10,11 @@ import { useArmed, useAsync } from './hooks';
 import { Icon, RingIcon } from './icons';
 import { Banner, ProgressBar } from './primitives';
 
+/** Desde cuándo una sincronización se considera antigua (ámbar): lo mismo que el punto de estado del botón de dispositivos de la barra de arriba (`App.tsx`). */
+const STALE_SYNC_MS = 6 * 3_600_000;
+/** Por debajo de esta batería (%) el indicador sale en rojo. */
+const LOW_BATTERY_PERCENT = 20;
+
 /** Lo del anillo dentro del menú de dispositivos (`DevicesSheet.tsx`): vincular, sincronizar y ver cómo ha ido. */
 export function RingPanel(): JSX.Element {
   const saved = ring.value;
@@ -33,13 +38,32 @@ export function RingPanel(): JSX.Element {
         </span>
         <div>
           <div class="ring-hero__name">{saved ? saved.name : 'Sin anillo vinculado'}</div>
-          <div class="ring-hero__meta">
-            {last
-              ? `Última sincronización ${fmtAgo(last.tsMs, now)}${last.batteryPercent !== null ? ` · batería ${last.batteryPercent}${NBSP}%` : ''}`
-              : saved
-                ? 'Aún no se ha sincronizado'
-                : 'Pulsa el botón para buscarlo'}
-          </div>
+          {last ? (
+            // El estado, a la vista y en dos etiquetas: cuándo se sincronizó (en ámbar si hace más de 6 h, como el punto de la barra de arriba) y la batería. A un lector de pantalla le sigue
+            // llegando la frase de siempre («Última sincronización hace 1 h», «batería 78 %»).
+            <div class="ring-hero__chips">
+              <span class={`chip-s ${nowMs.value - last.tsMs > STALE_SYNC_MS ? 'chip-s--warn' : 'chip-s--ok'}`}>
+                <i aria-hidden="true" />
+                <span aria-hidden="true">Sincronizado {fmtAgo(last.tsMs, now)}</span>
+                <span class="sr-only">Última sincronización {fmtAgo(last.tsMs, now)}</span>
+              </span>
+              {last.batteryPercent !== null && (
+                <span class="chip-s">
+                  <b class={`chip-s__battery${last.batteryPercent <= LOW_BATTERY_PERCENT ? ' is-low' : ''}`} style={{ '--p': `${last.batteryPercent}%` }} aria-hidden="true" />
+                  <span aria-hidden="true">
+                    {last.batteryPercent}
+                    {NBSP}%
+                  </span>
+                  <span class="sr-only">
+                    batería {last.batteryPercent}
+                    {NBSP}%
+                  </span>
+                </span>
+              )}
+            </div>
+          ) : (
+            <div class="ring-hero__meta">{saved ? 'Aún no se ha sincronizado' : 'Pulsa el botón para buscarlo'}</div>
+          )}
           {last?.firmware && <div class="ring-hero__meta">Firmware {last.firmware}</div>}
         </div>
       </div>

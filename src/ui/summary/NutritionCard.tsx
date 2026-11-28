@@ -224,19 +224,33 @@ export function NutritionCard({
           title={onWater ? "Hidratación" : "Nutrición"}
           color={onWater ? "var(--water)" : "var(--kcal)"}
           right={
-            <button
-              type="button"
-              class="food-face"
-              data-flip
-              aria-label={
-                onWater
-                  ? "Estás viendo la hidratación. Pulsa para ver la comida"
-                  : "Estás viendo la comida. Pulsa para ver la hidratación"
-              }
-              onClick={flip}
-            >
-              <Icon name="RefreshCw" size={16} />
-            </button>
+            <>
+              {!onWater && !editing && (
+                <button
+                  type="button"
+                  class="food-edit"
+                  aria-label="Elegir indicadores"
+                  onClick={() =>
+                    setDraft([...settings.value.nutritionPanel])
+                  }
+                >
+                  <Icon name="SlidersHorizontal" size={17} />
+                </button>
+              )}
+              <button
+                type="button"
+                class="food-face"
+                data-flip
+                aria-label={
+                  onWater
+                    ? "Estás viendo la hidratación. Pulsa para ver la comida"
+                    : "Estás viendo la comida. Pulsa para ver la hidratación"
+                }
+                onClick={flip}
+              >
+                <Icon name="RefreshCw" size={16} />
+              </button>
+            </>
           }
         />
 
@@ -352,7 +366,7 @@ export function NutritionCard({
                   )}
                 </ul>
               )}
-              {editing ? (
+              {editing && (
                 <div class="food-editbar">
                   <button
                     type="button"
@@ -371,15 +385,6 @@ export function NutritionCard({
                     Descartar
                   </button>
                 </div>
-              ) : (
-                <button
-                  type="button"
-                  class="food-edit"
-                  onClick={() => setDraft([...settings.value.nutritionPanel])}
-                >
-                  <Icon name="SlidersHorizontal" size={16} />
-                  Elegir indicadores
-                </button>
               )}
             </div>
 

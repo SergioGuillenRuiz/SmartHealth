@@ -4,14 +4,16 @@
   color-scheme: light dark;
 
   /* Paleta inspirada en Smart Health: fondo casi blanco, tarjetas blancas, verde menta y números ligeros. */
-  --bg: #f8f8f8;
+  /* Superficies tonales: el fondo con un punto de verde y las tarjetas blancas encima, sin borde (se separan por tono, no por raya). */
+  --bg: #edf1ee;
   --surface: #ffffff;
-  --surface-2: #f4f6f5;
-  --surface-3: #e8ecea;
-  --line: #eceeed;
+  --surface-2: #f2f5f3;
+  --surface-3: #e2e9e5;
+  --line: #e3e9e5;
   --text: #030f0d;
   --text-2: #5f6866;
-  --text-3: #6b7270;
+  /* Contraste ≥ 4,5:1 sobre el fondo, sobre `--surface-2` y sobre `--surface-3`. */
+  --text-3: #626a67;
 
   --brand: #177a58;
   --brand-soft: #e3f6ee;
@@ -21,7 +23,7 @@
   /* El verde de Smart Health, para trazos y rellenos que no llevan texto encima. */
   --mint: #58c198;
   /* El mismo verde menta para los iconos de la barra superior, algo más hondo para llegar a 3:1 sobre blanco. */
-  --mint-ui: #28a074;
+  --mint-ui: #1f9468;
 
   --steps: #2c9d5f;
   --kcal: #f26a21;
@@ -78,12 +80,14 @@
   --mark-heart: #fbdfe3;
 
 
-  --radius: 10px;
+  --radius: 22px;
   --radius-sm: 8px;
-  --shadow: 0 1px 2px rgba(20, 40, 35, 0.06), 0 2px 8px rgba(20, 40, 35, 0.06);
+  --shadow: 0 1px 1px rgba(14, 40, 31, 0.03), 0 14px 30px -18px rgba(14, 40, 31, 0.22);
   --shadow-up: 0 -6px 24px rgba(15, 23, 32, 0.12);
 
-  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Dos familias, las dos variables y dentro de la app (`styles/fonts/`, licencia OFL): Figtree para el texto y Bricolage Grotesque para las cifras y los títulos (`styles/type.css`). */
+  --font: 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --num: 'Bricolage Grotesque', 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --header-h: 56px;
@@ -92,14 +96,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #0d1311;
-    --surface: #151c1a;
-    --surface-2: #1b2422;
-    --surface-3: #26312e;
-    --line: #25302d;
+    --bg: #090f0d;
+    --surface: #131a17;
+    --surface-2: #1a2320;
+    --surface-3: #242f2b;
+    --line: #202a26;
     --text: #e9f1ee;
     --text-2: #aab9b4;
-    --text-3: #859590;
+    --text-3: #8a9a95;
 
     --brand: #4fd1a5;
     --brand-soft: #123a31;
@@ -156,20 +160,20 @@
 
 
 
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.25);
+    --shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 14px 30px -18px rgba(0, 0, 0, 0.7);
     --shadow-up: 0 -6px 24px rgba(0, 0, 0, 0.5);
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #0d1311;
-  --surface: #151c1a;
-  --surface-2: #1b2422;
-  --surface-3: #26312e;
-  --line: #25302d;
+  --bg: #090f0d;
+  --surface: #131a17;
+  --surface-2: #1a2320;
+  --surface-3: #242f2b;
+  --line: #202a26;
   --text: #e9f1ee;
   --text-2: #aab9b4;
-  --text-3: #859590;
+  --text-3: #8a9a95;
   --brand: #4fd1a5;
   --brand-soft: #123a31;
   --map-bg: #1a1c20;
@@ -218,7 +222,7 @@
   --mark-moon: #4a4326;
   --mark-wave: #3a3560;
   --mark-heart: #4a2530;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.25);
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 14px 30px -18px rgba(0, 0, 0, 0.7);
   --shadow-up: 0 -6px 24px rgba(0, 0, 0, 0.5);
 }
 
